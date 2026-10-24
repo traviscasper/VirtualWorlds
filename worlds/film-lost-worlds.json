@@ -1,0 +1,47 @@
+{
+  "$schema": "./schema.json",
+  "id": "film-lost-worlds",
+  "kind": "film-world",
+  "name": "The Lost Worlds",
+  "summary": "Fragments of worlds adrift in storms.",
+  "description": "A world from ARCHIVE: Worlds Within Worlds (chapter 7). It is drawn by the film's raymarching shader (worlds-within-worlds/src/worlds/70_lost.glsl). Opens the film studio at this chapter; a standalone interactive version is a planned adaptation (see docs/RECOMMENDATIONS.md).",
+  "categories": [
+    "space"
+  ],
+  "time": {
+    "era": "future",
+    "label": "Chapter 7"
+  },
+  "place": {
+    "type": "virtual",
+    "name": "The Lost Worlds",
+    "fictional": true
+  },
+  "purposes": [
+    "experience a story"
+  ],
+  "launch": [
+    {
+      "label": "Watch chapter 7",
+      "href": "worlds-within-worlds/ARCHIVE_Studio.html?chapter=6"
+    }
+  ],
+  "preview": "portal/img/film-lost-worlds.jpg",
+  "project": "worlds-within-worlds",
+  "formats": {
+    "desktop": true,
+    "mobile": false,
+    "webxr": false,
+    "video360": true,
+    "video16x9": true
+  },
+  "status": {
+    "stage": "film-only",
+    "notes": "Viewable in the film studio; interactive adaptation planned."
+  },
+  "engine": {
+    "type": "raymarch-glsl",
+    "module": "worlds-within-worlds/src/worlds/70_lost.glsl",
+    "chapter": 6
+  }
+}

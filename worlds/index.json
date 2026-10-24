@@ -1,0 +1,73 @@
+{
+  "title": "FLE Virtual Worlds",
+  "worlds": [
+    {
+      "id": "columbus-2050",
+      "file": "columbus-2050.json"
+    },
+    {
+      "id": "orbital-habitat",
+      "file": "orbital-habitat.json"
+    },
+    {
+      "id": "skyship-world-tour",
+      "file": "skyship-world-tour.json"
+    },
+    {
+      "id": "scifi-journey",
+      "file": "scifi-journey.json"
+    },
+    {
+      "id": "scifi-frankenstein",
+      "file": "scifi-frankenstein.json"
+    },
+    {
+      "id": "scifi-rur",
+      "file": "scifi-rur.json"
+    },
+    {
+      "id": "scifi-metropolis",
+      "file": "scifi-metropolis.json"
+    },
+    {
+      "id": "scifi-orbit",
+      "file": "scifi-orbit.json"
+    },
+    {
+      "id": "worlds-within-worlds",
+      "file": "worlds-within-worlds.json"
+    },
+    {
+      "id": "film-verdance",
+      "file": "film-verdance.json"
+    },
+    {
+      "id": "film-orrery",
+      "file": "film-orrery.json"
+    },
+    {
+      "id": "film-ferrum",
+      "file": "film-ferrum.json"
+    },
+    {
+      "id": "film-thalassa",
+      "file": "film-thalassa.json"
+    },
+    {
+      "id": "film-loom",
+      "file": "film-loom.json"
+    },
+    {
+      "id": "film-lost-worlds",
+      "file": "film-lost-worlds.json"
+    },
+    {
+      "id": "film-cosmic-core",
+      "file": "film-cosmic-core.json"
+    },
+    {
+      "id": "world-tour-film",
+      "file": "world-tour-film.json"
+    }
+  ]
+}

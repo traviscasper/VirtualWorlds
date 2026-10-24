@@ -1,0 +1,42 @@
+{
+  "$schema": "./schema.json",
+  "id": "world-tour-film",
+  "kind": "film",
+  "name": "ARCHIVE: World Tour (short film)",
+  "summary": "The 3-minute landmark short: Columbus, Ohio State, CMH, Washington, New York, London and Paris.",
+  "description": "Draft render (640×360) in a chapter-jump player. The project source for this short is not in this repository yet.",
+  "categories": [
+    "technology"
+  ],
+  "time": {
+    "era": "present",
+    "label": "Today"
+  },
+  "place": {
+    "type": "city",
+    "name": "Columbus and world landmarks",
+    "fictional": false
+  },
+  "purposes": [
+    "experience a story"
+  ],
+  "launch": [
+    {
+      "label": "Watch",
+      "href": "world-tour/index.html"
+    }
+  ],
+  "preview": "portal/img/world-tour-film.jpg",
+  "project": "world-tour",
+  "formats": {
+    "desktop": true,
+    "mobile": true,
+    "webxr": false,
+    "video360": false,
+    "video16x9": true
+  },
+  "status": {
+    "stage": "draft",
+    "notes": "Only the draft video and player are in the repo; add the source to re-render."
+  }
+}

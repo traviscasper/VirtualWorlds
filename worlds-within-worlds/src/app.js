@@ -142,6 +142,9 @@ $('prevS').onclick=()=>{ const i=sceneIdx(); const s=A.SCENES[Math.max(0,S.t-A.S
 $('nextS').onclick=()=>{ const i=sceneIdx(); seek(A.SCENES[Math.min(A.SCENES.length-1,i+1)].start); };
 $('speed').onchange=e=>{ const was=S.playing; if(was) pause(); S.speed=+e.target.value; $('audioNote').textContent=S.speed===1?'Sound is generated on your device as the film plays.':'Sound plays at normal speed only.'; if(was) play(); };
 $('chapSel').onchange=e=>{ const o=A.storyToOut(+e.target.value*540+.01); seek(o?o.t:+e.target.value*540); };
+// deep link from the FLE Virtual Worlds portal: ?chapter=0-9 (story chapter) or ?t=seconds (film time)
+{ const q=new URLSearchParams(location.search), ch=q.get('chapter'), tt=q.get('t');
+  if(ch!=null&&/^\d$/.test(ch)){ $('chapSel').value=ch; $('chapSel').onchange({target:$('chapSel')}); } else if(tt!=null&&isFinite(+tt)) seek(+tt); }
 // jump list of the action scenes (the edit's inserts), in film order, with their time in the finished film
 { const fmt=t=>`${Math.floor(t/60)}:${String(Math.floor(t%60)).padStart(2,'0')}`;
   const acts=A.edit().inserts.map(i=>({i,t:A.storyToOut(i.from).t})).sort((a,b)=>a.t-b.t);

@@ -1,0 +1,45 @@
+{
+  "$schema": "./schema.json",
+  "id": "skyship-world-tour",
+  "kind": "experience",
+  "name": "ARCHIVE Skyship: World Tour",
+  "summary": "A 3-minute flight in the open-glass skyship: Columbus, Washington, New York, Paris, London, then orbit.",
+  "description": "The original Skyship 360 kit: six cabin screens, a World Briefing on policy, technology and sustainability, eVTOL air taxis over London, and a 4K 360 video render pipeline.",
+  "categories": [
+    "technology",
+    "space"
+  ],
+  "time": {
+    "era": "present",
+    "label": "Today"
+  },
+  "place": {
+    "type": "city",
+    "name": "Columbus · Washington · New York · Paris · London · orbit",
+    "fictional": false
+  },
+  "purposes": [
+    "explore",
+    "learn",
+    "experience a story"
+  ],
+  "launch": [
+    {
+      "label": "Fly the tour",
+      "href": "skyship-360/skyship.html"
+    }
+  ],
+  "preview": "portal/img/skyship-world-tour.jpg",
+  "project": "skyship-360",
+  "formats": {
+    "desktop": true,
+    "mobile": true,
+    "webxr": true,
+    "video360": true,
+    "video16x9": true
+  },
+  "status": {
+    "stage": "complete",
+    "notes": "Unchanged. Render 360 video with skyship-360/render_360.py."
+  }
+}
