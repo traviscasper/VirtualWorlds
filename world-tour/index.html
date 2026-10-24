@@ -1,0 +1,44 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>ARCHIVE World Tour</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=IBM+Plex+Sans:wght@400;500&display=swap">
+<style>
+/* layout: one centred column, the film first, the stops as a jump list beneath */
+:root{
+  --bg:#eef2f7; --panel:#ffffff; --fg:#14202e; --muted:#566476; --accent:#1f6fd1; --line:#d6dee8;
+  --display:"Montserrat","Segoe UI",Helvetica,Arial,sans-serif; --body:"IBM Plex Sans","Segoe UI",Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#0a0f19; --panel:#121a28; --fg:#e6eef8; --muted:#95a3b6; --accent:#6fb2ff; --line:#233046; color-scheme:dark } }
+:root[data-theme="dark"]{ --bg:#0a0f19; --panel:#121a28; --fg:#e6eef8; --muted:#95a3b6; --accent:#6fb2ff; --line:#233046; color-scheme:dark }
+body{ background:var(--bg); color:var(--fg); font-family:var(--body); font-size:16px; line-height:1.5 }
+main{ max-width:960px; margin:0 auto; padding-block:28px 48px; padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px)); display:grid; gap:20px }
+h1{ font-family:var(--display); font-weight:700; font-size:clamp(28px,5vw,44px); letter-spacing:.18em; margin:0; text-wrap:balance }
+.sub{ color:var(--muted); margin:4px 0 0 }
+video{ width:100%; max-width:100%; aspect-ratio:16/9; background:#000; border-radius:10px; display:block }
+.stops{ display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:8px; padding:0; margin:0; list-style:none }
+.stops button{ width:100%; text-align:left; font:inherit; color:var(--fg); background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:10px 12px; cursor:pointer; display:flex; gap:10px; align-items:baseline }
+.stops button:hover{ border-color:var(--accent) }
+.stops button:focus-visible{ outline:2px solid var(--accent); outline-offset:2px }
+.stops time{ font-variant-numeric:tabular-nums; color:var(--accent); font-weight:500; min-width:3.2em }
+.note{ color:var(--muted); font-size:14px; margin:0 }
+</style>
+<main>
+  <header>
+    <h1>ARCHIVE</h1>
+    <p class="sub">World Tour · Future Life Experiences · 3:00</p>
+  </header>
+  <video id="film" controls playsinline preload="metadata" poster="poster.jpg">
+    <source src="archive_world_tour.mp4" type="video/mp4">
+  </video>
+  <ul class="stops" id="stops"></ul>
+  <p class="note">Draft render at 640×360. Tap a stop to jump to it.</p>
+</main>
+<script>
+const stops=[[0,'The Archive'],[14,'Columbus: the Scioto Mile'],[39,'The Ohio State University'],[60,'CMH: the new terminal'],[81,'Washington, DC'],[102,'New York: the Statue of Liberty'],[124,'London: Big Ben'],[146,'Paris: the Eiffel Tower'],[167,'Home to Columbus']];
+const v=document.getElementById('film'), ul=document.getElementById('stops');
+for(const [t,name] of stops){ const li=document.createElement('li'), b=document.createElement('button'); b.type='button';
+  b.innerHTML=`<time>${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}</time><span></span>`; b.querySelector('span').textContent=name;
+  b.onclick=()=>{ v.currentTime=t; v.play().catch(()=>{}); }; li.appendChild(b); ul.appendChild(li); }
+</script>
+
+</body></html>

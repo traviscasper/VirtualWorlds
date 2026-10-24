@@ -1,0 +1,19 @@
+# Render outputs (publish to YouTube or GitHub Releases instead)
+**/out/
+**/output/
+**/frames/
+**/parts/
+**/renders/
+*_360.mp4
+*.mov
+*.mkv
+
+# Keep the small World Tour draft video
+!world-tour/archive_world_tour.mp4
+
+# Tooling
+node_modules/
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db

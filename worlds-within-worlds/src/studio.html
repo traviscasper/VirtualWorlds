@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ARCHIVE Studio — Worlds Within Worlds</title>
+<style>
+:root{
+  --space:#050A1F; --panel:#0C1736; --panel2:#101F45; --line:#1E2E5A; --blue:#45B8FF; --blue2:#1E7FD6;
+  --gold:#F2C46B; --text:#E6EEFB; --muted:#8FA0C8; --warn:#FF8A7A;
+  --r-lg:14px; --r-sm:8px;
+  font-family:"Avenir Next","Avenir","Segoe UI Variable","Segoe UI",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--space);color:var(--text);min-height:100%}
+body{display:grid;grid-template-rows:auto 1fr auto;min-height:100vh}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+header{display:flex;align-items:center;gap:18px;padding:12px 20px;border-bottom:1px solid var(--line)}
+.brand{display:flex;flex-direction:column;line-height:1.1}
+.brand b{font-size:19px;letter-spacing:.14em;font-weight:650}
+.brand span{font-size:13px;color:var(--muted)}
+.tc{margin-left:auto;font-variant-numeric:tabular-nums;font-size:22px;font-weight:500;letter-spacing:.02em}
+.tc small{display:block;font-size:12px;color:var(--muted);text-align:right;letter-spacing:0}
+main{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;padding:16px 20px;min-height:0}
+.stage{position:relative;align-self:start;aspect-ratio:16/9;width:100%;border-radius:var(--r-lg);overflow:hidden;background:#000;box-shadow:0 0 0 1px var(--line),0 20px 60px rgba(0,30,90,.45)}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%}
+.stage{touch-action:none}
+.stage .msg{position:absolute;inset:auto 16px 16px 16px;color:var(--muted);font-size:13px;pointer-events:none}
+aside{display:flex;flex-direction:column;gap:12px;min-width:0}
+details{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm)}
+summary{cursor:pointer;padding:11px 14px;font-weight:600;font-size:15px;list-style:none;display:flex;justify-content:space-between}
+summary::after{content:"+";color:var(--muted)} details[open] summary::after{content:"\2013"}
+.body{padding:2px 14px 14px;display:grid;gap:10px;font-size:14px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.row label{color:var(--muted);min-width:92px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip,.btn{background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:6px 11px;cursor:pointer;font-size:13px}
+.chip[aria-pressed=true]{border-color:var(--blue);color:#fff;background:#14336b}
+.btn{border-radius:var(--r-sm);padding:8px 12px}
+.btn.primary{background:var(--blue2);border-color:var(--blue);color:#fff;font-weight:600}
+.btn:disabled{opacity:.45;cursor:default}
+select,input[type=number]{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:5px 8px}
+input[type=range]{accent-color:var(--blue);flex:1;min-width:100px}
+.note{color:var(--muted);font-size:13px;line-height:1.45;margin:0}
+.bar{height:6px;background:var(--panel2);border-radius:3px;overflow:hidden}.bar i{display:block;height:100%;width:0;background:var(--gold)}
+.transport{display:flex;gap:8px;align-items:center;padding:0 20px 8px;flex-wrap:wrap}
+.transport .btn{min-width:44px}
+footer{padding:4px 20px 20px}
+.timeline{position:relative;height:92px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;cursor:pointer;touch-action:none}
+.ch{position:absolute;top:0;bottom:0;border-right:1px solid var(--line);padding:8px 8px 0;font-size:12px;color:var(--muted);overflow:hidden;white-space:nowrap}
+.ch b{display:block;color:var(--text);font-weight:600;font-size:12.5px;text-overflow:ellipsis;overflow:hidden}
+.done{position:absolute;bottom:0;height:26px;background:linear-gradient(90deg,var(--blue2),var(--blue));box-shadow:0 0 18px var(--blue)}
+.planned{position:absolute;bottom:0;height:26px;left:0;right:0;background:repeating-linear-gradient(135deg,#132552 0 6px,#0e1c40 6px 12px)}
+.tick{position:absolute;bottom:0;width:1px;height:26px;background:rgba(255,255,255,.18)}
+.head{position:absolute;top:0;bottom:0;width:2px;background:var(--gold);box-shadow:0 0 10px var(--gold);pointer-events:none}
+.legend{display:flex;gap:16px;font-size:12px;color:var(--muted);margin-top:8px;flex-wrap:wrap}
+.legend i{display:inline-block;width:14px;height:8px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.scenes{max-height:220px;overflow:auto;display:grid;gap:4px}
+.scenes button{all:unset;cursor:pointer;display:flex;justify-content:space-between;gap:8px;padding:6px 8px;border-radius:6px;font-size:13px}
+.scenes button:hover,.scenes button[aria-current=true]{background:var(--panel2)}
+.scenes .st{color:var(--muted)} .scenes .st.ok{color:var(--blue)}
+@media (max-width:900px){ main{grid-template-columns:1fr;padding:12px} header{padding:10px 12px} .transport,footer{padding-left:12px;padding-right:12px} .ch b{font-size:11px} .ch span{display:none} }
+@media (prefers-reduced-motion:reduce){ .done{box-shadow:none} }
+body.render header,body.render aside,body.render .transport,body.render footer{display:none}
+body.render main{display:block;padding:0} body.render .stage{width:1920px;height:1080px;border-radius:0;box-shadow:none}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><b>ARCHIVE</b><span>Worlds Within Worlds — production studio</span></div>
+  <div class="tc" id="tc">00:00:00.00<small id="where">CH01 · The Awakening</small></div>
+</header>
+<main>
+  <div class="stage" id="stage"><canvas id="gl"></canvas><canvas id="ov"></canvas><div class="msg" id="msg"></div></div>
+  <aside>
+    <details open><summary>Character</summary><div class="body">
+      <div class="row"><label>Expression</label><select id="exprSel"><option value="">From the film</option></select></div>
+      <div class="row"><label>View</label><div class="chips" id="views">
+        <button class="chip" data-v="full">Full body</button><button class="chip" data-v="face">Face</button>
+        <button class="chip" data-v="side">Side</button><button class="chip" data-v="back">Back</button>
+        <button class="chip" data-v="film">Film camera</button></div></div>
+      <div class="row"><label>Zoom</label><input type="range" id="zoomR" min="1.2" max="8" step="0.05" value="3.4" aria-label="Distance from ARCHIVE"></div>
+      <div class="row"><label>Try a move</label><div class="chips" id="moves"></div></div>
+      <div class="row"><label>Visibility</label><button class="chip" id="hideArc" aria-pressed="false">Hide ARCHIVE</button></div>
+    </div></details>
+    <details><summary>Camera and view</summary><div class="body">
+      <div class="row"><label for="v360">360°</label><select id="v360"><option value="off">Off</option><option value="look">Look around (drag; front = film camera)</option><option value="equi">360 frame (equirectangular)</option><option value="vr">VR 3D 360 (top/bottom, for headsets)</option></select><span class="note">With 360 on, Record video saves a 360 video.</span><button class="btn" id="lookReset" hidden>Face front</button></div>
+      <div class="row"><label>Camera</label><select id="camMode"><option value="film">Film camera</option><option value="orbit">Orbit ARCHIVE (drag)</option></select></div>
+      <div class="row"><label>Projection</label><select id="projSel"><option value="film">From the film</option><option value="persp">Perspective</option><option value="planet">Tiny planet</option></select></div>
+      <div class="row"><label>Planet zoom</label><input type="range" id="planetZ" min="0.8" max="4" step="0.05" value="2.6"></div>
+      <div class="row"><label>Field of view</label><input type="range" id="fovR" min="18" max="90" step="1" value="0" disabled><button class="chip" id="fovLock" aria-pressed="false">Override</button></div>
+      <div class="row"><label>Quality</label><select id="qual"><option value="0">Draft (fast)</option><option value="1" selected>Final</option></select></div>
+      <div class="row"><label>Resolution</label><select id="resScale"><option value="0.5">50%</option><option value="0.75" selected>75%</option><option value="1">100%</option></select></div>
+      <div class="row"><label>Captions</label><button class="chip" id="capT" aria-pressed="false">Show dialogue</button></div>
+    </div></details>
+    <details><summary>Sound</summary><div class="body">
+      <div class="row"><label>Volume</label><input type="range" id="vol" min="0" max="1" step="0.01" value="0.85"></div>
+      <div class="row"><label>Stems</label><div class="chips"><button class="chip" data-stem="music" aria-pressed="true">Music</button><button class="chip" data-stem="sfx" aria-pressed="true">Effects</button><button class="chip" data-stem="dialogue" aria-pressed="true">Voice</button></div></div>
+      <div class="row"><label>Voice preview</label><button class="chip" id="tts" aria-pressed="false">Speak lines</button></div>
+      <p class="note" id="audioNote">Audio is generated on your device the first time you press play.</p>
+    </div></details>
+    <details><summary>Render and export</summary><div class="body">
+      <div class="row"><label>Range</label><select id="rng"><option value="opening">Opening (0:00–2:00)</option><option value="scene">Current scene</option><option value="chapter">Current chapter</option><option value="film">Complete film (90:00)</option></select></div>
+      <div class="row"><button class="btn primary" id="recBtn">Record video</button><button class="btn" id="wavBtn">Download audio</button><button class="btn" id="manBtn">Manifest</button></div>
+      <div class="row"><label for="voIn">Recorded lines</label><input type="file" id="voIn" accept=".wav,audio/wav" multiple aria-label="Load recorded voice lines (WAV files named by line ID)"></div>
+      <div class="row"><label for="muIn">Your music</label><input type="file" id="muIn" accept=".wav,.json,audio/wav,application/json" multiple aria-label="Load music WAV files plus cues.json"></div>
+      <div class="note" id="voNote">Name each recording by its line ID, e.g. NARR-01.wav. Music needs a cues.json; see docs/RECORDING_SCRIPT.md.</div>
+      <div class="row"><label for="voIn">Recorded lines</label><input type="file" id="voIn" accept=".wav,audio/wav" multiple aria-describedby="voNote"><span class="note" id="voNote">Name each file by its line ID, e.g. NARR-01.wav</span></div>
+      <div class="bar"><i id="recBar"></i></div>
+      <p class="note" id="recNote">Records in real time at 1920×1080 with sound. For frame-exact 90-minute output, use render.mjs (see the production plan).</p>
+    </div></details>
+    <details><summary>Production</summary><div class="body"><div class="scenes" id="sceneList"></div></div></details>
+  </aside>
+</main>
+<div class="transport">
+  <button class="btn" id="restart" aria-label="Restart">⏮</button>
+  <button class="btn" id="prevS" aria-label="Previous scene">◀︎</button>
+  <button class="btn primary" id="play" aria-label="Play">Play</button>
+  <button class="btn" id="nextS" aria-label="Next scene">▶︎</button>
+  <select id="speed" aria-label="Playback speed"><option>0.25</option><option>0.5</option><option selected>1</option><option>2</option></select>
+  <select id="chapSel" aria-label="Chapter"></select>
+  <select id="actSel" aria-label="Jump to an action scene"><option value="">Action scenes…</option></select>
+</div>
+<footer>
+  <div class="timeline" id="tl"><div class="planned"></div><div class="head" id="ph"></div></div>
+  <div class="legend"><span><i style="background:var(--blue)"></i>Animated</span><span><i style="background:repeating-linear-gradient(135deg,#1c3470 0 3px,#0e1c40 3px 6px)"></i>Planned</span><span>Drag to scrub · Space to play</span></div>
+</footer>
+<script id="shader-src" type="x-shader/x-fragment">/*SHADER*/</script>
+<script>/*ENGINE*/</script>
+<script>/*AUDIO*/</script>
+<script>/*APP*/</script>
+</body>
+</html>
