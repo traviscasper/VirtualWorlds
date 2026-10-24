@@ -1,0 +1,468 @@
+{
+  "$schema": "./schema.json",
+  "id": "orbital-habitat",
+  "kind": "world",
+  "name": "Sustainable Orbital Habitat",
+  "summary": "A ring habitat, biosphere domes and the Life Support Commons, where food, water, energy and air are made and recycled.",
+  "description": "Expands the orbital habitat from the Sci-Fi 360 journey (ring habitat spun for gravity, biosphere domes with farms, a lake and a waterfall, solar wings, transit tubes, the wheel station and views of Earth) with the Life Support Commons: four explorable stations for food (a vertical farm), water (closed-loop recycling), energy (solar, flywheel and batteries) and air (algae photobioreactors).",
+  "categories": [
+    "space",
+    "sustainability"
+  ],
+  "themes": [
+    "orbital habitats",
+    "life support",
+    "closed-loop systems",
+    "agriculture",
+    "renewable energy"
+  ],
+  "time": {
+    "era": "future",
+    "label": "Tomorrow"
+  },
+  "place": {
+    "type": "orbit",
+    "name": "Earth orbit",
+    "fictional": true
+  },
+  "purposes": [
+    "explore",
+    "learn",
+    "simulate",
+    "experience a story"
+  ],
+  "learningObjectives": [
+    "Explain how a habitat provides food, water, energy and air for its people.",
+    "Describe what makes a life-support system 'closed loop'.",
+    "Connect the habitat's systems to the same needs on Earth."
+  ],
+  "status": {
+    "stage": "pilot",
+    "notes": "Original orbit world preserved; Life Support Commons and new flight path added."
+  },
+  "launch": [
+    {
+      "label": "Fly the journey",
+      "mode": "cinematic",
+      "href": "skyship-engine/journey.html?journey=orbital-habitat"
+    },
+    {
+      "label": "Explore",
+      "mode": "explore",
+      "href": "skyship-engine/journey.html?journey=orbital-habitat&mode=explore"
+    },
+    {
+      "label": "Learn",
+      "mode": "learn",
+      "href": "skyship-engine/journey.html?journey=orbital-habitat&mode=learn"
+    }
+  ],
+  "preview": "portal/img/orbital-habitat.jpg",
+  "engine": {
+    "type": "skyship",
+    "module": "skyship-engine/worlds/orbital_habitat.js",
+    "build": "buildOrbitalHabitat",
+    "space": true,
+    "earth": true,
+    "cabinLight": 0.9,
+    "entry": {
+      "t": 116,
+      "camera": "cabin",
+      "position": [
+        0,
+        -46,
+        1000
+      ],
+      "heading": "toward the ring habitat"
+    },
+    "display": {
+      "chip": "Orbital Habitat",
+      "year": "TOMORROW",
+      "title": "THE ORBITAL HABITAT",
+      "author": "WRITTEN BY ALL OF US",
+      "sub": "life support, designed to last",
+      "theme": "SUSTAINING LIFE",
+      "themeLine": "Food, water, energy and air, all made and recycled in one loop.",
+      "place": "LIFE SUPPORT COMMONS",
+      "below": "EARTH",
+      "outside": "VACUUM",
+      "speedLabel": "17,100 MPH",
+      "holding": "Holding near the habitats"
+    },
+    "atmosphere": {
+      "top": "#000004",
+      "hor": "#02040c",
+      "bot": "#000000",
+      "fog": "#000000",
+      "fogD": 0,
+      "sun": [
+        0.42,
+        0.2,
+        -0.88
+      ],
+      "sunCol": "#ffffff",
+      "sS": 1.5,
+      "aS": 0.2,
+      "hemiS": "#3a4a6a",
+      "hemiG": "#06080c",
+      "stars": 1,
+      "cloud": "#ffffff",
+      "cloudAmt": 0,
+      "band": [
+        0,
+        0
+      ],
+      "cloudy": 0,
+      "exp": 1.0,
+      "moonDisk": 0,
+      "whiteout": "#6f8fbf"
+    }
+  },
+  "navigation": {
+    "modes": [
+      "cinematic",
+      "explore",
+      "learn"
+    ],
+    "controls": [
+      "drag to look",
+      "pinch or scroll to zoom",
+      "fly-to menu",
+      "stops",
+      "hotspots",
+      "WebXR headset"
+    ]
+  },
+  "stops": [
+    {
+      "t": 126,
+      "name": "Ring habitat",
+      "hotspots": [
+        "ring"
+      ]
+    },
+    {
+      "t": 132.5,
+      "name": "Through the ring",
+      "hotspots": [
+        "ring"
+      ]
+    },
+    {
+      "t": 140,
+      "name": "Biosphere dome",
+      "hotspots": [
+        "dome"
+      ]
+    },
+    {
+      "t": 147,
+      "name": "Food",
+      "hotspots": [
+        "farm"
+      ]
+    },
+    {
+      "t": 151,
+      "name": "Water",
+      "hotspots": [
+        "water"
+      ]
+    },
+    {
+      "t": 155,
+      "name": "Energy",
+      "hotspots": [
+        "energy"
+      ]
+    },
+    {
+      "t": 159,
+      "name": "Air",
+      "hotspots": [
+        "air"
+      ]
+    },
+    {
+      "t": 165,
+      "name": "Earth",
+      "hotspots": [
+        "earth"
+      ]
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "ring",
+      "anchor": "ring",
+      "label": "Ring habitat",
+      "category": "space",
+      "kicker": "Space · habitat design",
+      "title": "Spin for gravity",
+      "text": "Turning the ring pushes everything toward its outer floor, so it feels like gravity. Farmland runs all the way around the inside.",
+      "facts": [
+        {
+          "text": "A ring 224 m (735 ft) in radius turning twice a minute gives about 1 g (from a = ω²r).",
+          "source": "Physics of rotating habitats"
+        },
+        {
+          "text": "Gerard O'Neill proposed large rotating space settlements in The High Frontier (1976).",
+          "source": "G. K. O'Neill, The High Frontier"
+        }
+      ],
+      "archive": "A ring habitat, spinning to make gravity.",
+      "size": 260,
+      "question": {
+        "q": "How does a ring habitat make 'gravity'?",
+        "options": [
+          "By spinning, which pushes people toward the outer floor",
+          "With giant magnets in the floor",
+          "By being heavy enough to pull people down"
+        ],
+        "answer": 0,
+        "why": "Rotation creates a push toward the rim that feels like weight."
+      }
+    },
+    {
+      "id": "dome",
+      "anchor": "falls",
+      "label": "Biosphere dome",
+      "category": "sustainability",
+      "kicker": "Sustainability · ecosystems",
+      "title": "A biosphere under glass",
+      "text": "Forest, a lake and a waterfall share one sealed loop of air and water. Plants clean the air, and water evaporates, condenses and falls again.",
+      "facts": [
+        {
+          "text": "Biosphere 2 in Arizona sealed eight people inside a closed ecosystem from 1991 to 1993 to study living in sealed habitats.",
+          "source": "University of Arizona, Biosphere 2"
+        }
+      ],
+      "archive": "Forest, lake, waterfall. Water used again and again.",
+      "size": 90
+    },
+    {
+      "id": "farm",
+      "anchor": "farm",
+      "label": "Food · vertical farm",
+      "category": "sustainability",
+      "kicker": "Life support · food",
+      "title": "Food: the vertical farm",
+      "text": "Crops grow on stacked floors under LEDs tuned to the colors plants use most, red and blue, which is why the light looks pink. Water and nutrients are recycled between floors.",
+      "facts": [
+        {
+          "text": "NASA's Veggie garden has grown plants on the International Space Station since 2014; in 2015 astronauts ate lettuce grown in orbit for the first time.",
+          "source": "NASA"
+        }
+      ],
+      "archive": "First stop: food, grown under pink light.",
+      "size": 70,
+      "question": {
+        "q": "Why do the grow lights look pink?",
+        "options": [
+          "Plants use mostly red and blue light, and together they look pink",
+          "Pink light keeps insects away",
+          "It's only decoration"
+        ],
+        "answer": 0,
+        "why": "Chlorophyll absorbs red and blue light most strongly, so farms mix those colors."
+      }
+    },
+    {
+      "id": "water",
+      "anchor": "water",
+      "label": "Water · recycling",
+      "category": "sustainability",
+      "kicker": "Life support · water",
+      "title": "Water: a closed loop",
+      "text": "Every drop is cleaned and used again. Moisture from breath and sweat, and urine, are processed back into drinking water, and the glowing loop shows it flowing between the tanks.",
+      "facts": [
+        {
+          "text": "In 2023 NASA reported the ISS life-support system reached 98% water recovery after adding a Brine Processor Assembly; before that, recovery was about 93–94%.",
+          "source": "NASA, via Space.com, June 2023"
+        }
+      ],
+      "archive": "Water, cleaned and used again. Almost nothing lost.",
+      "size": 60,
+      "question": {
+        "q": "About how much of its water does the ISS now recover?",
+        "options": [
+          "About 50%",
+          "About 75%",
+          "About 98%"
+        ],
+        "answer": 2,
+        "why": "With the brine processor, nearly all water is recovered and reused."
+      }
+    },
+    {
+      "id": "energy",
+      "anchor": "energy",
+      "label": "Energy · sun + storage",
+      "category": "technology",
+      "kicker": "Life support · energy",
+      "title": "Energy: sunlight and storage",
+      "text": "Solar wings collect sunlight. A spinning flywheel and a battery bank store energy for the part of each orbit spent in Earth's shadow.",
+      "facts": [
+        {
+          "text": "Above the atmosphere sunlight delivers about 1,361 watts per square meter, roughly a third more than the brightest noon on the ground.",
+          "source": "NASA (solar constant)"
+        },
+        {
+          "text": "A habitat in low orbit circles Earth about every 90 minutes, so it passes into darkness about 16 times a day.",
+          "source": "NASA, ISS facts"
+        }
+      ],
+      "archive": "Sunlight in, stored for the dark side of the orbit.",
+      "size": 90,
+      "question": {
+        "q": "Why does an orbital habitat need energy storage?",
+        "options": [
+          "It passes into Earth's shadow on every orbit",
+          "Solar panels only work at night",
+          "Space is too cold for wires"
+        ],
+        "answer": 0,
+        "why": "In low orbit about a third of every lap is in darkness, so stored energy bridges the gap."
+      }
+    },
+    {
+      "id": "air",
+      "anchor": "air",
+      "label": "Air · algae",
+      "category": "sustainability",
+      "kicker": "Life support · air",
+      "title": "Air: algae make oxygen",
+      "text": "Tubes of green algae use light to turn the carbon dioxide people breathe out into oxygen. Their growth can later become food or fertilizer for the farm.",
+      "facts": [
+        {
+          "text": "The ISS makes most of its oxygen by splitting water with electricity (electrolysis).",
+          "source": "NASA"
+        },
+        {
+          "text": "The European Space Agency's MELiSSA project studies loops of microbes and algae that recycle air, water and food for long missions.",
+          "source": "ESA, MELiSSA"
+        }
+      ],
+      "archive": "Algae breathe in our CO2 and breathe out oxygen.",
+      "size": 60,
+      "question": {
+        "q": "What do the algae take in and give out?",
+        "options": [
+          "Oxygen in, carbon dioxide out",
+          "Carbon dioxide in, oxygen out",
+          "Water in, salt out"
+        ],
+        "answer": 1,
+        "why": "Like plants, algae photosynthesize: they use light to turn CO2 into sugar and release oxygen."
+      }
+    },
+    {
+      "id": "earth",
+      "anchor": "earth",
+      "label": "Earth",
+      "category": "space",
+      "kicker": "Space · home",
+      "title": "Home",
+      "text": "Every system here copies something Earth does for free: clean air, clean water, food and a stable climate. Earth is still the only planet known to have life.",
+      "facts": [],
+      "archive": "Every habitat is a way of keeping life going. So is Earth.",
+      "size": 600,
+      "range": 99999
+    }
+  ],
+  "facts": [
+    {
+      "text": "Gerard O'Neill proposed rotating space habitats in The High Frontier (1976).",
+      "source": "O'Neill, 1976"
+    },
+    {
+      "text": "A ring 224 m in radius turning twice a minute gives about 1 g.",
+      "source": "Physics"
+    },
+    {
+      "text": "The ISS recycles about 98% of the water its crew uses.",
+      "source": "NASA, 2023"
+    },
+    {
+      "text": "Biosphere 2 in Arizona (1991–93) tested sealed ecosystems.",
+      "source": "University of Arizona"
+    },
+    {
+      "text": "Every habitat here runs on sunlight and recycles its air and water.",
+      "source": "FLE"
+    }
+  ],
+  "assets": {
+    "models": "procedural (code-generated)",
+    "textures": "canvas-generated",
+    "shared": [
+      "sci-fi-360/js/lib.js",
+      "sci-fi-360/vendor/three.module.js",
+      "skyship-engine/journey.html",
+      "sci-fi-360/js/world_orbit.js"
+    ],
+    "data": []
+  },
+  "lighting": "hard sunlight in vacuum, starfield, Earth below with atmosphere glow",
+  "audio": {
+    "score": {
+      "chords": [
+        [
+          43,
+          50,
+          54,
+          57,
+          62
+        ],
+        [
+          40,
+          47,
+          52,
+          55,
+          59
+        ],
+        [
+          36,
+          43,
+          48,
+          52,
+          55
+        ],
+        [
+          38,
+          45,
+          50,
+          54,
+          57
+        ]
+      ],
+      "bar": 4,
+      "bells": [
+        79,
+        74,
+        71,
+        74,
+        76,
+        72
+      ],
+      "pulse": 0,
+      "ambience": "space",
+      "drone": 31,
+      "bright": 0.45
+    }
+  },
+  "portals": [
+    {
+      "to": "columbus-2050",
+      "via": "columbus-to-orbit",
+      "label": "Back down to Columbus"
+    }
+  ],
+  "formats": {
+    "desktop": true,
+    "mobile": true,
+    "webxr": true,
+    "video360": true,
+    "video16x9": true
+  }
+}

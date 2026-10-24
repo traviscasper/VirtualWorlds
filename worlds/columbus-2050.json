@@ -1,0 +1,543 @@
+{
+  "$schema": "./schema.json",
+  "id": "columbus-2050",
+  "kind": "world",
+  "name": "Columbus 2050",
+  "summary": "Fly down the Scioto and along Broad Street through one possible, greener future for downtown Columbus.",
+  "description": "An artistic future scenario for downtown Columbus, Ohio: a free-flowing Scioto River lined with urban forest, rapid transit in green lanes on Broad and High streets, protected bike lanes on every street, autonomous electric shuttles, green and solar roofs, mass-timber towers, a neighborhood microgrid and a rooftop vertiport. Real landmarks (the LeVeque Tower, the Ohio Statehouse, the Scioto Mile, Rhodes Tower, the Huntington Center, COSI) are placed approximately on a simplified street grid.",
+  "categories": [
+    "sustainability",
+    "technology"
+  ],
+  "themes": [
+    "sustainable cities",
+    "transportation",
+    "urban forest",
+    "clean energy",
+    "climate adaptation",
+    "automated vehicles"
+  ],
+  "time": {
+    "era": "future",
+    "label": "2050",
+    "year": 2050
+  },
+  "place": {
+    "type": "city",
+    "name": "Downtown Columbus, Ohio",
+    "fictional": false,
+    "geo": {
+      "lat": 39.9623,
+      "lon": -83.0007,
+      "note": "Origin (0,0) is High St & Broad St; metres; x east, z south."
+    }
+  },
+  "purposes": [
+    "explore",
+    "learn",
+    "experience a story"
+  ],
+  "learningObjectives": [
+    "See how a restored river, parks and street trees can cool a city and handle stormwater.",
+    "Compare ways to move people downtown: transit, bikes, walking, shared electric vehicles and air taxis.",
+    "Notice how buildings can produce clean energy and store it nearby."
+  ],
+  "status": {
+    "stage": "pilot",
+    "notes": "Artistic scenario on a simplified grid. Ready for verified GIS data (see gis)."
+  },
+  "disclaimer": "Columbus 2050 is an artistic future scenario, not an official plan.",
+  "launch": [
+    {
+      "label": "Fly the journey",
+      "mode": "cinematic",
+      "href": "skyship-engine/journey.html?journey=columbus-2050"
+    },
+    {
+      "label": "Explore",
+      "mode": "explore",
+      "href": "skyship-engine/journey.html?journey=columbus-2050&mode=explore"
+    },
+    {
+      "label": "Learn",
+      "mode": "learn",
+      "href": "skyship-engine/journey.html?journey=columbus-2050&mode=learn"
+    }
+  ],
+  "preview": "portal/img/columbus-2050.jpg",
+  "engine": {
+    "type": "skyship",
+    "module": "skyship-engine/worlds/columbus2050.js",
+    "build": "buildColumbus2050",
+    "space": false,
+    "earth": false,
+    "cabinLight": 0.3,
+    "entry": {
+      "t": 0,
+      "camera": "cabin",
+      "position": [
+        -296,
+        66,
+        -750
+      ],
+      "heading": "south along the Scioto"
+    },
+    "display": {
+      "chip": "Columbus 2050",
+      "year": "2050",
+      "title": "COLUMBUS 2050",
+      "author": "AN ARTISTIC SCENARIO",
+      "sub": "one possible future for downtown",
+      "theme": "THE SUSTAINABLE CITY",
+      "themeLine": "Rivers, trees, transit and clean energy: a city designed to sustain life.",
+      "place": "DOWNTOWN COLUMBUS",
+      "below": "THE SCIOTO RIVER",
+      "outside": "CLEAR · 74°F"
+    },
+    "atmosphere": {
+      "top": "#4a83c4",
+      "hor": "#cfe2f1",
+      "bot": "#6d7a66",
+      "fog": "#c8d9e6",
+      "fogD": 0.00045,
+      "sun": [
+        -0.45,
+        0.62,
+        -0.64
+      ],
+      "sunCol": "#fff1d8",
+      "sS": 1.2,
+      "aS": 0.6,
+      "hemiS": "#dce9ff",
+      "hemiG": "#5b6a4c",
+      "stars": 0,
+      "cloud": "#ffffff",
+      "cloudAmt": 0.5,
+      "band": [
+        380,
+        600
+      ],
+      "cloudy": 0.35,
+      "exp": 1.0,
+      "moonDisk": 0,
+      "whiteout": "#e8eef4"
+    }
+  },
+  "navigation": {
+    "modes": [
+      "cinematic",
+      "explore",
+      "learn"
+    ],
+    "controls": [
+      "drag to look",
+      "pinch or scroll to zoom",
+      "fly-to menu",
+      "stops",
+      "hotspots",
+      "WebXR headset"
+    ]
+  },
+  "stops": [
+    {
+      "t": 4,
+      "name": "Scioto River",
+      "hotspots": [
+        "river"
+      ]
+    },
+    {
+      "t": 8.5,
+      "name": "Vertiport",
+      "hotspots": [
+        "vertiport"
+      ]
+    },
+    {
+      "t": 12.5,
+      "name": "Green Bridge",
+      "hotspots": [
+        "greenbridge"
+      ]
+    },
+    {
+      "t": 16,
+      "name": "LeVeque Tower",
+      "hotspots": [
+        "leveque"
+      ]
+    },
+    {
+      "t": 20.5,
+      "name": "Scioto Mile",
+      "hotspots": [
+        "fountain"
+      ]
+    },
+    {
+      "t": 26.5,
+      "name": "Broad St transit",
+      "hotspots": [
+        "transit",
+        "bikes"
+      ]
+    },
+    {
+      "t": 30,
+      "name": "Statehouse",
+      "hotspots": [
+        "statehouse"
+      ]
+    },
+    {
+      "t": 34,
+      "name": "Rooftops",
+      "hotspots": [
+        "roofs",
+        "microgrid",
+        "timber"
+      ]
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "river",
+      "anchor": "river",
+      "label": "Scioto River",
+      "category": "sustainability",
+      "kicker": "Sustainability · real place",
+      "title": "The Scioto River, running free",
+      "text": "Downtown's river used to sit behind a low dam. The Scioto Greenways project removed the Main Street dam, narrowed the river and turned old riverbed into parkland. In this 2050 scenario an urban forest lines both banks.",
+      "facts": [
+        {
+          "text": "About 1.06 miles of the Scioto were returned to free-flowing condition, and the river's width through downtown was cut roughly in half.",
+          "source": "Landscape Architecture Foundation, Scioto Mile & Greenways case study"
+        },
+        {
+          "text": "Removing the dam and floodwalls reclaimed about 33 acres of open space; Greenways was completed in November 2015.",
+          "source": "Landscape Architecture Foundation"
+        }
+      ],
+      "archive": "A river with room to breathe, and a forest along both banks.",
+      "size": 220,
+      "question": {
+        "q": "What happened when the Main Street dam was removed?",
+        "options": [
+          "The river got wider and deeper",
+          "The river narrowed and new parkland appeared",
+          "The river was moved underground"
+        ],
+        "answer": 1,
+        "why": "Without the dam the river returned to a narrower, free-flowing channel, and the land it used to cover became parks."
+      }
+    },
+    {
+      "id": "vertiport",
+      "anchor": "vertiport",
+      "label": "Vertiport",
+      "category": "technology",
+      "kicker": "Technology · 2050 concept",
+      "title": "A rooftop vertiport",
+      "text": "An imagined mobility hub: buses, bikes and shared electric vehicles on the ground floor, solar panels on the roof, and pads where small electric air taxis land and take off.",
+      "facts": [
+        {
+          "text": "eVTOL stands for electric vertical take-off and landing: aircraft that rise straight up like a helicopter but run on batteries.",
+          "source": "General definition"
+        }
+      ],
+      "archive": "Air taxis, buses and bikes, all meeting in one place.",
+      "size": 90,
+      "question": {
+        "q": "Why put a vertiport on top of a transit hub?",
+        "options": [
+          "So people can switch between air taxis, buses and bikes in one place",
+          "Because air taxis need to land on buses",
+          "To keep the roof warm"
+        ],
+        "answer": 0,
+        "why": "Hubs make it easy to change modes, so one trip can combine several kinds of transport."
+      }
+    },
+    {
+      "id": "greenbridge",
+      "anchor": "greenbridge",
+      "label": "Green Bridge",
+      "category": "sustainability",
+      "kicker": "Sustainability · 2050 concept",
+      "title": "A bridge for people, not cars",
+      "text": "This imagined bridge carries only people walking, rolling and biking, with trees planted along it for shade.",
+      "facts": [
+        {
+          "text": "Shaded surfaces can be 20–45°F cooler than the peak temperatures of unshaded surfaces.",
+          "source": "U.S. EPA, Using Trees and Vegetation to Reduce Heat Islands"
+        }
+      ],
+      "archive": "A bridge just for walking and biking, with shade trees.",
+      "size": 90,
+      "question": {
+        "q": "How do trees cool a street?",
+        "options": [
+          "They block wind",
+          "They shade surfaces and release water vapor from their leaves",
+          "They reflect heat back into the sky like mirrors"
+        ],
+        "answer": 1,
+        "why": "Shade keeps the sun off pavement, and evapotranspiration from leaves cools the air."
+      }
+    },
+    {
+      "id": "leveque",
+      "anchor": "leveque",
+      "label": "LeVeque Tower",
+      "category": "technology",
+      "kicker": "Landmark · real place",
+      "title": "LeVeque Tower (1927)",
+      "text": "The Art Deco LeVeque Tower opened in 1927 and was the tallest building in Ohio when it was finished. It is kept here as it is today: the future is built around the city's history, not instead of it.",
+      "facts": [
+        {
+          "text": "Height: 555 feet (169 m).",
+          "source": "LeVeque Tower"
+        },
+        {
+          "text": "It was the tallest building in Ohio when it opened in 1927.",
+          "source": "ARCHIVE Skyship 360 kit fact sheet"
+        }
+      ],
+      "archive": "The LeVeque Tower, 1927. Still standing tall.",
+      "size": 120
+    },
+    {
+      "id": "fountain",
+      "anchor": "fountain",
+      "label": "Scioto Mile",
+      "category": "sustainability",
+      "kicker": "Parks · real place",
+      "title": "The Scioto Mile",
+      "text": "A chain of riverfront parks, paths and fountains along downtown's edge. Bicentennial Park's fountain is a favorite summer spot.",
+      "facts": [
+        {
+          "text": "The Scioto Mile parks were completed in June 2011.",
+          "source": "Landscape Architecture Foundation"
+        }
+      ],
+      "archive": "Parks right on the water.",
+      "size": 70
+    },
+    {
+      "id": "transit",
+      "anchor": "transit",
+      "label": "Rapid transit",
+      "category": "technology",
+      "kicker": "Transportation · 2050 concept",
+      "title": "Rapid transit on Broad Street",
+      "text": "In this scenario, rapid-transit vehicles run every few minutes in their own green lanes down the middle of Broad and High streets, with protected bike lanes on both sides. This is an artistic picture, not COTA's actual design.",
+      "facts": [
+        {
+          "text": "COTA's LinkUS program is planning bus rapid transit on West Broad Street, about 9 miles from Downtown to Prairie Township with 17 new stations.",
+          "source": "COTA, March 2024"
+        },
+        {
+          "text": "In 2024 the West Broad corridor received a $42 million federal grant.",
+          "source": "COTA, March 2024"
+        }
+      ],
+      "archive": "Rapid transit in its own green lane. No traffic jams.",
+      "size": 70,
+      "question": {
+        "q": "Why give transit its own lane?",
+        "options": [
+          "So it doesn't get stuck in car traffic, making trips faster and more reliable",
+          "So cars can drive faster",
+          "Because buses are too wide for normal lanes"
+        ],
+        "answer": 0,
+        "why": "A dedicated lane keeps transit moving even when car traffic is heavy."
+      }
+    },
+    {
+      "id": "bikes",
+      "anchor": "bikes",
+      "label": "Bike lanes",
+      "category": "sustainability",
+      "kicker": "Transportation · 2050 concept",
+      "title": "Protected bike lanes everywhere",
+      "text": "Every street in this future has a green, protected lane for bikes and scooters, separated from cars, so short trips are easy without driving.",
+      "facts": [],
+      "archive": "Green lanes for bikes on every street.",
+      "size": 60
+    },
+    {
+      "id": "statehouse",
+      "anchor": "statehouse",
+      "label": "Ohio Statehouse",
+      "category": "technology",
+      "kicker": "Landmark · real place",
+      "title": "The Ohio Statehouse",
+      "text": "Ohio's capitol, a Greek Revival building with a flat-topped cupola instead of a dome, sits on Capitol Square at Broad and High.",
+      "facts": [
+        {
+          "text": "Construction began in 1839 and the building was completed in 1861.",
+          "source": "Ohio Statehouse"
+        }
+      ],
+      "archive": "The Ohio Statehouse, finished in 1861.",
+      "size": 110
+    },
+    {
+      "id": "roofs",
+      "anchor": "roofs",
+      "label": "Green roofs",
+      "category": "sustainability",
+      "kicker": "Buildings · 2050 concept",
+      "title": "Green roofs and rooftop solar",
+      "text": "Most roofs in this future are planted or covered in solar panels. Plants soak up rain and keep roofs cool; panels make electricity right where it is used.",
+      "facts": [
+        {
+          "text": "Green roofs absorb rainwater, which slows stormwater runoff, and they stay cooler than conventional roofs in summer.",
+          "source": "U.S. EPA, Using Green Roofs to Reduce Heat Islands"
+        }
+      ],
+      "archive": "Green roofs and solar on nearly every building.",
+      "size": 160,
+      "question": {
+        "q": "Which two jobs can a green roof do?",
+        "options": [
+          "Hold rainwater and keep the building cooler",
+          "Make the building taller and heavier",
+          "Block radio signals and wind"
+        ],
+        "answer": 0,
+        "why": "Soil and plants store rain and shade the roof, cutting runoff and heat."
+      }
+    },
+    {
+      "id": "microgrid",
+      "anchor": "microgrid",
+      "label": "Microgrid",
+      "category": "technology",
+      "kicker": "Energy · 2050 concept",
+      "title": "A neighborhood microgrid",
+      "text": "A battery hall stores solar power from nearby roofs and canopies. If the main grid goes down, the microgrid can keep key buildings running on its own.",
+      "facts": [
+        {
+          "text": "A microgrid is a local energy system that can connect to the main grid or disconnect and run on its own ('island mode').",
+          "source": "U.S. Department of Energy"
+        }
+      ],
+      "archive": "Solar by day, stored for the night.",
+      "size": 60
+    },
+    {
+      "id": "timber",
+      "anchor": "timber",
+      "label": "Mass-timber towers",
+      "category": "sustainability",
+      "kicker": "Buildings · 2050 concept",
+      "title": "Mass-timber towers",
+      "text": "Engineered wood such as cross-laminated timber can replace some concrete and steel. Wood keeps storing the carbon the tree took in while it grew. The planted setbacks hold trees and gardens.",
+      "facts": [
+        {
+          "text": "The 2021 International Building Code allows mass-timber buildings up to 18 stories tall.",
+          "source": "International Code Council, 2021 IBC"
+        }
+      ],
+      "archive": "Towers made of wood, with gardens on every step.",
+      "size": 150
+    }
+  ],
+  "facts": [
+    {
+      "text": "Columbus 2050 is an artistic future scenario, not an official plan.",
+      "source": "FLE"
+    },
+    {
+      "text": "Columbus was founded in 1812 on the banks of the Scioto River.",
+      "source": "City of Columbus"
+    },
+    {
+      "text": "About 905,000 people lived in Columbus at the 2020 census.",
+      "source": "U.S. Census Bureau"
+    },
+    {
+      "text": "The LeVeque Tower opened in 1927; the Ohio Statehouse was completed in 1861.",
+      "source": "Landmark records"
+    },
+    {
+      "text": "COTA's LinkUS program is planning bus rapid transit on West Broad Street.",
+      "source": "COTA, 2024"
+    }
+  ],
+  "assets": {
+    "models": "procedural (code-generated)",
+    "textures": "canvas-generated facades and solar panels",
+    "shared": [
+      "sci-fi-360/js/lib.js",
+      "sci-fi-360/vendor/three.module.js",
+      "skyship-engine/journey.html"
+    ],
+    "data": []
+  },
+  "lighting": "late-morning summer sun; light haze; clouds at 380–600 m (the skyship climbs through them to orbit)",
+  "audio": {
+    "score": {
+      "chords": [
+        [
+          50,
+          57,
+          62,
+          66
+        ],
+        [
+          47,
+          54,
+          59,
+          62
+        ],
+        [
+          43,
+          50,
+          55,
+          59
+        ],
+        [
+          45,
+          52,
+          57,
+          61
+        ]
+      ],
+      "bar": 4,
+      "bells": [
+        74,
+        78,
+        81,
+        78,
+        76,
+        74,
+        73,
+        76
+      ],
+      "pulse": 0.55,
+      "ambience": "city",
+      "bright": 0.7
+    }
+  },
+  "portals": [
+    {
+      "to": "orbital-habitat",
+      "via": "columbus-to-orbit",
+      "label": "Skyship climb to orbit"
+    }
+  ],
+  "formats": {
+    "desktop": true,
+    "mobile": true,
+    "webxr": true,
+    "video360": true,
+    "video16x9": true
+  },
+  "gis": {
+    "ready": false,
+    "notes": "Street grid, river centreline and landmark positions are constants in columbus2050.js (STREETS, riverX, landmarks). Next step: generate them from OpenStreetMap / Franklin County GIS and calibrate building heights from LiDAR; the engine and manifests do not change."
+  }
+}

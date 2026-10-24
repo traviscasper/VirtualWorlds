@@ -1,0 +1,62 @@
+{
+  "journeys": [
+    {
+      "id": "columbus-to-orbit",
+      "title": "Columbus 2050 to Orbit",
+      "summary": "A 90-second guided flight: down the Scioto and along Broad Street in Columbus 2050, up through the clouds, and into the orbital habitat's Life Support Commons.",
+      "duration": 90,
+      "worlds": [
+        "columbus-2050",
+        "orbital-habitat"
+      ],
+      "categories": [
+        "sustainability",
+        "technology",
+        "space"
+      ]
+    },
+    {
+      "id": "columbus-2050",
+      "title": "Columbus 2050",
+      "summary": "Downtown Columbus in one possible 2050.",
+      "duration": 40,
+      "worlds": [
+        "columbus-2050"
+      ],
+      "categories": [
+        "sustainability",
+        "technology"
+      ]
+    },
+    {
+      "id": "orbital-habitat",
+      "title": "Sustainable Orbital Habitat",
+      "summary": "Through the ring habitat and the biosphere dome to the four life-support stations.",
+      "duration": 54,
+      "worlds": [
+        "orbital-habitat"
+      ],
+      "categories": [
+        "space",
+        "sustainability"
+      ]
+    },
+    {
+      "id": "scifi-classics",
+      "title": "200 Years of Science Fiction",
+      "summary": "The four Sci-Fi 360 worlds on the shared engine, with Explore and Learn modes.",
+      "duration": 180,
+      "worlds": [
+        "scifi-frankenstein",
+        "scifi-rur",
+        "scifi-metropolis",
+        "scifi-orbit"
+      ],
+      "categories": [
+        "technology",
+        "space",
+        "sustainability"
+      ]
+    }
+  ]
+}
