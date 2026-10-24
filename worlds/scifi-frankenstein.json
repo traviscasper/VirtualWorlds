@@ -1,0 +1,231 @@
+{
+  "$schema": "./schema.json",
+  "id": "scifi-frankenstein",
+  "kind": "world",
+  "name": "Frankenstein (1818)",
+  "summary": "A Gothic storm laboratory where lightning feeds the spark of life.",
+  "description": "From the Sci-Fi 360 journey: an Alpine gorge in a thunderstorm, a stone viaduct, a galvanic coil tower and the creature on his lightning-rod platform.",
+  "time": {
+    "era": "past",
+    "label": "1818",
+    "year": 1818
+  },
+  "place": {
+    "type": "laboratory",
+    "name": "Storm laboratory (fictional)",
+    "fictional": true
+  },
+  "purposes": [
+    "experience a story",
+    "learn"
+  ],
+  "learningObjectives": [
+    "Discuss responsibility for new technology through Mary Shelley's novel."
+  ],
+  "categories": [
+    "technology"
+  ],
+  "launch": [
+    {
+      "label": "Fly the journey",
+      "mode": "cinematic",
+      "href": "skyship-engine/journey.html?journey=scifi-classics"
+    },
+    {
+      "label": "Explore",
+      "mode": "explore",
+      "href": "skyship-engine/journey.html?journey=scifi-classics&mode=explore"
+    },
+    {
+      "label": "Learn",
+      "mode": "learn",
+      "href": "skyship-engine/journey.html?journey=scifi-classics&mode=learn"
+    }
+  ],
+  "preview": "portal/img/scifi-frankenstein.jpg",
+  "engine": {
+    "type": "skyship",
+    "module": "sci-fi-360/js/world_frankenstein.js",
+    "build": "buildFrankenstein",
+    "space": false,
+    "earth": false,
+    "cabinLight": 1.4,
+    "display": {
+      "chip": "Frankenstein",
+      "year": "1818",
+      "title": "FRANKENSTEIN",
+      "author": "MARY SHELLEY",
+      "sub": "or, The Modern Prometheus",
+      "theme": "THE SPARK OF LIFE",
+      "themeLine": "Humanity tries to create life, and must answer for what it has made.",
+      "place": "THE STORM LABORATORY",
+      "below": "THE GORGE",
+      "outside": "STORM"
+    },
+    "atmosphere": {
+      "top": "#05070f",
+      "hor": "#262d45",
+      "bot": "#090b12",
+      "fog": "#1b2133",
+      "fogD": 0.0011,
+      "sun": [
+        -0.35,
+        0.42,
+        -0.83
+      ],
+      "sunCol": "#a9bce8",
+      "sS": 0.42,
+      "aS": 0.36,
+      "hemiS": "#5f6fa0",
+      "hemiG": "#151820",
+      "stars": 0.2,
+      "cloud": "#2f3750",
+      "cloudAmt": 0.95,
+      "band": [
+        170,
+        340
+      ],
+      "cloudy": 1,
+      "exp": 1.25,
+      "moonDisk": 1,
+      "whiteout": "#3a4258"
+    }
+  },
+  "navigation": {
+    "modes": [
+      "cinematic",
+      "explore",
+      "learn"
+    ],
+    "controls": [
+      "drag to look",
+      "pinch or scroll to zoom",
+      "fly-to menu",
+      "stops",
+      "hotspots",
+      "WebXR headset"
+    ]
+  },
+  "stops": [
+    {
+      "t": 6.5,
+      "name": "Under the bridge",
+      "hotspots": [
+        "castle"
+      ]
+    },
+    {
+      "t": 13,
+      "name": "Galvanic coil",
+      "hotspots": [
+        "coil"
+      ]
+    },
+    {
+      "t": 24,
+      "name": "The creature",
+      "hotspots": [
+        "creature"
+      ]
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "coil",
+      "anchor": "coil",
+      "label": "Galvanic coil",
+      "category": "technology",
+      "kicker": "Science & ethics",
+      "title": "The spark of life",
+      "text": "Galvanism, using electricity to make muscles twitch, helped inspire the idea that a spark might bring life.",
+      "facts": [
+        {
+          "text": "Published anonymously in London on 1 January 1818.",
+          "source": "Sci-Fi 360 fact sheet"
+        }
+      ],
+      "archive": "They thought lightning might hold the spark of life.",
+      "size": 80
+    },
+    {
+      "id": "creature",
+      "anchor": "creature",
+      "label": "The creature",
+      "category": "technology",
+      "kicker": "Responsibility",
+      "title": "The creature",
+      "text": "Victor Frankenstein never names his creation; the novel calls it the creature. It reaches out, and Victor runs from what he made.",
+      "facts": [],
+      "archive": "He never asked to be made.",
+      "size": 40,
+      "question": {
+        "q": "What is Frankenstein mostly about?",
+        "options": [
+          "Responsibility for what we create",
+          "How to build a castle",
+          "Weather forecasting"
+        ],
+        "answer": 0,
+        "why": "Victor makes life, then abandons it; the story asks what creators owe their creations."
+      }
+    },
+    {
+      "id": "castle",
+      "anchor": "castle",
+      "label": "Lake Geneva, 1816",
+      "category": "technology",
+      "kicker": "History",
+      "title": "A ghost-story contest",
+      "text": "Mary Shelley began the story at 18, during a ghost-story contest at Lake Geneva in 1816.",
+      "facts": [],
+      "archive": "A story begun on a stormy summer night.",
+      "size": 200
+    }
+  ],
+  "facts": [
+    {
+      "text": "Published anonymously in London on 1 January 1818.",
+      "source": "Sci-Fi 360 fact sheet"
+    },
+    {
+      "text": "Mary Shelley began the story at 18, in a ghost-story contest at Lake Geneva in 1816.",
+      "source": "Sci-Fi 360 fact sheet"
+    },
+    {
+      "text": "Victor Frankenstein never names his creation. The novel calls it the creature.",
+      "source": "Sci-Fi 360 fact sheet"
+    },
+    {
+      "text": "Galvanism, using electricity to make muscles twitch, helped inspire the idea of a spark of life.",
+      "source": "Sci-Fi 360 fact sheet"
+    },
+    {
+      "text": "The subtitle compares Victor to Prometheus, who stole fire from the gods.",
+      "source": "Sci-Fi 360 fact sheet"
+    }
+  ],
+  "assets": {
+    "models": "procedural (code-generated)",
+    "textures": "canvas-generated",
+    "shared": [
+      "sci-fi-360/js/lib.js",
+      "sci-fi-360/vendor/three.module.js",
+      "skyship-engine/journey.html"
+    ],
+    "data": []
+  },
+  "audio": {
+    "track": "sci-fi-360/audio/soundtrack.mp3"
+  },
+  "formats": {
+    "desktop": true,
+    "mobile": true,
+    "webxr": true,
+    "video360": true,
+    "video16x9": true
+  },
+  "status": {
+    "stage": "complete",
+    "notes": "Original world from sci-fi-360, unchanged; runs on the shared engine via the scifi-classics journey."
+  }
+}

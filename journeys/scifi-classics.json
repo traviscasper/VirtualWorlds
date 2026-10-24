@@ -1,0 +1,349 @@
+{
+  "$schema": "./schema.json",
+  "id": "scifi-classics",
+  "title": "200 Years of Science Fiction",
+  "tagline": "Skyship · 200 years of science fiction",
+  "summary": "The four Sci-Fi 360 worlds on the shared engine, with Explore and Learn modes.",
+  "duration": 180,
+  "transition": 3,
+  "timelineLabel": "200 YEARS OF SCI-FI",
+  "transitLabel": "IN THE CLOUDS · CROSSING TIME",
+  "categories": [
+    "technology",
+    "space",
+    "sustainability"
+  ],
+  "worlds": [
+    {
+      "world": "scifi-frankenstein",
+      "t0": 0,
+      "t1": 40
+    },
+    {
+      "world": "scifi-rur",
+      "t0": 40,
+      "t1": 80
+    },
+    {
+      "world": "scifi-metropolis",
+      "t0": 80,
+      "t1": 120
+    },
+    {
+      "world": "scifi-orbit",
+      "t0": 120,
+      "t1": 180
+    }
+  ],
+  "cues": [
+    {
+      "t": 0,
+      "mood": "curious",
+      "look": "ahead",
+      "slot": "R",
+      "line": "A storm laboratory, two hundred years ago. Hold on."
+    },
+    {
+      "t": 6.5,
+      "mood": "surprised",
+      "look": "bridge",
+      "slot": "R",
+      "line": "Under the bridge!"
+    },
+    {
+      "t": 11.6,
+      "mood": "surprised",
+      "look": "coil",
+      "slot": "R",
+      "gesture": "jump"
+    },
+    {
+      "t": 13,
+      "mood": "curious",
+      "look": "coil",
+      "point": true,
+      "slot": "R",
+      "line": "They thought lightning might hold the spark of life."
+    },
+    {
+      "t": 19,
+      "mood": "curious",
+      "look": "creature",
+      "slot": "L",
+      "line": "Look, on the platform. The creature."
+    },
+    {
+      "t": 22.5,
+      "mood": "surprised",
+      "look": "creature",
+      "slot": "L",
+      "gesture": "jump"
+    },
+    {
+      "t": 24,
+      "mood": "curious",
+      "look": "creature",
+      "point": true,
+      "slot": "L",
+      "line": "He is reaching for us. He never asked to be made."
+    },
+    {
+      "t": 27.2,
+      "mood": "curious",
+      "look": "creature",
+      "gesture": "wave",
+      "slot": "L"
+    },
+    {
+      "t": 30.5,
+      "mood": "thoughtful",
+      "look": "falls",
+      "slot": "R",
+      "line": "Victor made life, then ran from it."
+    },
+    {
+      "t": 35,
+      "mood": "thoughtful",
+      "look": "you",
+      "slot": "R",
+      "line": "Creating life brings responsibility."
+    },
+    {
+      "t": 41,
+      "mood": "neutral",
+      "look": "ahead",
+      "slot": "L",
+      "line": "1920. A factory that makes workers."
+    },
+    {
+      "t": 45.5,
+      "mood": "thoughtful",
+      "look": "vats",
+      "point": true,
+      "slot": "R",
+      "line": "Each vat grows one robot, made to look like us."
+    },
+    {
+      "t": 52,
+      "mood": "concerned",
+      "look": "conveyor",
+      "slot": "R",
+      "line": "Identical. Numbered. Sent straight to work."
+    },
+    {
+      "t": 57.5,
+      "mood": "concerned",
+      "look": "catwalk",
+      "slot": "L",
+      "line": "They never stop walking."
+    },
+    {
+      "t": 63,
+      "mood": "thoughtful",
+      "look": "you",
+      "slot": "L",
+      "line": "Robota means forced labor. Who is this progress for?"
+    },
+    {
+      "t": 70,
+      "mood": "concerned",
+      "look": "stacks",
+      "point": true,
+      "slot": "L"
+    },
+    {
+      "t": 75,
+      "mood": "thoughtful",
+      "look": "ahead",
+      "slot": "L",
+      "line": "Next: a whole city run by machines."
+    },
+    {
+      "t": 81,
+      "mood": "amazed",
+      "look": "up",
+      "slot": "R",
+      "gesture": "jump",
+      "line": "Metropolis! Look up!"
+    },
+    {
+      "t": 86,
+      "mood": "amazed",
+      "look": "flyers",
+      "point": true,
+      "slot": "R",
+      "line": "Flying cars, sky bridges, airships."
+    },
+    {
+      "t": 89.5,
+      "mood": "concerned",
+      "look": "machine",
+      "slot": "L",
+      "line": "And down there, the workers who keep it running."
+    },
+    {
+      "t": 96,
+      "mood": "amazed",
+      "look": "statueR",
+      "point": true,
+      "slot": "L",
+      "line": "Statues of labor. Who are they built for?"
+    },
+    {
+      "t": 104,
+      "mood": "surprised",
+      "look": "bridge",
+      "slot": "R",
+      "line": "Bridge!"
+    },
+    {
+      "t": 108,
+      "mood": "amazed",
+      "look": "tower",
+      "point": true,
+      "slot": "L",
+      "line": "The head and the hands need a heart."
+    },
+    {
+      "t": 114,
+      "mood": "excited",
+      "look": "up",
+      "slot": "R",
+      "line": "Climbing. Next stop: orbit!"
+    },
+    {
+      "t": 121,
+      "mood": "amazed",
+      "look": "down",
+      "slot": "R",
+      "line": "Earth. Everything we know lives down there."
+    },
+    {
+      "t": 128,
+      "mood": "happy",
+      "look": "ring",
+      "point": true,
+      "slot": "R",
+      "line": "A ring habitat. Farms inside, spun for gravity."
+    },
+    {
+      "t": 134.5,
+      "mood": "excited",
+      "look": "up",
+      "gesture": "spin",
+      "slot": "R",
+      "line": "Right through the middle!"
+    },
+    {
+      "t": 140,
+      "mood": "happy",
+      "look": "falls",
+      "point": true,
+      "slot": "L",
+      "line": "Forests, a lake, a waterfall. Life, looked after."
+    },
+    {
+      "t": 152,
+      "mood": "happy",
+      "look": "you",
+      "slot": "R",
+      "line": "This time the technology protects life."
+    },
+    {
+      "t": 158,
+      "mood": "excited",
+      "look": "domeB",
+      "gesture": "open",
+      "slot": "R",
+      "line": "Sunlight in. Water recycled. Nothing wasted."
+    },
+    {
+      "t": 166,
+      "mood": "happy",
+      "look": "you",
+      "slot": "R",
+      "gesture": "open",
+      "line": "Creating life is powerful. Sustaining it is up to us."
+    },
+    {
+      "t": 176,
+      "mood": "happy",
+      "look": "you",
+      "slot": "R",
+      "gesture": "wave"
+    }
+  ],
+  "final": {
+    "t0": 165.5,
+    "line1": "Creating Life Is Powerful.",
+    "line2": "Sustaining Life Is Our Responsibility.",
+    "foot": "FRANKENSTEIN 1818 · R.U.R. 1920 · METROPOLIS 1927 · TOMORROW"
+  },
+  "audio": {
+    "file": "../sci-fi-360/audio/soundtrack.mp3",
+    "module": "../sci-fi-360/js/audio.js",
+    "export": "renderSoundtrack"
+  },
+  "lesson": {
+    "title": "Technology and Responsibility in Science Fiction",
+    "course": "Virtual Environments for a Better Future",
+    "intro": "Three classic stories asked what we owe to what we create. The fourth world is ours to write.",
+    "objectives": [
+      {
+        "text": "Explain the warning in Frankenstein.",
+        "hotspots": [
+          "creature"
+        ]
+      },
+      {
+        "text": "Say where the word 'robot' comes from.",
+        "hotspots": [
+          "sign"
+        ]
+      },
+      {
+        "text": "Describe Metropolis' message about technology and society.",
+        "hotspots": [
+          "tower",
+          "machine"
+        ]
+      },
+      {
+        "text": "Connect the stories to a sustainable future.",
+        "hotspots": [
+          "s-falls"
+        ]
+      }
+    ]
+  },
+  "shots": [
+    [
+      22,
+      "scifi_frankenstein",
+      "cabin",
+      0,
+      0
+    ],
+    [
+      60,
+      "scifi_rur",
+      "cabin",
+      0,
+      0
+    ],
+    [
+      100,
+      "scifi_metropolis",
+      "cabin",
+      0,
+      0
+    ],
+    [
+      140,
+      "scifi_orbit",
+      "cabin",
+      0,
+      0
+    ]
+  ]
+}

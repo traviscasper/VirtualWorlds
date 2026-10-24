@@ -1,0 +1,226 @@
+{
+  "$schema": "./schema.json",
+  "id": "scifi-metropolis",
+  "kind": "world",
+  "name": "Metropolis (1927)",
+  "summary": "A city of towers, sky bridges and hidden machines, from the 1927 silent film.",
+  "description": "From the Sci-Fi 360 journey: Metropolis' avenues, statues of labor, flyers and the central tower.",
+  "time": {
+    "era": "past",
+    "label": "1927",
+    "year": 1927
+  },
+  "place": {
+    "type": "city",
+    "name": "Metropolis (fictional)",
+    "fictional": true
+  },
+  "purposes": [
+    "experience a story",
+    "learn"
+  ],
+  "learningObjectives": [
+    "Discuss how technology can divide or connect a society."
+  ],
+  "categories": [
+    "technology"
+  ],
+  "launch": [
+    {
+      "label": "Fly the journey",
+      "mode": "cinematic",
+      "href": "skyship-engine/journey.html?journey=scifi-classics"
+    },
+    {
+      "label": "Explore",
+      "mode": "explore",
+      "href": "skyship-engine/journey.html?journey=scifi-classics&mode=explore"
+    },
+    {
+      "label": "Learn",
+      "mode": "learn",
+      "href": "skyship-engine/journey.html?journey=scifi-classics&mode=learn"
+    }
+  ],
+  "preview": "portal/img/scifi-metropolis.jpg",
+  "engine": {
+    "type": "skyship",
+    "module": "sci-fi-360/js/world_metropolis.js",
+    "build": "buildMetropolis",
+    "space": false,
+    "earth": false,
+    "cabinLight": 0.3,
+    "display": {
+      "chip": "Metropolis",
+      "year": "1927",
+      "title": "METROPOLIS",
+      "author": "FRITZ LANG · THEA VON HARBOU",
+      "sub": "a silent film",
+      "theme": "TECHNOLOGY AND SOCIETY",
+      "themeLine": "A gleaming city built on hidden labor asks who its machines really serve.",
+      "place": "THE CITY OF TOWERS",
+      "below": "THE STREETS FAR BELOW",
+      "outside": "HAZE"
+    },
+    "atmosphere": {
+      "top": "#6f86a6",
+      "hor": "#f5dfb2",
+      "bot": "#9a8a70",
+      "fog": "#e0cda6",
+      "fogD": 0.0009,
+      "sun": [
+        -0.35,
+        0.55,
+        -0.75
+      ],
+      "sunCol": "#fff0d0",
+      "sS": 1.25,
+      "aS": 0.55,
+      "hemiS": "#e8e6dc",
+      "hemiG": "#7a6a58",
+      "stars": 0,
+      "cloud": "#fff4e0",
+      "cloudAmt": 0.45,
+      "band": [
+        380,
+        620
+      ],
+      "cloudy": 0.3,
+      "exp": 1.0,
+      "moonDisk": 0,
+      "whiteout": "#efe2c8"
+    }
+  },
+  "navigation": {
+    "modes": [
+      "cinematic",
+      "explore",
+      "learn"
+    ],
+    "controls": [
+      "drag to look",
+      "pinch or scroll to zoom",
+      "fly-to menu",
+      "stops",
+      "hotspots",
+      "WebXR headset"
+    ]
+  },
+  "stops": [
+    {
+      "t": 86,
+      "name": "Flying traffic",
+      "hotspots": [
+        "flyers"
+      ]
+    },
+    {
+      "t": 90,
+      "name": "The machine",
+      "hotspots": [
+        "machine"
+      ]
+    },
+    {
+      "t": 108,
+      "name": "The tower",
+      "hotspots": [
+        "tower"
+      ]
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "flyers",
+      "anchor": "flyers",
+      "label": "Sky traffic",
+      "category": "technology",
+      "kicker": "Future cities, 1927",
+      "title": "Flying cars and sky bridges",
+      "text": "Metropolis imagined a city of towers linked by sky bridges, with flying traffic and airships, a picture of the future that still shapes science fiction.",
+      "facts": [
+        {
+          "text": "Fritz Lang's silent film premiered in Berlin on 10 January 1927.",
+          "source": "Sci-Fi 360 fact sheet"
+        }
+      ],
+      "archive": "Flying cars, sky bridges, airships.",
+      "size": 120
+    },
+    {
+      "id": "machine",
+      "anchor": "machine",
+      "label": "The machine",
+      "category": "technology",
+      "kicker": "Technology & society",
+      "title": "Who runs the machines?",
+      "text": "The rich live in towers above while workers run the machines below. The film asks who the city's machines really serve.",
+      "facts": [],
+      "archive": "Down there, the workers who keep it running.",
+      "size": 120
+    },
+    {
+      "id": "tower",
+      "anchor": "tower",
+      "label": "Head, hands, heart",
+      "category": "technology",
+      "kicker": "Message",
+      "title": "Head, hands and heart",
+      "text": "The film's closing message: the mediator between head and hands must be the heart.",
+      "facts": [
+        {
+          "text": "Lost footage was rediscovered in Buenos Aires in 2008.",
+          "source": "Sci-Fi 360 fact sheet"
+        }
+      ],
+      "archive": "The head and the hands need a heart.",
+      "size": 160
+    }
+  ],
+  "facts": [
+    {
+      "text": "Fritz Lang's silent film premiered in Berlin on 10 January 1927.",
+      "source": "Sci-Fi 360 fact sheet"
+    },
+    {
+      "text": "Thea von Harbou wrote the screenplay and the novel it came from.",
+      "source": "Sci-Fi 360 fact sheet"
+    },
+    {
+      "text": "The rich live in towers above while workers run the machines below.",
+      "source": "Sci-Fi 360 fact sheet"
+    },
+    {
+      "text": "Its closing message: the mediator between head and hands must be the heart.",
+      "source": "Sci-Fi 360 fact sheet"
+    },
+    {
+      "text": "Lost footage was rediscovered in Buenos Aires in 2008.",
+      "source": "Sci-Fi 360 fact sheet"
+    }
+  ],
+  "assets": {
+    "models": "procedural (code-generated)",
+    "textures": "canvas-generated",
+    "shared": [
+      "sci-fi-360/js/lib.js",
+      "sci-fi-360/vendor/three.module.js",
+      "skyship-engine/journey.html"
+    ],
+    "data": []
+  },
+  "audio": {
+    "track": "sci-fi-360/audio/soundtrack.mp3"
+  },
+  "formats": {
+    "desktop": true,
+    "mobile": true,
+    "webxr": true,
+    "video360": true,
+    "video16x9": true
+  },
+  "status": {
+    "stage": "complete",
+    "notes": "Original world from sci-fi-360, unchanged; runs on the shared engine via the scifi-classics journey."
+  }
+}

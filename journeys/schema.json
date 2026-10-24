@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fle-virtual-worlds/journey.schema.json",
+  "title": "Skyship journey",
+  "description": "A timed flight through one or more worlds on the shared skyship engine (skyship-engine/journey.html?journey=<id>). See docs/WORLD_FORMAT.md.",
+  "type": "object",
+  "required": ["id", "title", "duration", "worlds", "cues"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "title": { "type": "string" }, "tagline": { "type": "string" }, "summary": { "type": "string" },
+    "duration": { "type": "number", "description": "Seconds." },
+    "transition": { "type": "number", "description": "Half-length of the cloud crossing between worlds, seconds (default 3)." },
+    "timelineLabel": { "type": "string" }, "transitLabel": { "type": "string" },
+    "categories": { "type": "array", "items": { "enum": ["sustainability", "technology", "space"] } },
+    "worlds": { "type": "array", "minItems": 1, "items": { "type": "object", "required": ["world", "t0", "t1"], "properties": {
+      "world": { "type": "string", "description": "World id (worlds/<id>.json)." },
+      "t0": { "type": "number" }, "t1": { "type": "number" },
+      "timeOffset": { "type": "number", "description": "World-local time = journey time + timeOffset (lets a world's own flight path start anywhere)." },
+      "chip": { "type": "string" } } } },
+    "cues": { "type": "array", "description": "ARCHIVE's timeline: mood, what he looks at (an anchor name, or you/ahead/up/down), slot L/R, optional point/gesture, and his line.",
+      "items": { "type": "object", "required": ["t", "mood", "look"], "properties": {
+        "t": { "type": "number" }, "mood": { "enum": ["neutral", "curious", "surprised", "thoughtful", "concerned", "amazed", "happy", "excited"] }, "look": { "type": "string" },
+        "slot": { "enum": ["L", "R", "LL", "RR"] }, "point": { "type": "boolean" }, "gesture": { "enum": ["jump", "wave", "spin", "open"] }, "line": { "type": "string" } } } },
+    "final": { "type": "object", "properties": { "t0": { "type": "number" }, "line1": { "type": "string" }, "line2": { "type": "string" }, "foot": { "type": "string" }, "color2": { "type": "string" } } },
+    "audio": { "type": "object", "properties": { "file": { "type": "string", "description": "Relative to skyship-engine/journey.html." }, "module": { "type": "string" }, "export": { "type": "string" } } },
+    "lesson": { "type": "object", "properties": { "title": { "type": "string" }, "course": { "type": "string" }, "intro": { "type": "string" },
+      "objectives": { "type": "array", "items": { "type": "object", "required": ["text"], "properties": { "text": { "type": "string" }, "hotspots": { "type": "array", "items": { "type": "string" } } } } } } },
+    "shots": { "type": "array", "description": "QA screenshots: [time, label, view, yaw, pitch].", "items": { "type": "array" } },
+    "testStart": { "type": "number", "description": "Start time for render_journey.py --test." }
+  }
+}

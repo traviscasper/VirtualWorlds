@@ -1,0 +1,231 @@
+{
+  "$schema": "./schema.json",
+  "id": "scifi-rur",
+  "kind": "world",
+  "name": "R.U.R. (1920)",
+  "summary": "Rossum's factory, where artificial workers are grown and sent to work.",
+  "description": "From the Sci-Fi 360 journey: vats, conveyors and catwalks in the factory of Karel Čapek's 1920 play.",
+  "time": {
+    "era": "past",
+    "label": "1920",
+    "year": 1920
+  },
+  "place": {
+    "type": "laboratory",
+    "name": "Rossum's factory (fictional)",
+    "fictional": true
+  },
+  "purposes": [
+    "experience a story",
+    "learn"
+  ],
+  "learningObjectives": [
+    "Trace the word 'robot' and early ideas about automation and labor."
+  ],
+  "categories": [
+    "technology"
+  ],
+  "launch": [
+    {
+      "label": "Fly the journey",
+      "mode": "cinematic",
+      "href": "skyship-engine/journey.html?journey=scifi-classics"
+    },
+    {
+      "label": "Explore",
+      "mode": "explore",
+      "href": "skyship-engine/journey.html?journey=scifi-classics&mode=explore"
+    },
+    {
+      "label": "Learn",
+      "mode": "learn",
+      "href": "skyship-engine/journey.html?journey=scifi-classics&mode=learn"
+    }
+  ],
+  "preview": "portal/img/scifi-rur.jpg",
+  "engine": {
+    "type": "skyship",
+    "module": "sci-fi-360/js/world_rur.js",
+    "build": "buildRUR",
+    "space": false,
+    "earth": false,
+    "cabinLight": 0.3,
+    "display": {
+      "chip": "R.U.R.",
+      "year": "1920",
+      "title": "R.U.R.",
+      "author": "KAREL ČAPEK",
+      "sub": "Rossum's Universal Robots",
+      "theme": "MANUFACTURED LIFE",
+      "themeLine": "The play that gave us the word \"robot\": artificial workers, automation and exploitation.",
+      "place": "ROSSUM'S FACTORY",
+      "below": "THE FACTORY FLOOR",
+      "outside": "SMOKE"
+    },
+    "atmosphere": {
+      "top": "#3b2f3f",
+      "hor": "#f2a058",
+      "bot": "#5a3a28",
+      "fog": "#b58459",
+      "fogD": 0.00145,
+      "sun": [
+        0.15,
+        0.07,
+        -1
+      ],
+      "sunCol": "#ffb070",
+      "sS": 1.05,
+      "aS": 0.52,
+      "hemiS": "#ffc79a",
+      "hemiG": "#4a3226",
+      "stars": 0,
+      "cloud": "#c79170",
+      "cloudAmt": 0.6,
+      "band": [
+        150,
+        320
+      ],
+      "cloudy": 0.55,
+      "exp": 1.05,
+      "moonDisk": 0,
+      "whiteout": "#8f7c70"
+    }
+  },
+  "navigation": {
+    "modes": [
+      "cinematic",
+      "explore",
+      "learn"
+    ],
+    "controls": [
+      "drag to look",
+      "pinch or scroll to zoom",
+      "fly-to menu",
+      "stops",
+      "hotspots",
+      "WebXR headset"
+    ]
+  },
+  "stops": [
+    {
+      "t": 46,
+      "name": "The vats",
+      "hotspots": [
+        "vats"
+      ]
+    },
+    {
+      "t": 53,
+      "name": "Conveyor",
+      "hotspots": [
+        "conveyor"
+      ]
+    },
+    {
+      "t": 64,
+      "name": "Rossum's sign",
+      "hotspots": [
+        "sign"
+      ]
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "vats",
+      "anchor": "vats",
+      "label": "The vats",
+      "category": "technology",
+      "kicker": "Robots & AI",
+      "title": "Robots grown in vats",
+      "text": "Čapek's robots are made of synthetic living matter, not metal and gears. Each vat grows one worker.",
+      "facts": [],
+      "archive": "Each vat grows one robot, made to look like us.",
+      "size": 60
+    },
+    {
+      "id": "conveyor",
+      "anchor": "conveyor",
+      "label": "The line",
+      "category": "technology",
+      "kicker": "Automation",
+      "title": "Identical, numbered, sent to work",
+      "text": "The factory turns out workers like products. The play asks who all this progress is really for.",
+      "facts": [
+        {
+          "text": "Written in 1920; it premiered in Prague in January 1921.",
+          "source": "Sci-Fi 360 fact sheet"
+        }
+      ],
+      "archive": "Who is this progress for?",
+      "size": 60
+    },
+    {
+      "id": "sign",
+      "anchor": "sign",
+      "label": "Robota",
+      "category": "technology",
+      "kicker": "Language",
+      "title": "Where 'robot' comes from",
+      "text": "\"Robot\" comes from the Czech robota, meaning forced labor. Karel Čapek credited his brother Josef with the word.",
+      "facts": [],
+      "archive": "Robota means forced labor.",
+      "size": 80,
+      "question": {
+        "q": "What does the Czech word robota mean?",
+        "options": [
+          "Forced labor",
+          "Metal man",
+          "Thinking machine"
+        ],
+        "answer": 0,
+        "why": "Čapek chose a word that ties robots to the work they are forced to do."
+      }
+    }
+  ],
+  "facts": [
+    {
+      "text": "Written in 1920; it premiered in Prague in January 1921.",
+      "source": "Sci-Fi 360 fact sheet"
+    },
+    {
+      "text": "\"Robot\" comes from the Czech robota, meaning forced labor.",
+      "source": "Sci-Fi 360 fact sheet"
+    },
+    {
+      "text": "Karel Čapek credited his brother Josef with suggesting the word.",
+      "source": "Sci-Fi 360 fact sheet"
+    },
+    {
+      "text": "Čapek's robots are made of synthetic living matter, not metal and gears.",
+      "source": "Sci-Fi 360 fact sheet"
+    },
+    {
+      "text": "In the play the robots rebel, and humanity nearly disappears.",
+      "source": "Sci-Fi 360 fact sheet"
+    }
+  ],
+  "assets": {
+    "models": "procedural (code-generated)",
+    "textures": "canvas-generated",
+    "shared": [
+      "sci-fi-360/js/lib.js",
+      "sci-fi-360/vendor/three.module.js",
+      "skyship-engine/journey.html"
+    ],
+    "data": []
+  },
+  "audio": {
+    "track": "sci-fi-360/audio/soundtrack.mp3"
+  },
+  "formats": {
+    "desktop": true,
+    "mobile": true,
+    "webxr": true,
+    "video360": true,
+    "video16x9": true
+  },
+  "status": {
+    "stage": "complete",
+    "notes": "Original world from sci-fi-360, unchanged; runs on the shared engine via the scifi-classics journey."
+  }
+}
