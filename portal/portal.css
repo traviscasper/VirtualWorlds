@@ -41,7 +41,7 @@ img{max-width:100%;display:block}
 .btn.go{background:var(--ink);color:var(--sky)}
 .btn:hover{transform:translateY(-1px)}
 .btn small{font-weight:400;opacity:.8}
-.fine{font-size:14px;color:var(--muted);margin-top:14px}
+.hero .fine{font-size:14px;color:var(--muted);margin:14px 0 0}
 
 /* time · place · purpose */
 .tpp{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px 22px 18px;margin-bottom:28px}
@@ -67,8 +67,10 @@ legend span{font-weight:400;color:var(--muted)}
 .axis .dot[data-up]{top:calc(50% - 20px)} .axis .dot[data-up2]{top:calc(50% - 40px)}
 .axis .dot:hover,.axis .dot:focus-visible{transform:translate(-50%,-50%) scale(1.35)}
 .axis .dot[hidden]{display:none}
-.axis .tip{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);margin-bottom:6px;background:var(--ink);color:var(--sky);font:600 13px var(--body);padding:4px 8px;border-radius:6px;white-space:nowrap;pointer-events:none;opacity:0}
-.axis .dot:hover .tip,.axis .dot:focus-visible .tip{opacity:1}
+.axis{overflow-x:clip}
+.axis .tip{display:none;position:absolute;bottom:100%;left:50%;transform:translateX(-50%);margin-bottom:6px;background:var(--ink);color:var(--sky);font:600 13px var(--body);padding:4px 8px;border-radius:6px;white-space:nowrap;pointer-events:none}
+.axis .dot.r .tip{left:auto;right:-4px;transform:none} .axis .dot.l .tip{left:-4px;transform:none}
+.axis .dot:hover .tip,.axis .dot:focus-visible .tip{display:block}
 
 /* gallery */
 .sec h2{font:800 30px/1.1 var(--display);margin:0 0 6px;letter-spacing:-.01em}

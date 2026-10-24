@@ -64,7 +64,7 @@
   const used = {};
   const dots = cards.map(({ w, a }) => { const p = posOf(w); const key = Math.round(p / 3); const lane = used[key] = (used[key] ?? -1) + 1;
     const b = document.createElement('button'); b.type = 'button'; b.className = 'dot'; b.style.left = p + '%'; b.style.setProperty('--c', CATC[(w.categories || [])[0]] || 'var(--ink)');
-    if (lane === 1) b.dataset.up = ''; if (lane >= 2) b.dataset.up2 = '';
+    if (p > 70) b.classList.add('r'); else if (p < 20) b.classList.add('l'); if (lane === 1) b.dataset.up = ''; if (lane >= 2) b.dataset.up2 = '';
     b.setAttribute('aria-label', `${w.name}, ${w.time?.label || ''}`); b.innerHTML = `<span class="tip">${esc(w.name)}</span>`;
     b.onclick = () => { a.scrollIntoView({ block: 'center' }); a.classList.add('flash'); setTimeout(() => a.classList.remove('flash'), 1600); a.querySelector('a')?.focus({ preventScroll: true }); };
     axis.appendChild(b); return b; });
