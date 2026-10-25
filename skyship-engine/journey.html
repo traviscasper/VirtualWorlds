@@ -166,7 +166,7 @@ document.title = `${J.title} · ARCHIVE Skyship`;
 document.getElementById('tagline').textContent = J.tagline || J.title;
 document.getElementById('c').setAttribute('aria-label', `Inside ARCHIVE's skyship: ${J.title}`);
 const WORKS = J.worlds.map((s, i) => { const m = META[i], d = m.engine.display;
-  return { id: m.id, name: m.name, t0: s.t0, t1: s.t1, off: s.timeOffset || 0, chip: s.chip || d.chip, year: d.year, title: d.title, author: d.author, sub: d.sub, theme: d.theme,
+  return { id: m.id, name: m.name, t0: s.t0, t1: s.t1, off: s.timeOffset || 0, chip: s.chip || d.chip, year: d.year, yearShort: d.yearShort || d.year, title: d.title, author: d.author, sub: d.sub, theme: d.theme,
     themeLine: d.themeLine, place: d.place, below: d.below, facts: (m.facts || []).map(f => typeof f === 'string' ? f : f.text), space: !!m.engine.space, earth: !!m.engine.earth,
     outside: d.outside || 'CLEAR', cabinLight: m.engine.cabinLight ?? .3, speedLabel: d.speedLabel, altLabel: d.altLabel, holding: d.holding, cat: m.categories || [],
     stops: (m.stops || []).map(p => ({ ...p, t: p.t - (s.timeOffset || 0) })).filter(p => p.t >= s.t0 - .01 && p.t <= s.t1 + .01),
@@ -430,12 +430,12 @@ function drawHUD(info){ const x=hud.ctx, W=1200, H=300; x.clearRect(0,0,W,H);
   hud.tex.needsUpdate=true; }
 function mmss(t){ t=Math.max(0,Math.floor(t)); return `${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}`; }
 function drawTimeline(t,wi){ const x=mapP.ctx, W=960,H=600; x.clearRect(0,0,W,H); x.save(); rr(x,4,4,W-8,H-8,22); x.fillStyle='rgba(5,18,36,.78)'; x.fill(); x.clip();
-  const X0=90, X1=W-90, Y=250, NW=WORKS.length; const xs=WORKS.map((_,i)=>NW<2?(X0+X1)/2:X0+(X1-X0)*i/(NW-1));
+  const X0=90, X1=W-90, Y=250, NW=WORKS.length; const xs=WORKS.map((_,i)=>NW<2?(X0+X1)/2:X0+(X1-X0)*(J.timelineX?.[i]??i/(NW-1)));
   x.strokeStyle='rgba(127,227,255,.25)'; x.lineWidth=6; x.beginPath(); x.moveTo(X0,Y); x.lineTo(X1,Y); x.stroke();
   const u=clamp(t/DURATION,0,1); let px; { const seg=[...WORKS.map(w=>w.t0),DURATION]; let i=0; while(i<NW-2&&t>seg[i+1]) i++; const k=clamp((t-seg[i])/(seg[i+1]-seg[i]),0,1); px=NW<2? lerp(X0,X1,u) : lerp(xs[i],xs[Math.min(i+1,NW-1)],k); if(NW>1&&t>=WORKS[NW-1].t0) px=xs[NW-1]; }
   x.strokeStyle=CY; x.lineWidth=6; x.beginPath(); x.moveTo(X0,Y); x.lineTo(px,Y); x.stroke();
   WORKS.forEach((w,i)=>{ const on=i===wi, done=i<wi; x.fillStyle=on?CY:done?'rgba(127,227,255,.75)':'rgba(234,248,255,.35)'; x.beginPath(); x.arc(xs[i],Y,on?16:10,0,7); x.fill();
-    x.textAlign='center'; x.letterSpacing='2px'; x.font=`700 ${on?40:30}px ${FS}`; x.fillStyle=on?INK:'rgba(234,248,255,.6)'; x.fillText(w.year,xs[i],Y-44);
+    x.textAlign='center'; x.letterSpacing='2px'; x.font=`700 ${on?40:30}px ${FS}`; x.fillStyle=on?INK:'rgba(234,248,255,.6)'; x.fillText(w.yearShort,xs[i],Y-44);
     x.letterSpacing='1px'; x.font=`600 ${on?20:17}px ${FM}`; x.fillStyle=on?CY:'rgba(168,191,214,.8)'; const lab=w.chip.toUpperCase(); x.fillText(lab,xs[i],Y+52); x.textAlign='left'; });
   const pulse=.5+.5*Math.sin(t*4); x.strokeStyle=`rgba(127,227,255,${.3+.5*pulse})`; x.lineWidth=3; x.beginPath(); x.arc(px,Y,22+pulse*8,0,7); x.stroke(); x.fillStyle='#ffffff'; x.beginPath(); x.arc(px,Y,8,0,7); x.fill();
   const w=WORKS[wi]; x.fillStyle=INK; x.letterSpacing='2px'; fit(x,w.theme,`700 #px ${FD}`,34,W-80); x.fillText(w.theme,34,400); x.letterSpacing='0px'; x.font=`500 25px ${FB}`; x.fillStyle='#bfeaff'; wrapText(x,w.themeLine,34,446,W-68,32);
@@ -667,7 +667,7 @@ function audioTime(){ return src? srcOff+(actx.currentTime-srcT0) : null; }
 
 /* ---------------- UI ---------------- */
 const dests=document.getElementById('dests');
-WORKS.forEach((w,i)=>{ const b=document.createElement('button'); b.type='button'; b.innerHTML=`${w.chip}<small>${w.year}</small>`; b.dataset.world=i; b.id='world-'+w.id; b.setAttribute('aria-pressed','false');
+WORKS.forEach((w,i)=>{ const b=document.createElement('button'); b.type='button'; b.innerHTML=`${w.chip}<small>${w.yearShort}</small>`; b.dataset.world=i; b.id='world-'+w.id; b.setAttribute('aria-pressed','false');
   b.onclick=()=>{ if(MODE!=='cinematic'){ const st=STOPS.find(p=>p.world===i); if(st){ flyToStop(STOPS.indexOf(st)); return; } } seek(i===0?0:w.t0-TR); }; dests.appendChild(b); });
 if(WORKS.length<2) dests.hidden=true;
 function seek(t){ tourT=clamp(t,0,DURATION-.01); liveT=tourT; target=null; closeCard(); if(soundOn&&playing) startAudioAt(tourT); }

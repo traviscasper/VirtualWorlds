@@ -7,6 +7,12 @@
   "duration": 180,
   "transition": 3,
   "timelineLabel": "200 YEARS OF SCI-FI",
+  "timelineX": [
+    0,
+    0.29,
+    0.58,
+    1
+  ],
   "transitLabel": "IN THE CLOUDS · CROSSING TIME",
   "categories": [
     "technology",
