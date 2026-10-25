@@ -12,14 +12,14 @@ the same axes as the skyship engine. Needs only the Python standard library.
 
 Map data (c) OpenStreetMap contributors, available under the Open Database License (ODbL 1.0).
 """
-import argparse, json, math, re, sys, time, urllib.parse, urllib.request
+import argparse, json, math, re, sys, time, urllib.error, urllib.parse, urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 RAW = ROOT / "data/gis/raw"
 OUT = ROOT / "data/gis"
 MIRRORS = ["https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter",
-           "https://overpass.private.coffee/api/interpreter"]
+           "https://overpass.private.coffee/api/interpreter", "https://maps.mail.ru/osm/tools/overpass/api/interpreter"]
 
 # Each region: a south/west/north/east box and how to find its origin (0,0).
 REGIONS = {
@@ -61,25 +61,32 @@ def fetch(region):
     q = QUERY.replace("{b}", f"{s},{w},{n},{e}")
     data = urllib.parse.urlencode({"data": q}).encode()
     RAW.mkdir(parents=True, exist_ok=True)
-    last = None
+    errors = []
     for attempt in range(3):
         for url in MIRRORS:
+            host = url.split("/")[2]
             try:
-                print(f"  {region}: asking {url.split('/')[2]} ...", flush=True)
-                req = urllib.request.Request(url, data=data, headers={"User-Agent": "FLE-VirtualWorlds/1.0 (osm_world.py)"})
+                print(f"  {region}: asking {host} (attempt {attempt + 1}) ...", flush=True)
+                req = urllib.request.Request(url, data=data, headers={"User-Agent": "FLE-VirtualWorlds/1.0 (osm_world.py; github.com/traviscasper/VirtualWorlds)"})
                 with urllib.request.urlopen(req, timeout=300) as r:
                     body = r.read()
                 j = json.loads(body)
+                remark = j.get("remark", "")
+                if "error" in remark.lower():          # Overpass reports timeouts/out-of-memory as HTTP 200 + remark,
+                    raise RuntimeError(f"Overpass remark: {remark[:200]}")   # with partial data we must not use
                 if not j.get("elements"):
                     raise RuntimeError("empty answer")
                 (RAW / f"{region}.osm.json").write_bytes(body)
-                print(f"  {region}: {len(j['elements'])} elements, {len(body) / 1e6:.1f} MB")
+                print(f"  {region}: {len(j['elements'])} elements, {len(body) / 1e6:.1f} MB from {host}")
                 return
-            except Exception as ex:   # try the next mirror
-                last = ex
-                print(f"    failed: {ex}")
-        time.sleep(10 * (attempt + 1))
-    sys.exit(f"Could not download {region}: {last}")
+            except urllib.error.HTTPError as ex:
+                msg = f"{host}: HTTP {ex.code} {ex.reason} {ex.read()[:200]!r}"
+                errors.append(msg); print(f"    failed: {msg}")
+            except Exception as ex:   # timeouts, DNS, connection refused, bad JSON: try the next mirror
+                msg = f"{host}: {type(ex).__name__}: {ex}"
+                errors.append(msg); print(f"    failed: {msg}")
+        time.sleep(15 * (attempt + 1))
+    sys.exit(f"Could not download {region}. Errors:\n  " + "\n  ".join(errors))
 
 
 # ------------------------------------------------------------------ helpers
@@ -339,6 +346,17 @@ def build(region, raw_path=None):
                 xs = f["p"][0::2]; zs = f["p"][1::2]
                 out["landmarks"].setdefault(f["n"], {"x": round(sum(xs) / len(xs) / 10, 1), "z": round(sum(zs) / len(zs) / 10, 1), "h": 0,
                                                      "r": round(math.sqrt(abs(area([[xs[i] / 10, zs[i] / 10] for i in range(len(xs))])) / math.pi), 1)})
+    # named river centerlines are landmarks too: OSM riverbank polygons are often unnamed, so without this the
+    # Scioto and Olentangy would be missing. The point is the part of the river nearest the region's origin.
+    by_name = {}
+    for f in out["rivers"]:
+        if f.get("n"):
+            by_name.setdefault(f["n"], []).extend(zip(f["p"][0::2], f["p"][1::2]))
+    for nm, pts in by_name.items():
+        x, z = min(pts, key=lambda q: q[0] * q[0] + q[1] * q[1])
+        span = max(math.hypot((a[0] - b[0]) / 10, (a[1] - b[1]) / 10) for a, b in ((pts[0], q) for q in pts))
+        if nm not in out["landmarks"]:
+            out["landmarks"][nm] = {"x": round(x / 10, 1), "z": round(z / 10, 1), "h": 0, "r": round(span / 2, 1), "line": 1}
     for e in els:
         if e["type"] == "node" and e.get("tags", {}).get("natural") == "tree" and e["id"] in nodes:
             x, z = P(e["id"]); out["trees"] += [int(round(x * 10)), int(round(z * 10))]
