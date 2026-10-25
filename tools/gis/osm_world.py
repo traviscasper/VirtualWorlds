@@ -52,7 +52,13 @@ QUERY = """[out:json][timeout:240];
   node["natural"="tree"]({b});
   way["name"="The Oval"]({b});
 );
-out body; >; out skel qt;"""
+out body; >; out skel qt;
+(
+  nwr["name"]["leisure"~"stadium|sports_centre|park"]({b});
+  nwr["name"]["tourism"~"attraction|museum"]({b});
+  nwr["name"]["historic"]({b});
+);
+out center tags;"""
 
 
 # ------------------------------------------------------------------ fetch
@@ -176,8 +182,11 @@ def build(region, raw_path=None):
         sys.exit(f"No raw data for {region} at {raw_path}. Run: python tools/gis/osm_world.py fetch {region}")
     els = json.loads(raw_path.read_text())["elements"]
     nodes = {e["id"]: (e["lat"], e["lon"]) for e in els if e["type"] == "node" and "lat" in e}
-    ways = {e["id"]: e for e in els if e["type"] == "way"}
-    rels = [e for e in els if e["type"] == "relation"]
+    ways = {e["id"]: e for e in els if e["type"] == "way" and "nodes" in e}
+    rels = [e for e in els if e["type"] == "relation" and "members" in e]
+    # named places from the second query part ("out center tags"): a centre point and tags only. They give names
+    # to things whose outline is unnamed or tagged in a way the layers above don't read (e.g. Ohio Stadium).
+    named_pts = [e for e in els if e.get("tags", {}).get("name") and ("center" in e or (e["type"] == "node" and "lat" in e))]
 
     # origin
     o = cfg["origin"]; lat0, lon0 = o["fallback"]; how = "fallback"
@@ -357,6 +366,13 @@ def build(region, raw_path=None):
         span = max(math.hypot((a[0] - b[0]) / 10, (a[1] - b[1]) / 10) for a, b in ((pts[0], q) for q in pts))
         if nm not in out["landmarks"]:
             out["landmarks"][nm] = {"x": round(x / 10, 1), "z": round(z / 10, 1), "h": 0, "r": round(span / 2, 1), "line": 1}
+    for e in named_pts:
+        nm = e["tags"]["name"]
+        if nm in out["landmarks"]:
+            continue
+        la, lo = (e["center"]["lat"], e["center"]["lon"]) if "center" in e else (e["lat"], e["lon"])
+        out["landmarks"][nm] = {"x": round((lo - lon0) * kx, 1), "z": round(-(la - lat0) * kz, 1), "h": 0, "r": 0, "point": 1,
+                                "tag": next((f"{k}={e['tags'][k]}" for k in ("leisure", "tourism", "historic") if k in e["tags"]), "")}
     for e in els:
         if e["type"] == "node" and e.get("tags", {}).get("natural") == "tree" and e["id"] in nodes:
             x, z = P(e["id"]); out["trees"] += [int(round(x * 10)), int(round(z * 10))]
