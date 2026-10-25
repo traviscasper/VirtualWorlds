@@ -42,17 +42,18 @@ See [TASKS.md](TASKS.md) and [RECOMMENDATIONS.md](RECOMMENDATIONS.md).
 
 ## Test results
 
-Run on 24 October 2026 with `python tools/qa/check_worlds.py` (headless Chromium, software WebGL). **91 of 91 checks pass.** The first full run had one failure, a portal link to this file before it existed; the portal group was rerun after the fix and passed 11/11.
+Run on 25 October 2026 with `python tools/qa/check_worlds.py` (headless Chromium, software WebGL), on branch `phase-3-columbus-osu`. **129 of 129 checks pass** (7 min 22 s).
 
 | Group | Checks | What is checked |
 |---|---|---|
-| data | 21/21 | Every world and journey manifest validates against its schema; launch links, previews, world modules and journey references exist; lesson objectives point at real hotspots |
-| portal | 11/11 | Desktop and phone layouts, no sideways scrolling, all 31 local links resolve, the three theme filters, manifest index |
+| data | 24/24 | Every world and journey manifest validates against its schema; launch links, previews, world modules and journey references exist; lesson objectives point at real hotspots |
+| portal | 11/11 | Desktop and phone layouts, no sideways scrolling, all local links resolve, the three theme filters, manifest index |
 | scifi | 6/6 | Original Sci-Fi 360 page: all four worlds render real frames, 360 frame capture, no errors |
 | skyship | 4/4 | Original Skyship 360 page: Columbus and Paris frames, 360 capture, no errors |
 | studio | 4/4 | Film studio: Verdance and Thalassa chapter frames, film 360 frame, no errors |
 | worldtour | 3/3 | Video metadata loads, nine chapter buttons, no errors |
-| journey | 40/40 | Columbus → orbit: flight path clears every structure by ≥15 m, 60–90 s length, 14 cabin/chase/outside frames from river to final message, 360 capture in both worlds; Explore mode for Columbus, the habitat and the Sci-Fi worlds (stops, hotspot anchors, info cards, non-blank live view); Learn mode lesson panel and questions |
+| journey | 42/42 | Columbus → orbit on real geography: flight path clears every structure by ≥15 m (closest 20.3 m), 60–90 s length, cabin/chase/outside frames from the river to the final message, 360 capture in both worlds; Explore mode for Columbus, the habitat and the Sci-Fi worlds; Learn mode lesson panel and questions |
+| gis | 33/33 | Map data: ≈7,100 downtown and ≈5,600 campus buildings, 1.68 and 1.55 MB, all expected landmarks, OpenStreetMap attribution. OSU Campus journey and Today, 2050, Orbit journey: clearance in all three worlds (closest 20.3 m), lengths, every test shot renders, 360 capture on campus, OSU Learn mode (8 stops, 8 anchored hotspots, questions) |
 | mobile | 2/2 | Journey page fits a phone screen, no errors |
 
 Each frame check fails if the image is blank or flat (a stuck loading screen), and each page fails on any JavaScript error or missing file.
