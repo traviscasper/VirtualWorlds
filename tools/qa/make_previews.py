@@ -20,7 +20,7 @@ def save(url, name):
     im.save(OUT / f"{name}.jpg", quality=80, optimize=True, progressive=True); print("wrote", name)
 
 # [world id, journey, time, view, yaw, pitch]
-ENGINE = [("columbus-2050", "columbus-to-orbit", 27.5, "chase", 0, 0), ("orbital-habitat", "columbus-to-orbit", 69.5, "cabin", 1.2, -.05),
+ENGINE = [("columbus-2050", "columbus-2050", 27.5, "chase", 0, 0), ("osu-campus", "osu-campus", 17, "ext", 0, 0), ("orbital-habitat", "columbus-to-orbit", 69.5, "cabin", 1.2, -.05),
           ("scifi-frankenstein", "scifi-classics", 24, "cabin", .5, 0), ("scifi-rur", "scifi-classics", 52, "cabin", -.3, -.05),
           ("scifi-metropolis", "scifi-classics", 96, "cabin", 0, .1), ("scifi-orbit", "scifi-classics", 135, "cabin", 0, 0),
           ("scifi-journey", "scifi-classics", 23, "chase", 0, 0)]

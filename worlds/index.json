@@ -6,6 +6,10 @@
       "file": "columbus-2050.json"
     },
     {
+      "id": "osu-campus",
+      "file": "osu-campus.json"
+    },
+    {
       "id": "orbital-habitat",
       "file": "orbital-habitat.json"
     },

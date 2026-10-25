@@ -297,7 +297,9 @@
       "slot": "R"
     }
   ],
-  "audio": {},
+  "audio": {
+    "file": "../journeys/audio/campus-to-orbit.mp3"
+  },
   "final": {
     "t0": 150,
     "line1": "Today, Tomorrow, and Beyond:",

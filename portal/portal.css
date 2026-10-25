@@ -36,6 +36,8 @@ img{max-width:100%;display:block}
 .duo::after{content:"";position:absolute;inset:0 auto 0 50%;width:3px;transform:translateX(-50%);background:linear-gradient(#fff,#b7c8ff 50%,#1c2b55)}
 .duo figcaption{position:absolute;left:12px;bottom:12px;font:600 14px var(--body);color:#fff;background:rgba(10,18,34,.62);padding:4px 10px;border-radius:999px;backdrop-filter:blur(4px)}
 .duo figcaption + figcaption{left:auto;right:12px}
+.trio{grid-template-columns:1fr 1fr 1fr;aspect-ratio:16/7}.trio::after{display:none}.trio>div{position:relative;min-width:0;border-left:3px solid #fff}.trio>div:first-child{border-left:0}.trio figcaption{left:10px;right:auto;bottom:10px;font-size:13px}
+@media (max-width:560px){.trio{grid-template-columns:1fr;aspect-ratio:auto}.trio>div{aspect-ratio:16/8;border-left:0;border-top:3px solid #fff}.trio>div:first-child{border-top:0}}
 .acts{display:flex;flex-wrap:wrap;gap:10px}
 .btn{display:inline-flex;align-items:center;gap:8px;font:700 16px var(--body);text-decoration:none;border-radius:999px;padding:11px 20px;border:2px solid var(--ink);color:var(--ink);background:transparent}
 .btn.go{background:var(--ink);color:var(--sky)}

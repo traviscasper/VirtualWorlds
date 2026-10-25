@@ -1,6 +1,22 @@
 {
   "journeys": [
     {
+      "id": "campus-to-orbit",
+      "title": "Today, 2050, Orbit",
+      "summary": "A 2½-minute flight through time: Ohio State's campus today, downtown Columbus in one possible 2050, then up through the clouds to an orbital habitat.",
+      "duration": 156,
+      "worlds": [
+        "osu-campus",
+        "columbus-2050",
+        "orbital-habitat"
+      ],
+      "categories": [
+        "sustainability",
+        "technology",
+        "space"
+      ]
+    },
+    {
       "id": "columbus-to-orbit",
       "title": "Columbus 2050 to Orbit",
       "summary": "A 90-second guided flight: down the Scioto and along Broad Street in Columbus 2050, up through the clouds, and into the orbital habitat's Life Support Commons.",
@@ -13,6 +29,19 @@
         "sustainability",
         "technology",
         "space"
+      ]
+    },
+    {
+      "id": "osu-campus",
+      "title": "Ohio State Campus",
+      "summary": "Up the Olentangy, around Ohio Stadium, across the Oval to Mirror Lake and High Street, built from OpenStreetMap.",
+      "duration": 66,
+      "worlds": [
+        "osu-campus"
+      ],
+      "categories": [
+        "sustainability",
+        "technology"
       ]
     },
     {
