@@ -37,7 +37,24 @@ See [TASKS.md](TASKS.md) and [RECOMMENDATIONS.md](RECOMMENDATIONS.md).
 
 ## Test results
 
-<!-- QA_RESULTS -->
+Run on 24 October 2026 with `python tools/qa/check_worlds.py` (headless Chromium, software WebGL). **91 of 91 checks pass.** The first full run had one failure, a portal link to this file before it existed; the portal group was rerun after the fix and passed 11/11.
+
+| Group | Checks | What is checked |
+|---|---|---|
+| data | 21/21 | Every world and journey manifest validates against its schema; launch links, previews, world modules and journey references exist; lesson objectives point at real hotspots |
+| portal | 11/11 | Desktop and phone layouts, no sideways scrolling, all 31 local links resolve, the three theme filters, manifest index |
+| scifi | 6/6 | Original Sci-Fi 360 page: all four worlds render real frames, 360 frame capture, no errors |
+| skyship | 4/4 | Original Skyship 360 page: Columbus and Paris frames, 360 capture, no errors |
+| studio | 4/4 | Film studio: Verdance and Thalassa chapter frames, film 360 frame, no errors |
+| worldtour | 3/3 | Video metadata loads, nine chapter buttons, no errors |
+| journey | 40/40 | Columbus → orbit: flight path clears every structure by ≥15 m, 60–90 s length, 14 cabin/chase/outside frames from river to final message, 360 capture in both worlds; Explore mode for Columbus, the habitat and the Sci-Fi worlds (stops, hotspot anchors, info cards, non-blank live view); Learn mode lesson panel and questions |
+| mobile | 2/2 | Journey page fits a phone screen, no errors |
+
+Each frame check fails if the image is blank or flat (a stuck loading screen), and each page fails on any JavaScript error or missing file.
+
+**Render tests.** <!-- RENDER_RESULTS -->
+
+**Not tested here:** real-GPU frame rates, iOS Safari and Android Chrome on real phones, a WebXR headset, full-length 4K renders, and any online deployment.
 
 ## Known limitations
 

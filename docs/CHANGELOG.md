@@ -18,6 +18,12 @@
 - `worlds-within-worlds/src/app.js` (and the rebuilt `ARCHIVE_Studio.html`): `?chapter=N` and `?t=seconds` deep links. No other change; rebuilding with `build.py` reproduces the previous file byte for byte apart from these lines.
 - Root `README.md` and `.gitignore`.
 
+### Fixed (final pass, 24 October)
+- Added the missing `docs/PROJECT_STATUS.md` (the portal and README linked to it) with full test results.
+- Committed the four film-world preview images the manifests already referenced (Loom, Thalassa, Lost Worlds, Cosmic Core).
+- Sci-Fi classics timeline screen: short year labels (`yearShort`) and custom spacing (`timelineX`) so "TOMORROW" no longer crowds its neighbours.
+- Portal hero: captions now sit on a dark pill so "Orbital habitat" stays readable over the white habitat tower.
+
 ### Unchanged (verified)
 - `sci-fi-360/`, `skyship-360/`, `world-tour/`, and the film engine's rendering code. Baseline tests pass before and after.
 
