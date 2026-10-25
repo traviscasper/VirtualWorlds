@@ -31,9 +31,15 @@ export function buildColumbus2050GIS(ctx) {
   const hashB = b => (Math.abs(b.p[0] * 31 + b.p[1] * 17 + b.p.length * 7) % 1000) / 1000;
 
   /* ---------------- the river and the main streets, from the map ---------------- */
-  const scioto = chain(DATA.rivers.filter(r => /scioto/i.test(r.n)).map(r => r.pts))[0] || [[-650, -1500], [-650, 1500]];
-  const riverN = [...scioto].sort((a, b) => a[1] - b[1]);
-  const riverX = z => { let best = riverN[0]; for (const p of riverN) if (Math.abs(p[1] - z) < Math.abs(best[1] - z)) best = p; return best[0]; };
+  // the Scioto's line, clipped to downtown (OSM's river way runs far beyond the map area), ordered upstream → downstream
+  const sciotoAll = chain(DATA.rivers.filter(r => /scioto/i.test(r.n)).map(r => r.pts))[0] || [[-1100, -230], [-430, 0], [-300, 400], [-600, 800]];
+  const riverLine = (() => { const inside = sciotoAll.filter(([x, z]) => x > -1300 && x < 400 && z > -1300 && z < 1300); const L = inside.length > 3 ? inside : sciotoAll;
+    return L[0][0] < L[L.length - 1][0] && L[0][1] > L[L.length - 1][1] ? [...L].reverse() : L; })();   // starts in the north-west
+  const riverRoute = new Route(riverLine);
+  const nearestRiver = (x, z) => { let best = null, bd = 1e18; for (let i = 1; i < riverLine.length; i++) { const a = riverLine[i - 1], b = riverLine[i], ux = b[0] - a[0], uz = b[1] - a[1], L2 = ux * ux + uz * uz || 1;
+      const k = clamp(((x - a[0]) * ux + (z - a[1]) * uz) / L2, 0, 1), px = a[0] + ux * k, pz = a[1] + uz * k, d = (px - x) ** 2 + (pz - z) ** 2; if (d < bd) { bd = d; const l = Math.sqrt(L2); best = { x: px, z: pz, d: Math.sqrt(d), nx: -uz / l, nz: ux / l }; } } return best; };
+  const riverAtD = d => riverRoute.at(d, {});                       // point on the river d metres from its upstream end in the map area
+  const riverDist = (x, z) => nearestRiver(x, z).d;
   const roadLines = re => chain(DATA.roads.filter(r => re.test(r.n || '') && !['footway', 'path', 'cycleway', 'service'].includes(r.c)).map(r => r.pts));
   const broad = roadLines(/\bBroad Street\b/i), high = roadLines(/\bHigh Street\b/i);
   const major = DATA.roads.filter(r => ['primary', 'secondary', 'tertiary', 'trunk'].includes(r.c) && !r.b);
@@ -44,7 +50,7 @@ export function buildColumbus2050GIS(ctx) {
   /* ---------------- 2050 sites on today's surface parking lots ---------------- */
   const area = r => { let s = 0; for (let i = 0; i < r.length; i++) { const a = r[i], b = r[(i + 1) % r.length]; s += a[0] * b[1] - b[0] * a[1]; } return Math.abs(s / 2); };
   const lots = DATA.parking.map(f => { const [x0, z0, x1, z1] = ringBox(f.pts); return { f, x0, z0, x1, z1, cx: (x0 + x1) / 2, cz: (z0 + z1) / 2, w: x1 - x0, d: z1 - z0, a: area(f.pts) }; })
-    .filter(l => l.a > 1800 && Math.min(l.w, l.d) > 34 && Math.abs(l.cx) < 950 && Math.abs(l.cz) < 900 && l.cx > riverX(l.cz) + 80).sort((a, b) => b.a - a.a);
+    .filter(l => l.a > 1800 && Math.min(l.w, l.d) > 34 && Math.abs(l.cx) < 950 && Math.abs(l.cz) < 900 && riverDist(l.cx, l.cz) > 110).sort((a, b) => b.a - a.a);
   const timberLots = lots.slice(0, 5), solarLot = lots[5] || null;
 
   /* ---------------- the city ---------------- */
@@ -62,7 +68,10 @@ export function buildColumbus2050GIS(ctx) {
     const inWater = (x, z) => water.some(r => pointInRing(x, z, r));
     const occupied = (x, z) => DATA.buildings.some(b => Math.abs(b.pts[0][0] - x) < 120 && Math.abs(b.pts[0][1] - z) < 120 && pointInRing(x, z, b.pts));
     for (const r of major) for (const sd of [-1, 1]) for (const [x, z] of samples(r.pts, 15, sd * (r.w / 2 + 2.5))) { if (R() < .2 || occupied(x, z)) continue; out.push([x, z, .75 + R() * .3]); }
-    for (let z = -1500; z < 1500; z += 7) for (const sd of [-1, 1]) { const x = riverX(z) + sd * (34 + R() * 46); if (R() < .3 || inWater(x, z) || occupied(x, z)) continue; out.push([x, z, .85 + R() * .6]); }
+    // riverbank forest: step along the real river line, walk out to the water's edge on each side, plant a band beyond it
+    for (let d = 0; d < riverRoute.len; d += 7) { const c = riverAtD(d), n = nearestRiver(c.x, c.z);
+      for (const sd of [-1, 1]) { if (R() < .3) continue; let e = 20; while (e < 260 && inWater(c.x + n.nx * sd * e, c.z + n.nz * sd * e)) e += 6;
+        const o = e + 4 + R() * 40, x = c.x + n.nx * sd * o, z = c.z + n.nz * sd * o; if (inWater(x, z) || occupied(x, z)) continue; out.push([x, z, .85 + R() * .6]); } }
     return out;
   }
 
@@ -96,33 +105,44 @@ export function buildColumbus2050GIS(ctx) {
     colliders.push([S.x - 11, 17, S.z - 11, S.x + 11, 43, S.z + 11, 'Statehouse cupola']); }
 
   /* ---------------- flight path (world time) ---------------- */
-  // river leg: south down the Scioto; then east along Broad Street; then climb out through the clouds
-  const zStart = Math.max(riverN[0][1] + 50, -1000);
-  const riverPt = z => [riverX(z), z];
+  // river leg: follow the Scioto's real course from the north-west to the Broad Street bridge; then east along Broad
+  // Street; then climb out east of downtown through the clouds
   const broadLine = broad[0] || [[-900, 0], [900, 0]];
   const broadAt = x => { let best = broadLine[0]; for (const p of broadLine) if (Math.abs(p[0] - x) < Math.abs(best[0] - x)) best = p; return best[1]; };
-  const xr0 = riverX(0);
+  const crossD = (() => { let best = 0, bd = 1e9; for (let d = 0; d < riverRoute.len; d += 5) { const p = riverAtD(d), e = Math.abs(p.z - broadAt(p.x)); if (e < bd) { bd = e; best = d; } } return best; })();
+  const xr0 = riverAtD(crossD).x;
   const keys = [];
-  const rz = [[-3, zStart - 110, 74], [0, zStart, 66], [5.5, lerp(zStart, -60, .38), 56], [11, lerp(zStart, -60, .72), 50], [15.5, -110, 50]];
-  for (const [t, z, y] of rz) { const [x] = riverPt(z); keys.push([t, x, y, z]); }
-  const bx = [[19, xr0 + 40, 54], [22.5, xr0 + 170, 58], [26.5, lerp(xr0, 0, .62), 60], [30, -10, 62], [34, 230, 66]];
+  const startD = Math.max(0, crossD - 820);
+  for (const [t, f, y] of [[-3, -.16, 74], [0, 0, 66], [5.5, .36, 56], [11, .7, 50], [15.5, .97, 50]]) { const p = riverAtD(startD + f * (crossD - startD)); keys.push([t, p.x, y, p.z]); }
+  const bx = [[19, xr0 + 60, 54], [22.5, xr0 + 180, 58], [26.5, lerp(xr0, 0, .62), 60], [30, -10, 62], [34, 230, 66]];
   for (const [t, x, y] of bx) keys.push([t, x, y, broadAt(x)]);
   keys.push([38, 430, 160, broadAt(430) - 120], [41.5, 560, 470, broadAt(560) - 260], [45, 660, 760, broadAt(660) - 380]);
-  // lift any key whose surroundings are taller than it (keeps the QA clearance test green on real heights)
-  for (const k of keys) { if (k[0] > 36) continue; let h = 0; for (const c of colliders) { const dx = Math.max(c[0] - k[1], 0, k[1] - c[3]), dz = Math.max(c[2] - k[3], 0, k[3] - c[5]); if (Math.hypot(dx, dz) < 16) h = Math.max(h, c[4]); } if (h) k[2] = Math.max(k[2], h + 20); }
-  const path = new FlightPath(keys);
+  // keep clear of real buildings: sample the flight and lift nearby keys wherever the path passes over or within
+  // 14 m of a building below its top + 22 m (most heights are estimates, so this errs on the safe side)
+  let path = new FlightPath(keys); const lifts = new Set();
+  for (let pass = 0; pass < 10; pass++) { let lifted = false; const q = new V3();
+    for (let t = keys[0][0]; t <= 40; t += .2) { path.pos(t, q);
+      for (const c of colliders) { const dx = Math.max(c[0] - q.x, 0, q.x - c[3]), dz = Math.max(c[2] - q.z, 0, q.z - c[5]); if (Math.hypot(dx, dz) > 14 || q.y > c[4] + 22) continue;
+        lifts.add(c[6]); for (const k of keys) if (Math.abs(k[0] - t) < 3.6 && k[0] <= 40) { k[2] = Math.max(k[2] + 6, c[4] + 26); lifted = true; } } }
+    if (!lifted) break; path = new FlightPath(keys); }
+  if (lifts.size) console.info('[columbus-2050] flight lifted to clear:', [...lifts].join(', '));
   const at = t => path.pos(t, new V3());
 
   /* ---------------- 2050: green footbridge across the Scioto, where the ship passes at 12.5 s ---------------- */
-  const GB = (() => { const p = at(12.5); const z = p.z + 40, c = riverX(z), L = 150, w = 24; addBox('stone', L, 2.2, w, c, 6, z, 0, '#d9d4c8', 'Green Bridge (2050)');
-    B.add('grass', boxGeo(L - 4, .5, w - 6), [c, 8.2, z], null, null, '#5e9a45'); for (let i = -4; i <= 4; i++) treeList.push([c + i * 16, 8.7, z + (i % 2 ? 4 : -4), .75]);
-    for (const sd of [-1, 1]) addBox('white', L, 1.1, .4, c, 8.6, z + sd * (w / 2 - .2), 0, '#eef2f5'); for (const sx of [-45, 0, 45]) B.add('stone', cylGeo(1.8, 2, 6, 10), [c + sx, 0, z], null, null, '#cfc8ba');
-    return new V3(c, 9, z); })();
+  const GB = (() => { const p = at(12.5), n = nearestRiver(p.x, p.z); const c = { x: n.x + n.nz * 70, z: n.z - n.nx * 70 }, m = nearestRiver(c.x, c.z);   // 70 m downstream, just ahead of the ship
+    const ang = Math.atan2(-m.nz, m.nx), L = 170, w = 24, cx = m.x, cz = m.z;     // the deck runs along the river's normal
+    const put = (key, ww, h, dd, y, col, ox = 0, oz = 0) => B.add(key, boxGeo(ww, h, dd, 6, 8), [cx + Math.cos(ang) * ox + Math.sin(ang) * oz, y, cz - Math.sin(ang) * ox + Math.cos(ang) * oz], [0, ang, 0], null, col);
+    put('stone', L, 2.2, w, 6, '#d9d4c8'); put('grass', L - 4, .5, w - 6, 8.2, '#5e9a45');
+    for (const sd of [-1, 1]) put('white', L, 1.1, .4, 8.6, '#eef2f5', 0, sd * (w / 2 - .2));
+    for (const ox of [-55, 0, 55]) B.add('stone', cylGeo(1.8, 2, 6, 10), [cx + Math.cos(ang) * ox, 0, cz - Math.sin(ang) * ox], null, null, '#cfc8ba');
+    for (let i = -4; i <= 4; i++) { const ox = i * 17, oz = i % 2 ? 4 : -4; treeList.push([cx + Math.cos(ang) * ox + Math.sin(ang) * oz, 8.7, cz - Math.sin(ang) * ox + Math.cos(ang) * oz, .75]); }
+    colliders.push([cx - 6, 6, cz - 6, cx + 6, 9, cz + 6, 'Green Bridge (2050)']);
+    return new V3(cx, 9, cz); })();
 
   /* ---------------- 2050: rooftop vertiport on a parking garage near the river, seen at 8.5 s ---------------- */
-  const VP = (() => { const p = at(8.5); let best = null, bd = 1e9;
+  const VP = (() => { const p = at(11.5); let best = null, bd = 1e9;   // a garage just ahead of where ARCHIVE points it out (8 s)
     for (const b of DATA.buildings) { if (b.part) continue; const [x0, z0, x1, z1] = ringBox(b.pts), w = x1 - x0, d = z1 - z0; if (w < 35 || d < 30 || b.h > 45) continue; const cx = (x0 + x1) / 2, cz = (z0 + z1) / 2;
-      const dist = Math.hypot(cx - p.x, cz - p.z) + (b.k === 'parking' ? -200 : 0); if (cx < riverX(cz) + 40) continue; if (dist < bd) { bd = dist; best = { cx, cz, w, d, h: b.h }; } }
+      const dist = Math.hypot(cx - p.x, cz - p.z) + (b.k === 'parking' ? -200 : 0); if (riverDist(cx, cz) < 70) continue; if (dist < bd) { bd = dist; best = { cx, cz, w, d, h: b.h }; } }
     const v = best || { cx: p.x + 220, cz: p.z, w: 60, d: 50, h: 24 }; if (!best) addBox('white', v.w, v.h, v.d, v.cx, 0, v.cz, 0, '#e6ebef', 'Mobility hub');
     const y = v.h + .2; addBox('white', Math.min(v.w, 70) - 4, .6, Math.min(v.d, 56) - 4, v.cx, y, v.cz, 0, '#e6ebef');
     for (const [dx, dz] of [[-.25, -.22], [.25, -.22], [-.25, .22], [.25, .22]]) { const px = v.cx + dx * Math.min(v.w, 70), pz = v.cz + dz * Math.min(v.d, 56);
@@ -141,7 +161,7 @@ export function buildColumbus2050GIS(ctx) {
     return new V3(l.cx, 7, l.cz); })();
 
   /* ---------------- Scioto Mile fountain (animated jets) ---------------- */
-  const FT = (() => { const b = P.bicentennial; const x = Math.max(b.x, riverX(b.z) + 70), z = b.z; B.add('water', cylGeo(22, 22, .5, 48), [x, .1, z]); B.add('stone', cylGeo(23, 23, .7, 48, 8, 8, true), [x, 0, z], null, null, '#d9d2bd'); return new V3(x, 0, z); })();
+  const FT = (() => { const b = P.bicentennial, n = nearestRiver(b.x, b.z); const push = Math.max(0, 75 - n.d), sx = Math.sign((b.x - n.x) * n.nx + (b.z - n.z) * n.nz) || 1; const x = b.x + n.nx * sx * push, z = b.z + n.nz * sx * push; B.add('water', cylGeo(22, 22, .5, 48), [x, .1, z]); B.add('stone', cylGeo(23, 23, .7, 48, 8, 8, true), [x, 0, z], null, null, '#d9d2bd'); return new V3(x, 0, z); })();
   const jets = new THREE.InstancedMesh(new THREE.CylinderGeometry(.25, .5, 1, 6).translate(0, .5, 0), ctx.mat('#dff3ff', { transparent: true, opacity: .75, roughness: .1, emissive: '#7fbfe0', emissiveIntensity: .3 }), 24); jets.frustumCulled = false; group.add(jets);
 
   /* trees on the bridge and towers */
@@ -170,15 +190,15 @@ export function buildColumbus2050GIS(ctx) {
   group.add(trams.mesh, pods.mesh, bikes.mesh, taxis.mesh);
   // people on the riverfront paths and around Capitol Square
   const near = (pts, c, r) => pts.some(([x, z]) => Math.hypot(x - c.x, z - c.z) < r);
-  const footRoutes = DATA.roads.filter(r => ['footway', 'path', 'pedestrian'].includes(r.c) && r.pts.length > 1 && (Math.abs(r.pts[0][0] - riverX(r.pts[0][1])) < 140 || near(r.pts, P.statehouse, 140) || near(r.pts, P.commons, 120)))
+  const footRoutes = DATA.roads.filter(r => ['footway', 'path', 'pedestrian'].includes(r.c) && r.pts.length > 1 && (riverDist(r.pts[0][0], r.pts[0][1]) < 140 || near(r.pts, P.statehouse, 140) || near(r.pts, P.commons, 120)))
     .map(r => Route.outAndBack(r.pts)).filter(r => r.len > 30).slice(0, 80);
   let walkers = null; if (footRoutes.length) { const people = new People(Math.min(300, footRoutes.length * 4), { envMats: ctx.envMats }); group.add(people.mesh); walkers = new Walkers(people, footRoutes.map(route => ({ route, n: 4 })), 31); }
 
   /* ---------------- anchors and telescope (same names as the pilot world) ---------------- */
   const a = (p, y) => new V3(p.x, y, p.z);
   const T0 = TT[0] || new V3(300, 70, -195);
-  const anchors = { river: new V3(riverX(-420), 4, -420), vertiport: VP.clone().setY(VP.y + 4), greenbridge: GB, leveque: a(P.leveque, 120), fountain: FT.clone().setY(4),
-    canyon: new V3(lerp(xr0, 0, .5), 40, broadAt(lerp(xr0, 0, .5))), transit: new V3(lerp(xr0, 0, .4), 2, broadAt(lerp(xr0, 0, .4))), bikes: new V3(lerp(xr0, 0, .3), 1.5, broadAt(lerp(xr0, 0, .3)) + 6), statehouse: a(P.statehouse, 30),
+  const rv = riverAtD(startD + .55 * (crossD - startD)); const anchors = { river: new V3(rv.x, 4, rv.z), vertiport: VP.clone().setY(VP.y + 4), greenbridge: GB, leveque: a(P.leveque, 120), fountain: FT.clone().setY(4),
+    canyon: new V3(lerp(xr0, 0, .78), 40, broadAt(lerp(xr0, 0, .78))), transit: new V3(lerp(xr0, 0, .86), 2, broadAt(lerp(xr0, 0, .86))), bikes: new V3(lerp(xr0, 0, .92), 1.5, broadAt(lerp(xr0, 0, .92)) + 7), statehouse: a(P.statehouse, 30),
     roofs: new V3(230, 45, broadAt(230) - 120), microgrid: MG, timber: T0, cosi: a(P.cosi, 10), downtown: new V3(0, 0, 0) };
   const telescope = [
     { t0: -9, t1: 8, name: 'SCIOTO RIVER', fact: 'FREE-FLOWING THROUGH DOWNTOWN · GREENWAYS 2015', at: anchors.river, size: 220 },

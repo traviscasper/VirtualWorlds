@@ -200,7 +200,7 @@ export function buildCity(ctx, data, opts = {}) {
 /* ---------------- pieces ---------------- */
 function ribbon(A, key, pts, w, y, col, lift = 0) {
   if (pts.length < 2) return; const hw = w / 2; const L = []; let tot = 0; for (let i = 1; i < pts.length; i++) tot += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
-  let s = 0; const ramp = Math.min(18, tot / 3);
+  let s = 0; const ramp = Math.max(.5, Math.min(18, tot / 3));
   for (let i = 0; i < pts.length; i++) {
     if (i) s += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
     const a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)]; let dx = b[0] - a[0], dz = b[1] - a[1]; const l = Math.hypot(dx, dz) || 1; dx /= l; dz /= l;
@@ -215,8 +215,8 @@ function ribbon(A, key, pts, w, y, col, lift = 0) {
 }
 function bridgeSides(A, pts, w, lift, col) {
   // a simple deck edge (fascia) under the lifted part of the road
-  const hw = w / 2 + .3; let tot = 0; for (let i = 1; i < pts.length; i++) tot += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
-  const ramp = Math.min(18, tot / 3); let s = 0;
+  const hw = w / 2 + .3; let tot = 0; if (pts.length < 2) return; for (let i = 1; i < pts.length; i++) tot += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+  const ramp = Math.max(.5, Math.min(18, tot / 3)); let s = 0;
   for (let i = 1; i < pts.length; i++) { const a = pts[i - 1], b = pts[i], L = Math.hypot(b[0] - a[0], b[1] - a[1]); if (L < .1) continue;
     const s0 = s, s1 = s + L; s = s1; const ya = lift * clamp(Math.min(s0, tot - s0) / ramp, 0, 1), yb = lift * clamp(Math.min(s1, tot - s1) / ramp, 0, 1);
     if (ya < .5 && yb < .5) continue; const dx = (b[0] - a[0]) / L, dz = (b[1] - a[1]) / L;

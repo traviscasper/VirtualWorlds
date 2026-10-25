@@ -774,6 +774,8 @@ function clearance(step=.25){ // smallest distance from the ship's path to any d
 window.SKYSHIP={ DURATION, JOURNEY:JID, WORKS:WORKS.map(w=>w.chip), SHOTS:J.shots||[], ready:false,
   warm(t){ for(let i=0;i<90;i++) update(Math.max(0,t-3+i/30),1/30); },
   frame360(t,W=3840,dt=1/30){ update(t,dt); updateTelescope(); return captureEquirect(W); },
+  aim(t,name){ update(t,1/30); ship.updateMatrixWorld(true); const w=anchorPos(name,update.wi,new V3()); if(!w) return null; const d=ship.worldToLocal(w).sub(cabinCam.position);
+    return [Math.atan2(-d.x,-d.z), Math.atan2(d.y,Math.hypot(d.x,d.z))]; },
   frameFlat(t,v='cabin',dt=1/30,y=0,p=-.12){ setView(v); yaw=y; pitch=p; update(t,dt); updateTelescope(); if(v==='ext') controls.update(); renderer.render(scene,camActive); return canvas.toDataURL('image/jpeg',.9); },
   /** soundtrack for the video: prepare a WAV of [t0, t0+dur] and hand it over in base64 chunks */
   async soundtrackPrepare(t0=0,dur=DURATION,recompose=false){ const b=await (recompose? (async()=>{ soundBuf=null; composing=null; const keep=J.audio; J.audio={...(keep||{}),file:null}; try{ return await getSoundtrack(true); } finally{ J.audio=keep; } })() : getSoundtrack(!J.audio?.file)); const bytes=encodeWav(b,Math.max(0,t0),Math.min(DURATION,t0+dur)); wavCache=bytes; return Math.ceil(bytes.length/(3<<20)); },

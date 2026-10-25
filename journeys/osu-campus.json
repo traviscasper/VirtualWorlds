@@ -7,42 +7,197 @@
   "duration": 66,
   "transition": 3,
   "timelineLabel": "OHIO STATE TODAY",
-  "categories": ["sustainability", "technology"],
-  "worlds": [{ "world": "osu-campus", "t0": 0, "t1": 66, "timeOffset": 0 }],
+  "categories": [
+    "sustainability",
+    "technology"
+  ],
+  "worlds": [
+    {
+      "world": "osu-campus",
+      "t0": 0,
+      "t1": 66,
+      "timeOffset": 0
+    }
+  ],
   "cues": [
-    { "t": 0, "mood": "curious", "look": "ahead", "slot": "L", "line": "The Ohio State University. Columbus, today." },
-    { "t": 3.5, "mood": "happy", "look": "river", "slot": "R", "line": "The Olentangy. Its dam came down in 2012." },
-    { "t": 9, "mood": "amazed", "look": "stadium", "point": true, "slot": "L", "line": "Ohio Stadium. The Horseshoe, since 1922." },
-    { "t": 16, "mood": "curious", "look": "rotunda", "slot": "R", "line": "Its rotunda was modelled on the Pantheon." },
-    { "t": 20.5, "mood": "thoughtful", "look": "energy", "slot": "L", "line": "Campus energy: aiming for zero carbon by 2050." },
-    { "t": 25.5, "mood": "happy", "look": "thompson", "point": true, "slot": "R", "line": "Thompson Library. A million books inside." },
-    { "t": 32, "mood": "excited", "look": "oval", "slot": "L", "line": "The Oval. No cars, just paths and people." },
-    { "t": 39, "mood": "curious", "look": "orton", "point": true, "slot": "R", "line": "Orton Hall: Ohio's rocks, in the order they formed." },
-    { "t": 45.5, "mood": "happy", "look": "mirrorlake", "slot": "L", "line": "Mirror Lake. Native plants, and homes for bees." },
-    { "t": 53, "mood": "curious", "look": "union", "slot": "R", "line": "The Ohio Union, where campus meets High Street." },
-    { "t": 58.5, "mood": "happy", "look": "you", "gesture": "wave", "slot": "L", "line": "A campus that keeps learning. Like you." }
+    {
+      "t": 0,
+      "mood": "curious",
+      "look": "ahead",
+      "slot": "L",
+      "line": "The Ohio State University. Columbus, today."
+    },
+    {
+      "t": 3.5,
+      "mood": "happy",
+      "look": "river",
+      "slot": "R",
+      "line": "The Olentangy. Its dam came down in 2012."
+    },
+    {
+      "t": 9,
+      "mood": "amazed",
+      "look": "stadium",
+      "point": true,
+      "slot": "L",
+      "line": "Ohio Stadium. The Horseshoe, since 1922."
+    },
+    {
+      "t": 16,
+      "mood": "curious",
+      "look": "rotunda",
+      "slot": "R",
+      "line": "Its rotunda was modelled on the Pantheon."
+    },
+    {
+      "t": 20.5,
+      "mood": "thoughtful",
+      "look": "energy",
+      "slot": "L",
+      "line": "Campus energy: aiming for zero carbon by 2050."
+    },
+    {
+      "t": 25.5,
+      "mood": "happy",
+      "look": "thompson",
+      "point": true,
+      "slot": "R",
+      "line": "Thompson Library. A million books inside."
+    },
+    {
+      "t": 32,
+      "mood": "excited",
+      "look": "oval",
+      "slot": "L",
+      "line": "The Oval. No cars, just paths and people."
+    },
+    {
+      "t": 39,
+      "mood": "curious",
+      "look": "orton",
+      "point": true,
+      "slot": "R",
+      "line": "Orton Hall: Ohio's rocks, in the order they formed."
+    },
+    {
+      "t": 45.5,
+      "mood": "happy",
+      "look": "mirrorlake",
+      "slot": "L",
+      "line": "Mirror Lake. Native plants, and homes for bees."
+    },
+    {
+      "t": 53,
+      "mood": "curious",
+      "look": "union",
+      "slot": "R",
+      "line": "The Ohio Union, where campus meets High Street."
+    },
+    {
+      "t": 58.5,
+      "mood": "happy",
+      "look": "you",
+      "gesture": "wave",
+      "slot": "L",
+      "line": "A campus that keeps learning. Like you."
+    }
   ],
   "audio": {},
-  "final": { "t0": 59.5, "line1": "The Ohio State University.", "line2": "A Campus That Learns.", "foot": "MAP DATA © OPENSTREETMAP CONTRIBUTORS · FUTURE LIFE EXPERIENCES", "color2": "#ff8a8a" },
+  "final": {
+    "t0": 59.5,
+    "line1": "The Ohio State University.",
+    "line2": "A Campus That Learns.",
+    "foot": "MAP DATA © OPENSTREETMAP CONTRIBUTORS · FUTURE LIFE EXPERIENCES",
+    "color2": "#ff8a8a"
+  },
   "lesson": {
     "title": "Reading a Campus",
     "course": "Virtual Environments for a Better Future",
     "intro": "Investigate how one university is restoring its river and lake, cutting its carbon, and keeping its history visible.",
     "objectives": [
-      { "text": "Explain what changed when the Olentangy's dam was removed.", "hotspots": ["osu-river"] },
-      { "text": "Describe two ways the campus is cutting its carbon.", "hotspots": ["osu-energy"] },
-      { "text": "Find a building that teaches geology just by standing there.", "hotspots": ["osu-orton"] },
-      { "text": "Name two places where the campus made room for nature or people instead of cars.", "hotspots": ["osu-oval", "osu-mirrorlake"] }
+      {
+        "text": "Explain what changed when the Olentangy's dam was removed.",
+        "hotspots": [
+          "osu-river"
+        ]
+      },
+      {
+        "text": "Describe two ways the campus is cutting its carbon.",
+        "hotspots": [
+          "osu-energy"
+        ]
+      },
+      {
+        "text": "Find a building that teaches geology just by standing there.",
+        "hotspots": [
+          "osu-orton"
+        ]
+      },
+      {
+        "text": "Name two places where the campus made room for nature or people instead of cars.",
+        "hotspots": [
+          "osu-oval",
+          "osu-mirrorlake"
+        ]
+      }
     ]
   },
   "shots": [
-    [4, "osu_river", "cabin", 0.6, -0.25],
-    [11, "osu_stadium", "cabin", 1.2, -0.2],
-    [17, "osu_stadium_ext", "ext", 0, 0],
-    [27, "osu_thompson", "cabin", 0.4, -0.1],
-    [35, "osu_oval", "cabin", 0, -0.45],
-    [41, "osu_orton", "cabin", -1.0, -0.15],
-    [48, "osu_mirrorlake", "cabin", 0.3, -0.4],
-    [56, "osu_union", "chase", 0, 0]
+    [
+      4,
+      "osu_river",
+      "cabin",
+      -0.56,
+      -0.38
+    ],
+    [
+      11,
+      "osu_stadium",
+      "cabin",
+      -0.46,
+      -0.21
+    ],
+    [
+      17,
+      "osu_stadium_ext",
+      "ext",
+      0,
+      0
+    ],
+    [
+      27,
+      "osu_thompson",
+      "cabin",
+      0.56,
+      -0.54
+    ],
+    [
+      35,
+      "osu_oval",
+      "cabin",
+      -0.38,
+      -1.13
+    ],
+    [
+      39,
+      "osu_orton",
+      "cabin",
+      1.48,
+      -1.18
+    ],
+    [
+      48,
+      "osu_mirrorlake",
+      "cabin",
+      -0.36,
+      -0.98
+    ],
+    [
+      56,
+      "osu_union",
+      "chase",
+      0,
+      0
+    ]
   ]
 }

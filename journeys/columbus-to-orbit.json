@@ -261,22 +261,36 @@
       4,
       "columbus_river",
       "cabin",
-      0.5,
-      -0.3
+      0.3,
+      -0.21
+    ],
+    [
+      8.5,
+      "columbus_vertiport",
+      "cabin",
+      0.44,
+      -0.1
+    ],
+    [
+      12.5,
+      "columbus_bridge",
+      "cabin",
+      -0.09,
+      -0.52
     ],
     [
       16,
       "columbus_leveque",
       "cabin",
-      1.15,
-      0.12
+      0.77,
+      0.26
     ],
     [
       24,
       "columbus_broad",
       "cabin",
-      0,
-      -0.08
+      0.11,
+      -0.57
     ],
     [
       27,
@@ -289,8 +303,8 @@
       30,
       "columbus_statehouse",
       "cabin",
-      -1.3,
-      -0.12
+      -0.75,
+      -0.63
     ],
     [
       34,
