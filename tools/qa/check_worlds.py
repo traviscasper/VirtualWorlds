@@ -9,7 +9,7 @@ blank (so a stuck loading screen fails). Writes screenshots and a JSON report.
     python tools/qa/check_worlds.py portal journey  # only some groups
     python tools/qa/check_worlds.py --out docs/qa   # where screenshots go
 
-Groups: portal, scifi, skyship, studio, worldtour, journey, mobile
+Groups: data, portal, scifi, skyship, studio, worldtour, journey, gis, mobile
 Needs: pip install playwright pillow && python -m playwright install chromium
 """
 import argparse, base64, functools, http.server, io, json, socketserver, statistics, sys, threading, time
@@ -213,6 +213,48 @@ def t_mobile(b, run, base):
     report_errors(run, "mobile", "journey on phone", errs); page.context.close()
 
 
+def t_gis(b, run, base):
+    """worlds built from OpenStreetMap: the data layers, the OSU campus journey, and the Today → 2050 → Orbit journey"""
+    expect = {"columbus-downtown": ["LeVeque Tower", "Ohio Statehouse", "Scioto River"],
+              "osu-campus": ["Ohio Stadium", "The Oval", "Mirror Lake", "Olentangy River", "*Thompson*"]}
+    for region, names in expect.items():
+        f = ROOT / "data/gis" / f"{region}.json"
+        if not f.is_file():
+            run.record("gis", f"data/gis/{region}.json exists", False, "run tools/gis/osm_world.py or the OpenStreetMap data workflow"); continue
+        d = json.loads(f.read_text()); L = d.get("landmarks", {}); mb = f.stat().st_size / 1e6
+        run.record("gis", f"{region}: hundreds of buildings, 0.3-3 MB", d["stats"]["buildings"] >= 200 and .3 <= mb <= 3, f"({d['stats']['buildings']} buildings, {mb:.2f} MB)")
+        miss = [n for n in names if not any((n.strip("*").lower() in k.lower()) if n.startswith("*") else k.lower() == n.lower() for k in L)]
+        run.record("gis", f"{region}: expected landmarks present", not miss, "missing: " + ", ".join(miss) if miss else f"({len(names)} found)")
+        run.record("gis", f"{region}: OpenStreetMap attribution in the data", "OpenStreetMap" in d.get("attribution", ""))
+    for jid, lo, hi in [("osu-campus", 50, 80), ("campus-to-orbit", 120, 180)]:
+        page, errs = new_page(b, run, "gis")
+        page.add_init_script("window.__SKYSHIP_RENDER=true")
+        page.goto(base + f"skyship-engine/journey.html?journey={jid}"); page.wait_for_function("window.SKYSHIP&&SKYSHIP.ready", timeout=600000)
+        for c in page.evaluate("SKYSHIP.clearance()"):
+            run.record("gis", f"{jid}: flight path clears every building/structure in {c['world']}", c["d"] >= 15, f"(closest {c['d']} m at {c['t']}s: {c.get('box', '')})")
+        dur = page.evaluate("SKYSHIP.DURATION"); run.record("gis", f"{jid}: length {lo}-{hi} s", lo <= dur <= hi, f"({dur}s)")
+        for t, label, view, y, p in page.evaluate("SKYSHIP.SHOTS"):
+            page.evaluate(f"SKYSHIP.warm({t})")
+            raw = save_data_url(page.evaluate(f"SKYSHIP.frameFlat({t},'{view}',1/30,{y},{p})"), run.out / f"gis_{label}.jpg")
+            run.frame("gis", f"{jid}: {label} renders ({view} view, {t}s)", raw, f"gis_{label}.jpg")
+        if jid == "osu-campus":
+            raw = save_data_url(page.evaluate("SKYSHIP.frame360(35,1024)"), run.out / "gis_360_osu.jpg")
+            run.frame("gis", "360 capture works on the OSU campus", raw, "gis_360_osu.jpg")
+        report_errors(run, "gis", f"{jid} render mode", errs); page.context.close()
+    page, errs = new_page(b, run, "gis")
+    page.goto(base + "skyship-engine/journey.html?journey=osu-campus&mode=learn")
+    page.wait_for_function("window.SKYSHIP&&SKYSHIP.ready", timeout=600000); freeze(page)
+    stops = page.locator("#stops button").count() - 1
+    run.record("gis", "OSU campus: learn mode loads with stops and the lesson panel", stops >= 6 and page.locator("#lesson:not([hidden])").count() == 1, f"({stops} stops)")
+    bad = page.evaluate("SKYSHIP.hotspots().filter(h=>!h.ok).map(h=>h.id)"); hs = page.evaluate("SKYSHIP.hotspots().length")
+    run.record("gis", "OSU campus: every hotspot has a 3D anchor", not bad and hs >= 8, ", ".join(bad) or f"({hs} hotspots)")
+    page.evaluate("SKYSHIP.flyToStop(0); SKYSHIP.goto(SKYSHIP.state().target); SKYSHIP.step(1)")
+    page.evaluate("SKYSHIP.openHotspot(SKYSHIP.hotspots().findIndex(h=>h.id==='osu-river')); SKYSHIP.step(2,.4)")
+    run.record("gis", "OSU campus: info card asks a question", page.locator("#card .q button").count() >= 2)
+    page.screenshot(path=str(run.out / "gis_learn_osu.jpg"), type="jpeg", quality=80, timeout=240000)
+    report_errors(run, "gis", "OSU campus learn mode", errs); page.context.close()
+
+
 def t_data(b, run, base):
     """manifests match their schemas; launch links, previews, modules and journey references exist"""
     try: import jsonschema
@@ -239,7 +281,7 @@ def t_data(b, run, base):
             run.record("data", f"{folder}/{f.name} is valid and complete", not probs, "; ".join(probs))
 
 
-GROUPS = {"data": t_data, "portal": t_portal, "scifi": t_scifi, "skyship": t_skyship, "studio": t_studio, "worldtour": t_worldtour, "journey": t_journey, "mobile": t_mobile}
+GROUPS = {"data": t_data, "portal": t_portal, "scifi": t_scifi, "skyship": t_skyship, "studio": t_studio, "worldtour": t_worldtour, "journey": t_journey, "gis": t_gis, "mobile": t_mobile}
 
 
 def main():

@@ -1,18 +1,22 @@
 # Project status
 
-*Last updated: 24 October 2026 · branch `phase-2` · not yet merged into `main`*
+*Last updated: 25 October 2026 · branch `phase-3-columbus-osu` (built on `phase-2`) · neither is merged into `main` yet*
 
-FLE Virtual Worlds is a static website of code-generated worlds guided by ARCHIVE. It is made of a portal, a shared Skyship Engine, two new pilot worlds and the four original projects, which are kept working as they were.
+FLE Virtual Worlds is a static website of code-generated worlds guided by ARCHIVE. It is made of a portal, a shared Skyship Engine, three pilot worlds (two of them on real OpenStreetMap geography) and the four original projects, which are kept working as they were.
 
 ## At a glance
 
 | Area | Status |
 |---|---|
-| Portal (`index.html`) | **Working.** Gallery of 17 worlds, theme filters (Sustainability green, Technology red, Space purple), Time · Place · Purpose filters, time axis, journey list, phone layout |
+| Portal (`index.html`) | **Working.** Features the Today → 2050 → Orbit flight. Gallery of 18 worlds, theme filters (Sustainability green, Technology red, Space purple), Time · Place · Purpose filters, time axis, journey list, phone layout |
 | Shared Skyship Engine (`skyship-engine/journey.html`) | **Working.** Data-driven; Cinematic, Explore and Learn modes; journey menu; 360 capture; WebXR entry |
-| Columbus 2050 | **Pilot.** Artistic scenario on a simplified street grid, 8 stops, 11 hotspots. Not an official plan. Not yet on real GIS data |
+| Columbus 2050 | **Pilot, on real geography.** Today's streets, buildings, river and parks from OpenStreetMap, with an imagined 2050 layer (green/solar roofs, transit lanes, bike lanes, riverbank forest, vertiport, timber towers on today's parking lots). 8 stops, 11 hotspots. Not an official plan. The original grid-based module is kept as `columbus2050.js` |
+| Ohio State campus (today) | **Pilot, on real geography.** OpenStreetMap buildings, paths, the Olentangy, Mirror Lake and the Oval; hand-modelled Ohio Stadium (fitted to its real outline) and Orton Hall's tower. 8 stops, 8 sourced hotspots, Learn mode lesson |
+| Map data pipeline (`tools/gis/`, `data/gis/`) | **Working.** `osm_world.py` downloads and builds the layers; a GitHub Actions workflow runs it on GitHub's servers, verifies it and commits the two data files |
 | Orbital habitat (expanded) | **Pilot.** Original orbit world preserved, plus the Life Support Commons (farm, water, energy, air), 8 stops, 7 hotspots |
 | Columbus 2050 → Orbit journey | **Working.** 90 s, cloud-climb transition, ARCHIVE cues, pre-rendered score |
+| Today, 2050, Orbit journey | **Working.** 2½ min: OSU campus → Columbus 2050 → orbital habitat, two cloud transitions, combined lesson, pre-rendered score |
+| Ohio State Campus journey | **Working.** 66 s, its own lesson and score |
 | Journey video renderer (`render_journey.py`) | **Working** for short test renders here. Full-length 4K renders not yet run (needs a GPU machine) |
 | Sci-Fi 360 (`sci-fi-360/`) | **Unchanged and working.** Its four worlds also run on the shared engine |
 | Skyship 360 (`skyship-360/`) | **Unchanged and working.** Not yet ported to the shared engine |
@@ -28,7 +32,8 @@ See *Test results* below. Everything was tested in headless Chromium with softwa
 
 - **VR:** "Enter VR" works through WebXR, but hotspot markers are page overlays and hide inside a headset, so Explore and Learn are desktop/phone only for now.
 - **Narration:** ARCHIVE's lines appear as on-screen text with music; there is no recorded voice yet.
-- **Columbus geography:** landmark positions and the river are approximate. The code keeps the street grid, river line and building lots in one place for a later swap to OpenStreetMap / Franklin County GIS data.
+- **Building heights:** most come from estimates. In OpenStreetMap only about 22% of downtown buildings and 27% of campus buildings have a height or number of floors, so the rest get a typical height for their type. Landmarks with tagged heights are right (LeVeque Tower 169 m, Rhodes Tower 192 m, Huntington Center 156 m). Calibrating heights from Ohio's statewide LiDAR would fix the skyline.
+- **Hand-placed details:** Orton Hall's bell tower sits at the corner of its real footprint nearest the Oval (approximate). The Scioto Mile fountain uses an approximate position because Bicentennial Park isn't named in the map data.
 - **Film worlds:** viewable in the film studio at each chapter; there are no interactive versions yet.
 
 ## Planned
@@ -65,6 +70,8 @@ Each frame check fails if the image is blank or flat (a stuck loading screen), a
 - Google Fonts can't be reached from the build environment; pages fall back to system fonts there and load the web fonts normally online.
 - The hosted (online) version has not been tested because nothing is deployed yet.
 - Columbus 2050 is a speculative scenario. Its disclaimer appears in the portal, in the ship, and on every Columbus info card.
+- Map data © OpenStreetMap contributors (ODbL 1.0). The credit appears in the portal, in the world facts and on the journeys' final cards.
+- The real-geography worlds are heavier than the pilot (about 7,000 extruded buildings each). They load in under a minute with software rendering here; real-device frame rates are untested.
 
 ## Deployment
 

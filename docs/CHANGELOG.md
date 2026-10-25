@@ -1,5 +1,24 @@
 # Changelog
 
+## Phase 3: Columbus and Ohio State on real geography (branch `phase-3-columbus-osu`, October 2026)
+
+### Added
+- **OpenStreetMap pipeline**: `tools/gis/osm_world.py` (download from Overpass with mirrors, build compact layers), `tools/gis/verify_osm.py` (building count, size, real-download and landmark checks), and the `OpenStreetMap data` GitHub Actions workflow, which runs it on GitHub's servers, uploads the files as an artifact and commits only `data/gis/columbus-downtown.json` and `data/gis/osu-campus.json`.
+- **Map data**: downtown Columbus (≈7,100 buildings) and the Ohio State campus (≈5,600 buildings). © OpenStreetMap contributors, ODbL 1.0.
+- **City builder** `skyship-engine/js/gis.js`: extruded buildings with facades, roads and bridges, water, parks, trees; `Route`, `PathMovers`, `Walkers` for movement on real lines.
+- **Ohio State campus world** (`osu_campus.js`, `worlds/osu-campus.json`) and the **Ohio State Campus** journey (66 s).
+- **Today, 2050, Orbit** journey (2½ min): campus → Columbus 2050 → orbital habitat.
+- Engine test hook `SKYSHIP.aim(t, anchor)`; QA `gis` group; "campus" place type.
+
+### Changed
+- **Columbus 2050** now runs on real geography (`columbus2050_gis.js`); the grid-based pilot module `columbus2050.js` is kept unchanged.
+- Portal features the new journey with three panels; test shots in the Columbus and campus journeys are aimed at their landmarks.
+- `osm_world.py`: river centerlines and named places become landmarks; Overpass error remarks are rejected.
+
+### Fixed
+- Columbus river leg followed a far-away stretch of the Scioto (the river's map line runs outside the area); it now follows the real course through downtown.
+- NaN geometry from zero-length bridge segments.
+
 ## Phase 2: Connected worlds (branch `phase-2`, October 2026)
 
 ### Added

@@ -546,6 +546,6 @@
   "gis": {
     "ready": true,
     "source": "OpenStreetMap via tools/gis/osm_world.py (region columbus-downtown)",
-    "notes": "Street network, footprints, river and parks are real. About 83% of building heights are estimated (no height or levels tag). Next: calibrate heights from Ohio statewide LiDAR (OGRIP) and overlay verified plans such as LinkUS."
+    "notes": "Street network, footprints, river and parks are real. About 78% of building heights are estimated (no height or levels tag). Next: calibrate heights from Ohio statewide LiDAR (OGRIP) and overlay verified plans such as LinkUS."
   }
 }

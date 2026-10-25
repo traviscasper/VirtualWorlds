@@ -9,12 +9,15 @@ index.html                 Portal (gallery, Time · Place · Purpose filters, ti
 portal/                    Portal CSS/JS and preview images (portal/img/<world-id>.jpg)
 worlds/                    One manifest per world (+ schema.json, index.json)  ← the shared world format
 journeys/                  Skyship journeys: timed flights through worlds (+ schema.json, index.json, audio/)
-skyship-engine/            Shared engine: journey.html, js/score.js, worlds/*.js (new worlds), render_journey.py
+skyship-engine/            Shared engine: journey.html, js/score.js, js/gis.js (map-data city builder), worlds/*.js (new worlds), render_journey.py
+data/gis/                  Map layers built from OpenStreetMap (columbus-downtown.json, osu-campus.json); raw downloads are not committed
 sci-fi-360/                Original Sci-Fi 360 kit (unchanged); its lib.js, world modules and vendored three.js are shared
 skyship-360/               Original Skyship 360 kit (unchanged)
 worlds-within-worlds/      The 90-minute film engine and studio (separate GLSL raymarcher)
 world-tour/                Player for the World Tour short (video only)
 tools/qa/                  check_worlds.py (automated tests), make_previews.py
+tools/gis/                 osm_world.py (download + build map layers), verify_osm.py (checks)
+.github/workflows/         osm-data.yml: runs the map pipeline on GitHub's servers
 docs/                      This documentation
 ```
 
@@ -75,6 +78,23 @@ Worlds connect through **journeys**. A journey lists world segments; the engine 
 ### Sound
 
 A journey's `audio.file` (pre-rendered MP3) is used when present. Otherwise the page composes a score with `skyship-engine/js/score.js` from each world's `audio.score` settings (chords, bells, pulse, ambience), in an OfflineAudioContext so the live page and the video share one mix. `scifi-classics` reuses the original Sci-Fi soundtrack and composer.
+
+## Worlds on real geography (OpenStreetMap)
+
+```
+tools/gis/osm_world.py fetch   Overpass API → data/gis/raw/<region>.osm.json        (raw, not committed)
+tools/gis/osm_world.py build   raw → data/gis/<region>.json                          (committed, ~1.5 MB each)
+skyship-engine/js/gis.js       loadRegion(id) + buildCity(ctx, data, opts)           (shared by every map-based world)
+skyship-engine/worlds/*.js     the story layer: landmarks, 2050 overlays, flight path, anchors
+```
+
+* **Regions** are defined in `osm_world.py` (`REGIONS`): a lat/lon box and an origin. Downtown's origin is the High St & Broad St intersection, found in the data; the campus origin is the centre of the Oval. Coordinates are metres with the engine's axes (x east, z south).
+* **The layer file** holds buildings (footprint, height, minimum height, kind, colour, name, `e:1` if the height is estimated), roads (class, width, bridge), rail, water areas, river lines, green areas, surface parking, mapped trees, and `landmarks`: every named building, water or green area, river line, and named stadium, attraction, museum or historic place, with a position and size. Worlds look features up by name and fall back to an approximate position only if a name is missing.
+* **`buildCity`** extrudes footprints with procedural facades (tower, office, brick, stone, house, plain, chosen from building kind and height), lays roads as ribbons (lifted on bridges), fills water and parks, scatters trees in green areas, and returns colliders for the clearance test. Options let a world skip buildings it draws itself (the LeVeque Tower, the Statehouse, Ohio Stadium), style roofs (green / solar / white for 2050), add trees, and choose tree colours.
+* **Moving things** follow real lines: `Route` (a polyline sampled by distance), `PathMovers` (instanced vehicles) and `Walkers` (the shared `People` mesh) run along the map's streets, footpaths and rivers.
+* **Flight paths** are written as story beats and then fitted to the data: the Columbus river leg follows the Scioto's real line; both worlds lift keyframes wherever the sampled path would pass within 14 m of a real building.
+* **Refreshing data**: the `OpenStreetMap data` workflow runs `osm_world.py all` on a GitHub runner, checks it with `verify_osm.py`, uploads the files as an artifact and commits only `data/gis/*.json`. It runs when the workflow or the GIS tools change on `phase-3-columbus-osu` (or by hand once it is on `main`).
+* **Attribution**: map data © OpenStreetMap contributors, ODbL 1.0. Each layer file carries the attribution, and the worlds show it.
 
 ## Dependencies
 
