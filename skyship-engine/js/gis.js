@@ -270,3 +270,27 @@ export class Walkers {
   update(t) { for (const it of this.items) { const o = it.L.route.at(it.off + it.sp * t, this._o); const yaw = o.yaw + (it.sp < 0 ? Math.PI : 0);
       this.p.place(it.i, o.x + Math.cos(o.yaw) * it.side, it.L.y ?? .1, o.z - Math.sin(o.yaw) * it.side, yaw, 1, it.ph); } this.p.commit(t); }
 }
+
+/* ---------------- helpers for world overlays ---------------- */
+/** join polylines whose ends meet (OSM splits a street into many ways) → longest continuous lines first */
+export function chain(lines, tol = 1.5) {
+  const segs = lines.filter(l => l.length > 1).map(l => [...l]); const out = []; const same = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]) < tol;
+  while (segs.length) { let cur = segs.shift(), grew = true;
+    while (grew) { grew = false; for (let i = 0; i < segs.length; i++) { const s = segs[i];
+      if (same(s[0], cur[cur.length - 1])) cur = cur.concat(s.slice(1)); else if (same(s[s.length - 1], cur[cur.length - 1])) cur = cur.concat([...s].reverse().slice(1));
+      else if (same(s[s.length - 1], cur[0])) cur = s.slice(0, -1).concat(cur); else if (same(s[0], cur[0])) cur = [...s].reverse().slice(0, -1).concat(cur); else continue;
+      segs.splice(i, 1); grew = true; break; } }
+    out.push(cur); }
+  const len = l => l.reduce((s, p, i) => i ? s + Math.hypot(p[0] - l[i - 1][0], p[1] - l[i - 1][1]) : 0, 0);
+  return out.sort((a, b) => len(b) - len(a));
+}
+/** a flat painted ribbon along polylines (transit lanes, bike lanes, promenades); offset > 0 shifts it to the right of travel */
+export function lineMesh(ctx, lines, width, y, color, offset = 0, mat) {
+  const A = new Acc(), c = new Col(color); for (const l of lines) ribbon(A, 'm', offset ? offsetLine(l, offset) : l, width, y, c);
+  const g = new THREE.Group(); A.build({ m: mat || ctx.mat('#ffffff', { vertexColors: true, roughness: .85, envMapIntensity: .2 }) }, g); return g;
+}
+/** sample points every `step` metres along a polyline (optionally offset sideways) */
+export function samples(line, step, offset = 0) { const l = offset ? offsetLine(line, offset) : line, R = new Route(l), out = [], o = {}; for (let d = step / 2; d < R.len; d += step) { R.at(d, o); out.push([o.x, o.z]); } return out; }
+/** the footprint ring and bbox of a named building */
+export function footprint(data, re) { const b = data.buildings.find(b => b.n && re.test(b.n)); if (!b) return null; const [x0, z0, x1, z1] = bbox(b.pts); return { b, ring: b.pts, x0, z0, x1, z1, cx: (x0 + x1) / 2, cz: (z0 + z1) / 2, w: x1 - x0, d: z1 - z0 }; }
+export { offsetLine, bbox as ringBox };
