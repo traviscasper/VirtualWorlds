@@ -7,8 +7,8 @@
 
    Module interface (shared with the other skyship worlds): build(ctx) → { group, path, update(t), anchors, telescope, colliders } */
 import * as THREE from 'three';
-import { V3, Col, FlightPath, Builder, boxGeo, cylGeo, People } from '../../sci-fi-360/js/lib.js';
-import { loadRegion, buildCity, Route, PathMovers, Walkers } from '../js/gis.js';
+import { V3, Col, lerp, FlightPath, Builder, boxGeo, cylGeo, People } from '../../sci-fi-360/js/lib.js';
+import { loadRegion, buildCity, Route, PathMovers, Walkers, footprint, chain } from '../js/gis.js';
 
 const DATA = await loadRegion('osu-campus');
 
@@ -20,7 +20,7 @@ const FALLBACK = {
 const NAMES = {
   thompson: ['William Oxley Thompson Memorial Library', 'Thompson Library', 'Thompson Memorial Library'], oval: ['The Oval'],
   orton: ['Orton Hall'], univhall: ['University Hall'], mirrorlake: ['Mirror Lake'], union: ['Ohio Union'], stadium: ['Ohio Stadium'],
-  river: ['Olentangy River'], power: ['McCracken Power Plant', 'McCracken Power', 'Combined Heat and Power'] };
+  river: ['Olentangy River'], power: ['Combined Heat and Power Plant', 'McCracken Power Plant'] };
 
 export function buildOSUCampus(ctx) {
   const group = new THREE.Group(); group.name = 'osu-campus';
@@ -29,11 +29,17 @@ export function buildOSUCampus(ctx) {
 
   /* ---------------- the city from map data ---------------- */
   const autumn = ['#3f8a3e', '#c7642a', '#e0a53a', '#9c3b25', '#6aa845', '#d98b2b'];
-  const city = buildCity(ctx, DATA, { seed: 21, trees: { parks: 330, woods: 80, max: 5000 }, treeShades: autumn,
-    skip: b => b.n && /ohio stadium/i.test(b.n) });
+  // Ohio Stadium's map outline is an unnamed building=stadium with the field as a hole; we draw our own horseshoe
+  // inside that exact footprint, so the map's flat-roofed extrusion is left out
+  const stadLL = DATA.landmarks['Ohio Stadium'];
+  const SF = DATA.buildings.find(b => b.k === 'stadium' && stadLL && Math.abs(b.pts[0][0] - stadLL.x) < 200 && Math.abs(b.pts[0][1] - stadLL.z) < 250);
+  const city = buildCity(ctx, DATA, { seed: 21, trees: { parks: 330, woods: 80, max: 5000, noFill: /^The Oval$/ }, treeShades: autumn,
+    skip: b => b === SF || (b.n && /ohio stadium/i.test(b.n)) });
   group.add(city.group);
   const P = {}; const missing = [];
   for (const k in FALLBACK) { let f = null; for (const nm of NAMES[k] || []) { f = city.find(nm); if (f) break; } if (!f) missing.push(k); P[k] = f || fromLL(FALLBACK[k]); }
+  { const hs = chain(DATA.roads.filter(r => /\bHigh Street\b/i.test(r.n || '') && !['footway', 'path', 'service'].includes(r.c)).map(r => r.pts))[0];
+    if (hs) { const q = hs.reduce((b, p) => Math.abs(p[1] - P.union.z) < Math.abs(b[1] - P.union.z) ? p : b, hs[0]); P.highst = { x: q[0], z: q[1], h: 0, r: 20 }; if (missing.includes('highst')) missing.splice(missing.indexOf('highst'), 1); } }
   if (missing.length) console.info('[osu-campus] using approximate positions for:', missing.join(', '));
   const colliders = city.colliders;
 
@@ -42,29 +48,40 @@ export function buildOSUCampus(ctx) {
     grass: ctx.mat('#ffffff', { vertexColors: true, roughness: .95, envMapIntensity: .2 }), glass: ctx.mat('#9fc3e0', { roughness: .2, metalness: .5, envMapIntensity: 1.2 }),
     paint: ctx.mat('#ffffff', { vertexColors: true, roughness: .8 }), glow: new THREE.MeshBasicMaterial({ color: new Col('#ffe7b0').multiplyScalar(1.6) }) };
 
-  /* ---------------- Ohio Stadium: a horseshoe open to the south, rotunda at the north end ---------------- */
-  { const S = P.stadium, cx = S.x, cz = S.z; const R0 = 58, R1 = 112, LEN = 80;      // field radius, outer radius, straight length
-    const tier = (r0, r1, y0, y1, col) => {          // a ring of seating from radius r0→r1, rising y0→y1, around a horseshoe outline
-      const seg = 28; for (let i = 0; i < seg; i++) { const a0 = Math.PI * i / seg, a1 = Math.PI * (i + 1) / seg;   // north semicircle (a from 0 → π)
-        quadFan(B, 'seat', cx, cz - LEN / 2, r0, r1, a0, a1, y0, y1, col); }
-      for (const sd of [-1, 1]) { const x0 = cx + sd * r0, x1 = cx + sd * r1;      // straight sides running south
-        rampBox(B, 'seat', x0, x1, cz - LEN / 2, cz + LEN / 2, y0, y1, col); } };
-    tier(R0, 78, 1, 16, '#9aa3ab'); tier(78, 96, 16, 30, '#8d969f'); tier(96, R1, 30, 41, '#7f8992');
-    for (let i = 0; i <= 28; i++) { const a = Math.PI * i / 28; B.add('stone', boxGeo(4, 43, 4), [cx + Math.cos(a) * (R1 + 1), 0, cz - LEN / 2 - Math.sin(a) * (R1 + 1)], [0, -a, 0], null, '#d6cdb9'); }
-    for (const sd of [-1, 1]) for (let k = 0; k <= 6; k++) B.add('stone', boxGeo(4, 43, 4), [cx + sd * (R1 + 1), 0, cz - LEN / 2 + k * LEN / 6], null, null, '#d6cdb9');
-    // the field and markings
-    B.add('grass', boxGeo(R0 * 2 - 6, .4, LEN + R0), [cx, 0, cz - 2], null, null, '#3f8f3a');
-    for (let k = -5; k <= 5; k++) B.add('paint', boxGeo(48, .5, .5), [cx, .05, cz + k * 9.14 - 2], null, null, '#ffffff');
-    // the rotunda (modelled on the Pantheon's dome) at the north end
-    const rz = cz - LEN / 2 - R1 - 10; B.add('stone', cylGeo(19, 19, 26, 28), [cx, 0, rz], null, null, '#e4dccb');
-    B.add('stone', new THREE.SphereGeometry(19, 28, 12, 0, Math.PI * 2, 0, Math.PI / 2), [cx, 26, rz], null, null, '#c9c2b2');
-    for (let i = 0; i < 6; i++) B.add('stone', boxGeo(2.2, 24, 2.2), [cx - 12 + i * 4.8, 0, rz + 19.5], null, null, '#f2ecdf');
-    colliders.push([cx - R1, 0, cz - LEN / 2 - R1, cx + R1, 43, cz + LEN / 2, 'Ohio Stadium'], [cx - 19, 0, rz - 19, cx + 19, 45, rz + 19, 'Ohio Stadium rotunda']);
-    P.rotunda = { x: cx, z: rz, h: 45 }; P.stadium = { ...S, h: 43 };
+  /* ---------------- Ohio Stadium: a horseshoe open to the south, rotunda at the north end, fitted to the map outline ---------------- */
+  { const box = SF ? SF.pts.reduce((a, [x, z]) => [Math.min(a[0], x), Math.min(a[1], z), Math.max(a[2], x), Math.max(a[3], z)], [1e9, 1e9, -1e9, -1e9])
+                   : [P.stadium.x - 107, P.stadium.z - 140, P.stadium.x + 107, P.stadium.z + 140];
+    const hole = SF?.holeP?.[0]?.reduce((a, [x, z]) => [Math.min(a[0], x), Math.min(a[1], z), Math.max(a[2], x), Math.max(a[3], z)], [1e9, 1e9, -1e9, -1e9]);
+    const cx = hole ? (hole[0] + hole[2]) / 2 : (box[0] + box[2]) / 2;
+    const R1 = Math.min(cx - box[0], box[2] - cx) - 2;                    // outer radius = half the outline's width
+    const R0 = hole ? Math.max(30, (hole[2] - hole[0]) / 2 + 4) : 42;     // inner edge just outside the field
+    const cN = box[1] + R1 + 2, zS = box[3] - 2;                           // centre of the north curve; open south end
+    const tier = (r0, r1, y0, y1, col) => {
+      const seg = 32; for (let i = 0; i < seg; i++) quadFan(B, 'seat', cx, cN, r0, r1, Math.PI * i / seg, Math.PI * (i + 1) / seg, y0, y1, col);
+      for (const sd of [-1, 1]) rampBox(B, 'seat', cx + sd * r0, cx + sd * r1, cN, zS, y0, y1, col); };
+    const r1 = lerp(R0, R1, .45), r2 = lerp(R0, R1, .78);
+    // seating in bands (alternating shades read as rows of seats); the upper deck starts higher and darker
+    const bands = [[R0, r1, 1, 16, ['#a7aeb5', '#949ca4']], [r1, r2, 16, 30, ['#9aa2aa', '#878f98']], [r2, R1, 30, 41, ['#8a929b', '#78818a']]];
+    for (const [a0, a1, y0, y1, cols] of bands) { const n = 5; for (let k = 0; k < n; k++) tier(lerp(a0, a1, k / n), lerp(a0, a1, (k + 1) / n), lerp(y0, y1, k / n), lerp(y0, y1, (k + 1) / n), cols[k % 2]); }
+    B.add('stone', cylGeo(R1 + 3, R1 + 3, 1.2, 48, 8, 8, true), [cx, 41, cN], null, null, '#d6cdb9');
+    for (let i = 0; i <= 32; i++) { const a = Math.PI * i / 32; B.add('stone', boxGeo(4, 43, 4), [cx + Math.cos(a) * (R1 + 1), 0, cN - Math.sin(a) * (R1 + 1)], [0, -a, 0], null, '#d6cdb9'); }
+    for (const sd of [-1, 1]) for (let k = 0; k <= 8; k++) B.add('stone', boxGeo(4, 43, 4), [cx + sd * (R1 + 1), 0, lerp(cN, zS, k / 8)], null, null, '#d6cdb9');
+    // the field (the map's own "Safelite Field" pitch is drawn underneath) and yard lines
+    const fz = hole ? (hole[1] + hole[3]) / 2 : cN + 40, fl = hole ? hole[3] - hole[1] : 110;
+    B.add('grass', boxGeo(2 * R0 - 6, .4, Math.max(fl, zS - cN + R0 - 10)), [cx, 0, fz], null, null, '#3f8f3a');
+    for (let k = -5; k <= 5; k++) B.add('paint', boxGeo(48, .5, .5), [cx, .05, fz + k * 9.14], null, null, '#ffffff');
+    // the rotunda (modelled on the Pantheon's dome) at the north end of the outline
+    const rz = box[1] + 16; B.add('stone', cylGeo(16, 16, 26, 28), [cx, 0, rz], null, null, '#e4dccb');
+    B.add('stone', new THREE.SphereGeometry(16, 28, 12, 0, Math.PI * 2, 0, Math.PI / 2), [cx, 26, rz], null, null, '#c9c2b2');
+    for (let i = 0; i < 6; i++) B.add('stone', boxGeo(2.2, 24, 2.2), [cx - 12 + i * 4.8, 0, rz - 16.5], null, null, '#f2ecdf');
+    colliders.push([cx - R1, 0, box[1], cx + R1, 43, zS, 'Ohio Stadium'], [cx - 17, 0, rz - 17, cx + 17, 43, rz + 17, 'Ohio Stadium rotunda']);
+    P.rotunda = { x: cx, z: rz, h: 43 }; P.stadium = { x: cx, z: fz, h: 43, r: R1 };
   }
 
   /* ---------------- Orton Hall's bell tower (the map has the hall; this adds the tower) ---------------- */
-  { const t = P.orton, tx = t.x + (t.r || 15) * .45, tz = t.z - (t.r || 15) * .2;
+  { const OF = footprint(DATA, /^orton hall$/i); const t = P.orton;
+    const corner = OF ? OF.ring.reduce((best, p) => Math.hypot(p[0] - P.oval.x, p[1] - P.oval.z) < Math.hypot(best[0] - P.oval.x, best[1] - P.oval.z) ? p : best, OF.ring[0]) : [t.x, t.z];
+    const tx = lerp(corner[0], OF ? OF.cx : t.x, .18), tz = lerp(corner[1], OF ? OF.cz : t.z, .18);
     B.add('stone', boxGeo(8, 34, 8), [tx, 0, tz], null, null, '#cdbf9e'); B.add('stone', boxGeo(9.4, 2, 9.4), [tx, 34, tz], null, null, '#b9aa88');
     B.add('stone', new THREE.ConeGeometry(6.4, 9, 4).rotateY(Math.PI / 4).translate(0, 4.5, 0), [tx, 36, tz], null, null, '#6d5a49');
     B.add('glow', boxGeo(8.2, 2.4, 1.2), [tx, 29, tz], null, null);
@@ -98,8 +115,10 @@ export function buildOSUCampus(ctx) {
   const dir = (a, b) => { const dx = b.x - a.x, dz = b.z - a.z, l = Math.hypot(dx, dz) || 1; return { x: dx / l, z: dz / l }; };
   const off = (p, d, along, side) => ({ x: p.x + d.x * along - d.z * side, z: p.z + d.z * along + d.x * side });
   const S = P.stadium, river = P.river;
+  const rl = chain(DATA.rivers.filter(r => /olentangy/i.test(r.n || '')).map(r => r.pts))[0] || [[river.x, -2000], [river.x, 2000]];
+  const riverAt = z => { const q = rl.reduce((b, p) => Math.abs(p[1] - z) < Math.abs(b[1] - z) ? p : b, rl[0]); return { x: q[0], z }; };
   const W = [                                        // [t, point, min height]
-    [0, { x: river.x - 20, z: S.z + 420 }, 70], [7, { x: river.x - 10, z: S.z + 170 }, 72], [13, { x: S.x - 150, z: S.z - 20 }, 80],
+    [0, riverAt(S.z + 420), 70], [7, riverAt(S.z + 170), 72], [13, { x: S.x - 150, z: S.z - 20 }, 80],
     [19, { x: S.x - 30, z: P.rotunda.z - 70 }, 88], [25, off(P.thompson, dir(P.thompson, P.oval), -150, -20), 78],
     [31, off(P.thompson, dir(P.thompson, P.oval), 70, 10), 62], [36, P.oval, 50], [41, { x: P.ortonTower.x - 20, z: P.ortonTower.z + 70 }, 58],
     [46, { x: P.mirrorlake.x - 40, z: P.mirrorlake.z - 40 }, 52], [51, { x: P.mirrorlake.x + 90, z: P.mirrorlake.z + 10 }, 55],
@@ -109,7 +128,7 @@ export function buildOSUCampus(ctx) {
 
   /* ---------------- anchors (what ARCHIVE, hotspots and the telescope point at) ---------------- */
   const a = (p, y) => new V3(p.x, y ?? Math.max(4, (p.h || 0) * .7), p.z);
-  const anchors = { river: a({ x: river.x, z: S.z + 120 }, 2), stadium: a(P.stadium, 30), rotunda: a(P.rotunda, 30), thompson: a(P.thompson, Math.max(20, P.thompson.h * .8)),
+  const anchors = { river: a(riverAt(S.z + 120), 2), stadium: a(P.stadium, 30), rotunda: a(P.rotunda, 30), thompson: a(P.thompson, Math.max(20, P.thompson.h * .8)),
     oval: a(P.oval, 2), orton: a(P.ortonTower, 30), univhall: a(P.univhall), mirrorlake: a(P.mirrorlake, 1.5), union: a(P.union, 14), highst: a(P.highst, 3),
     energy: a(P.power, Math.max(10, P.power.h || 12)), campus: new V3(P.oval.x, 0, P.oval.z) };
   const telescope = [

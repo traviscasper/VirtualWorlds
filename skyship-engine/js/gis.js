@@ -104,6 +104,7 @@ function cssColour(s) { try { return new Col(s); } catch (e) { return null; } }
  * opts.road(r)                   → colour string override for a road (e.g. transit lanes), or null
  * opts.trees: { parks: m²/tree, woods: m²/tree, max }          procedural trees in green areas (plus OSM tree nodes)
  * opts.treeShades: [colours]     canopy colours to pick from (e.g. autumn)
+ * opts.trees.noFill: RegExp      green areas (by name) that get no procedural trees, only mapped ones
  * opts.extent: [x0, z0, x1, z1]  limit what is built (metres)
  * Returns { group, colliders, landmarks, find(name), roads(name), treePoints, stats }
  */
@@ -182,7 +183,7 @@ export function buildCity(ctx, data, opts = {}) {
   const treePts = data.treePts.filter(p => inExt(...p)).map(([x, z]) => [x, z, .8 + r() * .5]);
   if (opts.trees) { const grid = buildingGrid(data.buildings);
     for (const f of data.green) { const per = (f.k === 'wood' || f.k === 'forest') ? opts.trees.woods ?? 90 : ['park', 'garden', 'grass', 'recreation_ground', 'cemetery'].includes(f.k) ? opts.trees.parks ?? 420 : 0;
-      if (!per) continue; const [x0, z0, x1, z1] = bbox(f.pts); const area = Math.abs(signedArea(f.pts)); let k = Math.min(400, Math.round(area / per));
+      if (!per || opts.trees.noFill?.test(f.n || '')) continue; const [x0, z0, x1, z1] = bbox(f.pts); const area = Math.abs(signedArea(f.pts)); let k = Math.min(400, Math.round(area / per));
       for (let tries = 0; k > 0 && tries < k * 6; tries++) { const x = x0 + r() * (x1 - x0), z = z0 + r() * (z1 - z0);
         if (!pointInRing(x, z, f.pts) || grid.hit(x, z) || !inExt(x, z)) continue; treePts.push([x, z, .8 + r() * .6]); k--; } } }
   if (opts.extraTrees) treePts.push(...opts.extraTrees);
