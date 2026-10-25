@@ -17,7 +17,7 @@
     "time": { "type": "object", "required": ["era", "label"], "properties": {
       "era": { "enum": ["past", "present", "future", "past-to-future"] }, "label": { "type": "string" }, "year": { "type": "integer" } } },
     "place": { "type": "object", "required": ["type", "name"], "properties": {
-      "type": { "enum": ["city", "laboratory", "orbit", "spacecraft", "planet", "virtual"] }, "name": { "type": "string" }, "fictional": { "type": "boolean" },
+      "type": { "enum": ["city", "campus", "laboratory", "orbit", "spacecraft", "planet", "virtual"] }, "name": { "type": "string" }, "fictional": { "type": "boolean" },
       "geo": { "type": "object", "properties": { "lat": { "type": "number" }, "lon": { "type": "number" }, "note": { "type": "string" } } } } },
     "purposes": { "type": "array", "items": { "enum": ["explore", "learn", "simulate", "design", "experience a story"] } },
     "learningObjectives": { "type": "array", "items": { "type": "string" } },

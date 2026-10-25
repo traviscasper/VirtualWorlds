@@ -20,3 +20,6 @@ Thumbs.db
 
 # QA output and engine render parts
 tools/qa/out/
+
+# Raw OpenStreetMap downloads (re-fetch with tools/gis/osm_world.py)
+data/gis/raw/

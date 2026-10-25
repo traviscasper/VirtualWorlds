@@ -21,7 +21,7 @@
   const FACETS = {
     cat: { el: 'f-cat', label: { all: 'All' , ...CATS }, get: w => w.categories || [] },
     time: { el: 'f-time', label: { any: 'Any time', past: 'Past', present: 'Present', future: 'Future' }, get: timeOf },
-    place: { el: 'f-place', label: { any: 'Anywhere', city: 'City', laboratory: 'Laboratory', orbit: 'Orbit', virtual: 'Virtual world' }, get: w => [placeOf(w)] },
+    place: { el: 'f-place', label: { any: 'Anywhere', city: 'City', campus: 'Campus', laboratory: 'Laboratory', orbit: 'Orbit', virtual: 'Virtual world' }, get: w => [placeOf(w)] },
     purpose: { el: 'f-purpose', label: { any: 'Any purpose', explore: 'Explore', learn: 'Learn', simulate: 'Simulate', 'experience a story': 'Story' }, get: w => w.purposes || [] } };
   const sel = { cat: 'all', time: 'any', place: 'any', purpose: 'any' };
   for (const [k, f] of Object.entries(FACETS)) {
