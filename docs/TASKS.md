@@ -25,7 +25,7 @@ Priorities: **P1** = needed for the next milestone or the FLE event, **P2** = hi
 - [ ] **Review Columbus 2050 content** with someone who knows downtown: landmark positions, which concepts to show, wording of the disclaimers
 - [ ] **Full-length renders** of `columbus-to-orbit` on a GPU machine: 4K 360 and 1080p 16:9 (`render_journey.py`)
 - [ ] **Decide hosting**: GitHub Pages needs the repo public or a paid plan; or deploy the static folder elsewhere (see DEPLOYMENT in PROJECT_STATUS.md). Needs Travis's approval.
-- [ ] Merge `phase-2` into `main` after review
+- [ ] Review the Phase 2 pull request and merge `phase-2` into `main`
 
 ## Soon (P2)
 

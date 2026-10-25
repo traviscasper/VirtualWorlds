@@ -52,7 +52,10 @@ Run on 24 October 2026 with `python tools/qa/check_worlds.py` (headless Chromium
 
 Each frame check fails if the image is blank or flat (a stuck loading screen), and each page fails on any JavaScript error or missing file.
 
-**Render tests.** <!-- RENDER_RESULTS -->
+**Render tests** (`skyship-engine/render_journey.py`, CPU only):
+- 360: a 5 s clip of `columbus-to-orbit`, 1920×960, 30 fps, H.264 + AAC music. Google's Spatial Media tool reads it back as `Spherical = true`, `ProjectionType = equirectangular`, so YouTube and headsets will treat it as 360.
+- 16:9: a 3 s clip over Broad Street (22–25 s), 960×540, 30 fps, with music. About 2.9 s per frame on the CPU; a GPU machine is far faster (see the kit READMEs).
+- Full-length renders (4K 360, 1080p 16:9) have not been run here.
 
 **Not tested here:** real-GPU frame rates, iOS Safari and Android Chrome on real phones, a WebXR headset, full-length 4K renders, and any online deployment.
 
