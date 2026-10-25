@@ -44,7 +44,7 @@ QUERY = """[out:json][timeout:240];
   way["railway"~"rail|light_rail|tram"]({b});
   way["waterway"~"river|stream|canal"]({b});
   way["natural"="water"]({b}); relation["natural"="water"]({b}); way["waterway"="riverbank"]({b});
-  way["leisure"~"park|garden|pitch|stadium|track|playground|golf_course"]({b}); relation["leisure"~"park|garden"]({b});
+  way["leisure"~"park|garden|pitch|stadium|track|playground|golf_course"]({b}); relation["leisure"~"park|garden|stadium|pitch|track"]({b});
   way["landuse"~"grass|recreation_ground|forest|meadow|cemetery"]({b});
   way["natural"~"wood|scrub|grassland"]({b});
   way["man_made"="bridge"]({b});
