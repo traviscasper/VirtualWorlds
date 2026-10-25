@@ -1,0 +1,47 @@
+{
+  "$schema": "./schema.json",
+  "id": "film-orrery",
+  "kind": "film-world",
+  "name": "The Orrery",
+  "summary": "Nested worlds turning inside one another like a cosmic clockwork.",
+  "description": "A world from ARCHIVE: Worlds Within Worlds (chapter 3). It is drawn by the film's raymarching shader (worlds-within-worlds/src/worlds/20_orrery.glsl). Opens the film studio at this chapter; a standalone interactive version is a planned adaptation (see docs/RECOMMENDATIONS.md).",
+  "categories": [
+    "space"
+  ],
+  "time": {
+    "era": "future",
+    "label": "Chapter 3"
+  },
+  "place": {
+    "type": "virtual",
+    "name": "The Orrery",
+    "fictional": true
+  },
+  "purposes": [
+    "experience a story"
+  ],
+  "launch": [
+    {
+      "label": "Watch chapter 3",
+      "href": "worlds-within-worlds/ARCHIVE_Studio.html?chapter=2"
+    }
+  ],
+  "preview": "portal/img/film-orrery.jpg",
+  "project": "worlds-within-worlds",
+  "formats": {
+    "desktop": true,
+    "mobile": false,
+    "webxr": false,
+    "video360": true,
+    "video16x9": true
+  },
+  "status": {
+    "stage": "film-only",
+    "notes": "Viewable in the film studio; interactive adaptation planned."
+  },
+  "engine": {
+    "type": "raymarch-glsl",
+    "module": "worlds-within-worlds/src/worlds/20_orrery.glsl",
+    "chapter": 2
+  }
+}

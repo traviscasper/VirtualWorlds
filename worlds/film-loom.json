@@ -1,0 +1,47 @@
+{
+  "$schema": "./schema.json",
+  "id": "film-loom",
+  "kind": "film-world",
+  "name": "The Loom",
+  "summary": "The Great Network: thousands of threads, many fraying.",
+  "description": "A world from ARCHIVE: Worlds Within Worlds (chapter 6). It is drawn by the film's raymarching shader (worlds-within-worlds/src/worlds/60_loom.glsl). Opens the film studio at this chapter; a standalone interactive version is a planned adaptation (see docs/RECOMMENDATIONS.md).",
+  "categories": [
+    "technology"
+  ],
+  "time": {
+    "era": "future",
+    "label": "Chapter 6"
+  },
+  "place": {
+    "type": "virtual",
+    "name": "The Loom",
+    "fictional": true
+  },
+  "purposes": [
+    "experience a story"
+  ],
+  "launch": [
+    {
+      "label": "Watch chapter 6",
+      "href": "worlds-within-worlds/ARCHIVE_Studio.html?chapter=5"
+    }
+  ],
+  "preview": "portal/img/film-loom.jpg",
+  "project": "worlds-within-worlds",
+  "formats": {
+    "desktop": true,
+    "mobile": false,
+    "webxr": false,
+    "video360": true,
+    "video16x9": true
+  },
+  "status": {
+    "stage": "film-only",
+    "notes": "Viewable in the film studio; interactive adaptation planned."
+  },
+  "engine": {
+    "type": "raymarch-glsl",
+    "module": "worlds-within-worlds/src/worlds/60_loom.glsl",
+    "chapter": 5
+  }
+}

@@ -1,0 +1,199 @@
+{
+  "$schema": "./schema.json",
+  "id": "columbus-2050",
+  "title": "Columbus 2050",
+  "tagline": "Skyship · Columbus 2050 (artistic scenario)",
+  "summary": "Downtown Columbus in one possible 2050.",
+  "duration": 40,
+  "transition": 3,
+  "timelineLabel": "COLUMBUS 2050",
+  "categories": [
+    "sustainability",
+    "technology"
+  ],
+  "worlds": [
+    {
+      "world": "columbus-2050",
+      "t0": 0,
+      "t1": 40,
+      "timeOffset": 0
+    }
+  ],
+  "cues": [
+    {
+      "t": 0,
+      "mood": "curious",
+      "look": "ahead",
+      "slot": "L",
+      "line": "Columbus, Ohio. The year 2050. One possible future."
+    },
+    {
+      "t": 4.5,
+      "mood": "happy",
+      "look": "river",
+      "slot": "R",
+      "line": "The Scioto runs free here, lined with forest."
+    },
+    {
+      "t": 8,
+      "mood": "amazed",
+      "look": "vertiport",
+      "point": true,
+      "slot": "L",
+      "line": "A rooftop vertiport. Air taxis, buses and bikes meet here."
+    },
+    {
+      "t": 12,
+      "mood": "curious",
+      "look": "greenbridge",
+      "slot": "R",
+      "line": "Below us: a bridge just for walking and biking."
+    },
+    {
+      "t": 15.5,
+      "mood": "amazed",
+      "look": "leveque",
+      "point": true,
+      "slot": "L",
+      "line": "The LeVeque Tower, 1927. A real Columbus landmark."
+    },
+    {
+      "t": 19.5,
+      "mood": "happy",
+      "look": "fountain",
+      "point": true,
+      "slot": "R",
+      "line": "The Scioto Mile. Parks right on the water."
+    },
+    {
+      "t": 23.2,
+      "mood": "surprised",
+      "look": "canyon",
+      "gesture": "jump",
+      "slot": "R",
+      "line": "Steady... right down Broad Street!"
+    },
+    {
+      "t": 26.3,
+      "mood": "excited",
+      "look": "transit",
+      "point": true,
+      "slot": "R",
+      "line": "Rapid transit in its own green lane."
+    },
+    {
+      "t": 29.5,
+      "mood": "thoughtful",
+      "look": "statehouse",
+      "point": true,
+      "slot": "R",
+      "line": "The Ohio Statehouse, finished in 1861."
+    },
+    {
+      "t": 33,
+      "mood": "happy",
+      "look": "roofs",
+      "point": true,
+      "slot": "L",
+      "line": "Green roofs, solar panels, towers made of wood."
+    },
+    {
+      "t": 36.5,
+      "mood": "excited",
+      "look": "up",
+      "gesture": "spin",
+      "slot": "R",
+      "line": "Hold on. Next stop: orbit!"
+    },
+    {
+      "t": 37,
+      "mood": "happy",
+      "look": "you",
+      "gesture": "wave",
+      "slot": "R",
+      "line": "One possible future. What would you build?"
+    }
+  ],
+  "audio": {
+    "file": "../journeys/audio/columbus-2050.mp3"
+  },
+  "final": {
+    "t0": 34.5,
+    "line1": "Columbus 2050.",
+    "line2": "One Possible Future.",
+    "foot": "AN ARTISTIC SCENARIO · NOT AN OFFICIAL PLAN · FUTURE LIFE EXPERIENCES",
+    "color2": "#9dffcf"
+  },
+  "lesson": {
+    "title": "Designing a Sustainable City",
+    "course": "Virtual Environments for a Better Future",
+    "intro": "Investigate how this imagined Columbus handles water, heat, energy and getting around.",
+    "objectives": [
+      {
+        "text": "Explain how a restored river and urban trees help a city.",
+        "hotspots": [
+          "river",
+          "greenbridge"
+        ]
+      },
+      {
+        "text": "Describe two ways to move people without more cars.",
+        "hotspots": [
+          "transit",
+          "vertiport"
+        ]
+      },
+      {
+        "text": "Name ways buildings can make energy and manage rain.",
+        "hotspots": [
+          "roofs",
+          "microgrid"
+        ]
+      }
+    ]
+  },
+  "shots": [
+    [
+      4,
+      "columbus_river",
+      "cabin",
+      0.5,
+      -0.3
+    ],
+    [
+      16,
+      "columbus_leveque",
+      "cabin",
+      1.15,
+      0.12
+    ],
+    [
+      24,
+      "columbus_broad",
+      "cabin",
+      0,
+      -0.08
+    ],
+    [
+      27,
+      "columbus_transit_chase",
+      "chase",
+      0,
+      0
+    ],
+    [
+      30,
+      "columbus_statehouse",
+      "cabin",
+      -1.3,
+      -0.12
+    ],
+    [
+      34,
+      "columbus_roofs",
+      "ext",
+      0,
+      0
+    ]
+  ]
+}

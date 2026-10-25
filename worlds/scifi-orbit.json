@@ -1,0 +1,229 @@
+{
+  "$schema": "./schema.json",
+  "id": "scifi-orbit",
+  "kind": "world",
+  "name": "A Sustainable Future (orbit)",
+  "summary": "The original orbital habitats from the Sci-Fi 360 journey.",
+  "description": "Ring habitat, biosphere domes, solar wings, transit tubes and the wheel station, as first built for the Sci-Fi 360 journey (kept unchanged; the expanded version is the Sustainable Orbital Habitat).",
+  "time": {
+    "era": "future",
+    "label": "Tomorrow"
+  },
+  "place": {
+    "type": "orbit",
+    "name": "Earth orbit",
+    "fictional": true
+  },
+  "purposes": [
+    "experience a story"
+  ],
+  "learningObjectives": [
+    "See how technology could sustain life beyond Earth."
+  ],
+  "categories": [
+    "space",
+    "sustainability"
+  ],
+  "launch": [
+    {
+      "label": "Fly the journey",
+      "mode": "cinematic",
+      "href": "skyship-engine/journey.html?journey=scifi-classics"
+    },
+    {
+      "label": "Explore",
+      "mode": "explore",
+      "href": "skyship-engine/journey.html?journey=scifi-classics&mode=explore"
+    },
+    {
+      "label": "Learn",
+      "mode": "learn",
+      "href": "skyship-engine/journey.html?journey=scifi-classics&mode=learn"
+    }
+  ],
+  "preview": "portal/img/scifi-orbit.jpg",
+  "engine": {
+    "type": "skyship",
+    "module": "sci-fi-360/js/world_orbit.js",
+    "build": "buildOrbit",
+    "space": true,
+    "earth": true,
+    "cabinLight": 0.9,
+    "display": {
+      "chip": "Future",
+      "year": "TOMORROW",
+      "yearShort": "NEXT",
+      "title": "A SUSTAINABLE FUTURE",
+      "author": "WRITTEN BY ALL OF US",
+      "sub": "the next chapter",
+      "theme": "LIFE BEYOND EARTH",
+      "themeLine": "Technology that protects ecosystems, sustains biodiversity, and lets life thrive beyond Earth.",
+      "place": "ORBITAL HABITATS",
+      "below": "EARTH",
+      "outside": "VACUUM",
+      "speedLabel": "17,100 MPH",
+      "holding": "Holding near the habitats"
+    },
+    "atmosphere": {
+      "top": "#000004",
+      "hor": "#02040c",
+      "bot": "#000000",
+      "fog": "#000000",
+      "fogD": 0,
+      "sun": [
+        0.42,
+        0.2,
+        -0.88
+      ],
+      "sunCol": "#ffffff",
+      "sS": 1.5,
+      "aS": 0.2,
+      "hemiS": "#3a4a6a",
+      "hemiG": "#06080c",
+      "stars": 1,
+      "cloud": "#ffffff",
+      "cloudAmt": 0,
+      "band": [
+        0,
+        0
+      ],
+      "cloudy": 0,
+      "exp": 1.0,
+      "moonDisk": 0,
+      "whiteout": "#1c2b55"
+    }
+  },
+  "navigation": {
+    "modes": [
+      "cinematic",
+      "explore",
+      "learn"
+    ],
+    "controls": [
+      "drag to look",
+      "pinch or scroll to zoom",
+      "fly-to menu",
+      "stops",
+      "hotspots",
+      "WebXR headset"
+    ]
+  },
+  "stops": [
+    {
+      "t": 128,
+      "name": "Ring habitat",
+      "hotspots": [
+        "s-ring"
+      ]
+    },
+    {
+      "t": 141,
+      "name": "Biosphere",
+      "hotspots": [
+        "s-falls"
+      ]
+    },
+    {
+      "t": 166,
+      "name": "Earth",
+      "hotspots": [
+        "s-earth"
+      ]
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "s-ring",
+      "anchor": "ring",
+      "label": "Ring habitat",
+      "category": "space",
+      "kicker": "Space",
+      "title": "A ring habitat",
+      "text": "Farms inside a spinning ring; the spin makes gravity.",
+      "facts": [
+        {
+          "text": "A ring 224 m in radius turning twice a minute gives about 1 g.",
+          "source": "Physics"
+        }
+      ],
+      "archive": "Farms inside, spun for gravity.",
+      "size": 260
+    },
+    {
+      "id": "s-falls",
+      "anchor": "falls",
+      "label": "Biosphere",
+      "category": "sustainability",
+      "kicker": "Sustainability",
+      "title": "Life, looked after",
+      "text": "Forests, a lake and a waterfall inside a sealed dome.",
+      "facts": [
+        {
+          "text": "Biosphere 2 in Arizona (1991) tested sealed ecosystems for living in space.",
+          "source": "Sci-Fi 360 fact sheet"
+        }
+      ],
+      "archive": "Forests, a lake, a waterfall.",
+      "size": 90
+    },
+    {
+      "id": "s-earth",
+      "anchor": "earth",
+      "label": "Earth",
+      "category": "space",
+      "kicker": "Home",
+      "title": "Home",
+      "text": "Everything we know lives down there.",
+      "facts": [],
+      "archive": "Earth. Everything we know lives down there.",
+      "size": 600,
+      "range": 99999
+    }
+  ],
+  "facts": [
+    {
+      "text": "Gerard O'Neill proposed rotating space habitats in The High Frontier (1976).",
+      "source": "Sci-Fi 360 fact sheet"
+    },
+    {
+      "text": "A ring 224 m in radius turning twice a minute gives about 1 g.",
+      "source": "Sci-Fi 360 fact sheet"
+    },
+    {
+      "text": "The ISS recycles about 98% of the water its crew uses.",
+      "source": "Sci-Fi 360 fact sheet"
+    },
+    {
+      "text": "Biosphere 2 in Arizona (1991) tested sealed ecosystems for living in space.",
+      "source": "Sci-Fi 360 fact sheet"
+    },
+    {
+      "text": "Every habitat here runs on sunlight and recycles its air and water.",
+      "source": "Sci-Fi 360 fact sheet"
+    }
+  ],
+  "assets": {
+    "models": "procedural (code-generated)",
+    "textures": "canvas-generated",
+    "shared": [
+      "sci-fi-360/js/lib.js",
+      "sci-fi-360/vendor/three.module.js",
+      "skyship-engine/journey.html"
+    ],
+    "data": []
+  },
+  "audio": {
+    "track": "sci-fi-360/audio/soundtrack.mp3"
+  },
+  "formats": {
+    "desktop": true,
+    "mobile": true,
+    "webxr": true,
+    "video360": true,
+    "video16x9": true
+  },
+  "status": {
+    "stage": "complete",
+    "notes": "Original world from sci-fi-360, unchanged; runs on the shared engine via the scifi-classics journey."
+  }
+}

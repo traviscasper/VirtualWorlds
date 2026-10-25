@@ -1,0 +1,44 @@
+{
+  "$schema": "./schema.json",
+  "id": "worlds-within-worlds",
+  "kind": "film",
+  "name": "ARCHIVE: Worlds Within Worlds (film studio)",
+  "summary": "The 90-minute, ten-chapter feature: a playable studio with chapter jumps, 360 and VR modes.",
+  "description": "Raymarched GLSL worlds rendered by the film's own engine. Open the studio to play, scrub, preview 360 / VR 3D and record; render the full film with render/render.mjs.",
+  "categories": [
+    "technology",
+    "space",
+    "sustainability"
+  ],
+  "time": {
+    "era": "future",
+    "label": "Many times"
+  },
+  "place": {
+    "type": "virtual",
+    "name": "The Archive and its worlds",
+    "fictional": true
+  },
+  "purposes": [
+    "experience a story"
+  ],
+  "launch": [
+    {
+      "label": "Open the studio",
+      "href": "worlds-within-worlds/ARCHIVE_Studio.html"
+    }
+  ],
+  "preview": "portal/img/worlds-within-worlds.jpg",
+  "project": "worlds-within-worlds",
+  "formats": {
+    "desktop": true,
+    "mobile": false,
+    "webxr": false,
+    "video360": true,
+    "video16x9": true
+  },
+  "status": {
+    "stage": "complete",
+    "notes": "All ten chapters animated; entertainment pass in progress (see worlds-within-worlds/docs/PRODUCTION_PLAN.md)."
+  }
+}

@@ -1,0 +1,366 @@
+{
+  "$schema": "./schema.json",
+  "id": "columbus-to-orbit",
+  "title": "Columbus 2050 to Orbit",
+  "tagline": "Skyship · Columbus 2050 → orbital habitat",
+  "summary": "A 90-second guided flight: down the Scioto and along Broad Street in Columbus 2050, up through the clouds, and into the orbital habitat's Life Support Commons.",
+  "duration": 90,
+  "transition": 4,
+  "timelineLabel": "COLUMBUS → ORBIT",
+  "transitLabel": "CLIMBING THROUGH THE CLOUDS",
+  "categories": [
+    "sustainability",
+    "technology",
+    "space"
+  ],
+  "worlds": [
+    {
+      "world": "columbus-2050",
+      "t0": 0,
+      "t1": 42,
+      "timeOffset": 0
+    },
+    {
+      "world": "orbital-habitat",
+      "t0": 42,
+      "t1": 90,
+      "timeOffset": 78
+    }
+  ],
+  "cues": [
+    {
+      "t": 0,
+      "mood": "curious",
+      "look": "ahead",
+      "slot": "L",
+      "line": "Columbus, Ohio. The year 2050. One possible future."
+    },
+    {
+      "t": 4.5,
+      "mood": "happy",
+      "look": "river",
+      "slot": "R",
+      "line": "The Scioto runs free here, lined with forest."
+    },
+    {
+      "t": 8,
+      "mood": "amazed",
+      "look": "vertiport",
+      "point": true,
+      "slot": "L",
+      "line": "A rooftop vertiport. Air taxis, buses and bikes meet here."
+    },
+    {
+      "t": 12,
+      "mood": "curious",
+      "look": "greenbridge",
+      "slot": "R",
+      "line": "Below us: a bridge just for walking and biking."
+    },
+    {
+      "t": 15.5,
+      "mood": "amazed",
+      "look": "leveque",
+      "point": true,
+      "slot": "L",
+      "line": "The LeVeque Tower, 1927. A real Columbus landmark."
+    },
+    {
+      "t": 19.5,
+      "mood": "happy",
+      "look": "fountain",
+      "point": true,
+      "slot": "R",
+      "line": "The Scioto Mile. Parks right on the water."
+    },
+    {
+      "t": 23.2,
+      "mood": "surprised",
+      "look": "canyon",
+      "gesture": "jump",
+      "slot": "R",
+      "line": "Steady... right down Broad Street!"
+    },
+    {
+      "t": 26.3,
+      "mood": "excited",
+      "look": "transit",
+      "point": true,
+      "slot": "R",
+      "line": "Rapid transit in its own green lane."
+    },
+    {
+      "t": 29.5,
+      "mood": "thoughtful",
+      "look": "statehouse",
+      "point": true,
+      "slot": "R",
+      "line": "The Ohio Statehouse, finished in 1861."
+    },
+    {
+      "t": 33,
+      "mood": "happy",
+      "look": "roofs",
+      "point": true,
+      "slot": "L",
+      "line": "Green roofs, solar panels, towers made of wood."
+    },
+    {
+      "t": 36.5,
+      "mood": "excited",
+      "look": "up",
+      "gesture": "spin",
+      "slot": "R",
+      "line": "Hold on. Next stop: orbit!"
+    },
+    {
+      "t": 40.5,
+      "mood": "amazed",
+      "look": "up",
+      "slot": "R",
+      "line": "Up through the clouds..."
+    },
+    {
+      "t": 46.5,
+      "mood": "amazed",
+      "look": "down",
+      "slot": "R",
+      "line": "Earth. Columbus is down there, under the clouds."
+    },
+    {
+      "t": 50,
+      "mood": "happy",
+      "look": "ring",
+      "point": true,
+      "slot": "R",
+      "line": "A ring habitat, spinning to make gravity."
+    },
+    {
+      "t": 53.5,
+      "mood": "excited",
+      "look": "up",
+      "gesture": "spin",
+      "slot": "R",
+      "line": "Straight through the middle!"
+    },
+    {
+      "t": 58.5,
+      "mood": "happy",
+      "look": "falls",
+      "point": true,
+      "slot": "R",
+      "line": "Forest, lake, waterfall. Water used again and again."
+    },
+    {
+      "t": 66.5,
+      "mood": "curious",
+      "look": "farm",
+      "point": true,
+      "slot": "L",
+      "line": "The Life Support Commons. First: food."
+    },
+    {
+      "t": 70.5,
+      "mood": "happy",
+      "look": "water",
+      "point": true,
+      "slot": "L",
+      "line": "Water, cleaned and used again. Almost nothing lost."
+    },
+    {
+      "t": 74.5,
+      "mood": "amazed",
+      "look": "energy",
+      "point": true,
+      "slot": "L",
+      "line": "Sunlight in, stored for the dark side of the orbit."
+    },
+    {
+      "t": 78.5,
+      "mood": "happy",
+      "look": "air",
+      "point": true,
+      "slot": "L",
+      "line": "Algae breathe in our CO2 and breathe out oxygen."
+    },
+    {
+      "t": 82.5,
+      "mood": "thoughtful",
+      "look": "earthView",
+      "slot": "R",
+      "line": "A city or a habitat: both have to keep life going."
+    },
+    {
+      "t": 86.5,
+      "mood": "happy",
+      "look": "you",
+      "gesture": "wave",
+      "slot": "R"
+    }
+  ],
+  "final": {
+    "t0": 84,
+    "line1": "From Columbus to Orbit,",
+    "line2": "Sustaining Life Is Our Responsibility.",
+    "foot": "FUTURE LIFE EXPERIENCES · TIME · PLACE · PURPOSE"
+  },
+  "audio": {
+    "file": "../journeys/audio/columbus-to-orbit.mp3"
+  },
+  "lesson": {
+    "title": "Sustaining Life: from a City to a Space Habitat",
+    "course": "Virtual Environments for a Better Future",
+    "intro": "A city and a space habitat need the same things: clean water, energy, food, fresh air and ways to move around. Investigate each marker and answer the questions.",
+    "objectives": [
+      {
+        "text": "Explain how a restored river and urban trees help a city.",
+        "hotspots": [
+          "river",
+          "greenbridge"
+        ]
+      },
+      {
+        "text": "Describe two ways to move people without more cars.",
+        "hotspots": [
+          "transit",
+          "vertiport"
+        ]
+      },
+      {
+        "text": "Name ways buildings can make energy and manage rain.",
+        "hotspots": [
+          "roofs",
+          "microgrid"
+        ]
+      },
+      {
+        "text": "Explain how a habitat recycles water and air.",
+        "hotspots": [
+          "water",
+          "air"
+        ]
+      },
+      {
+        "text": "Explain how a habitat grows food and stores energy.",
+        "hotspots": [
+          "farm",
+          "energy"
+        ]
+      },
+      {
+        "text": "Compare: which needs are the same in the city and in orbit?",
+        "hotspots": [
+          "ring",
+          "dome"
+        ]
+      }
+    ]
+  },
+  "shots": [
+    [
+      4,
+      "columbus_river",
+      "cabin",
+      0.5,
+      -0.3
+    ],
+    [
+      16,
+      "columbus_leveque",
+      "cabin",
+      1.15,
+      0.12
+    ],
+    [
+      24,
+      "columbus_broad",
+      "cabin",
+      0,
+      -0.08
+    ],
+    [
+      27,
+      "columbus_transit_chase",
+      "chase",
+      0,
+      0
+    ],
+    [
+      30,
+      "columbus_statehouse",
+      "cabin",
+      -1.3,
+      -0.12
+    ],
+    [
+      34,
+      "columbus_roofs",
+      "ext",
+      0,
+      0
+    ],
+    [
+      41.5,
+      "transition_clouds",
+      "cabin",
+      0,
+      -0.1
+    ],
+    [
+      47,
+      "orbit_earth",
+      "cabin",
+      0,
+      -0.6
+    ],
+    [
+      53,
+      "orbit_ring",
+      "cabin",
+      0,
+      0.05
+    ],
+    [
+      62,
+      "orbit_dome",
+      "cabin",
+      -1.1,
+      -0.15
+    ],
+    [
+      69,
+      "orbit_farm",
+      "cabin",
+      1.25,
+      0
+    ],
+    [
+      73,
+      "orbit_water",
+      "cabin",
+      1.3,
+      -0.05
+    ],
+    [
+      77,
+      "orbit_energy",
+      "cabin",
+      1.25,
+      0.05
+    ],
+    [
+      81,
+      "orbit_air",
+      "cabin",
+      1.25,
+      0
+    ],
+    [
+      86,
+      "final_message",
+      "cabin",
+      0,
+      0.12
+    ]
+  ]
+}

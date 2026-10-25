@@ -1,0 +1,47 @@
+{
+  "$schema": "./schema.json",
+  "id": "film-ferrum",
+  "kind": "film-world",
+  "name": "Ferrum",
+  "summary": "A city of machines losing power district by district.",
+  "description": "A world from ARCHIVE: Worlds Within Worlds (chapter 4). It is drawn by the film's raymarching shader (worlds-within-worlds/src/worlds/40_ferrum.glsl). Opens the film studio at this chapter; a standalone interactive version is a planned adaptation (see docs/RECOMMENDATIONS.md).",
+  "categories": [
+    "technology"
+  ],
+  "time": {
+    "era": "future",
+    "label": "Chapter 4"
+  },
+  "place": {
+    "type": "virtual",
+    "name": "Ferrum",
+    "fictional": true
+  },
+  "purposes": [
+    "experience a story"
+  ],
+  "launch": [
+    {
+      "label": "Watch chapter 4",
+      "href": "worlds-within-worlds/ARCHIVE_Studio.html?chapter=3"
+    }
+  ],
+  "preview": "portal/img/film-ferrum.jpg",
+  "project": "worlds-within-worlds",
+  "formats": {
+    "desktop": true,
+    "mobile": false,
+    "webxr": false,
+    "video360": true,
+    "video16x9": true
+  },
+  "status": {
+    "stage": "film-only",
+    "notes": "Viewable in the film studio; interactive adaptation planned."
+  },
+  "engine": {
+    "type": "raymarch-glsl",
+    "module": "worlds-within-worlds/src/worlds/40_ferrum.glsl",
+    "chapter": 3
+  }
+}

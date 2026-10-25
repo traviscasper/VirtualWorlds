@@ -1,0 +1,51 @@
+{
+  "$schema": "./schema.json",
+  "id": "scifi-journey",
+  "kind": "experience",
+  "name": "ARCHIVE Skyship: 200 Years of Science Fiction",
+  "summary": "Frankenstein, R.U.R., Metropolis and a sustainable orbital future, in one 3-minute flight.",
+  "description": "The original Sci-Fi 360 kit with its own soundtrack and 4K 360 render pipeline. The same four worlds also run on the shared Skyship Engine (scifi-classics journey), where they gain Explore and Learn modes.",
+  "categories": [
+    "technology",
+    "space",
+    "sustainability"
+  ],
+  "time": {
+    "era": "past-to-future",
+    "label": "1818 → tomorrow"
+  },
+  "place": {
+    "type": "virtual",
+    "name": "Four worlds of science fiction",
+    "fictional": true
+  },
+  "purposes": [
+    "experience a story",
+    "learn",
+    "explore"
+  ],
+  "launch": [
+    {
+      "label": "Original kit",
+      "href": "sci-fi-360/skyship.html"
+    },
+    {
+      "label": "Explore on the shared engine",
+      "mode": "explore",
+      "href": "skyship-engine/journey.html?journey=scifi-classics&mode=explore"
+    }
+  ],
+  "preview": "portal/img/scifi-journey.jpg",
+  "project": "sci-fi-360",
+  "formats": {
+    "desktop": true,
+    "mobile": true,
+    "webxr": true,
+    "video360": true,
+    "video16x9": true
+  },
+  "status": {
+    "stage": "complete",
+    "notes": "Original unchanged; render with sci-fi-360/render_360.py."
+  }
+}
