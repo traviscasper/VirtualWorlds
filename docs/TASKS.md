@@ -12,6 +12,7 @@ Priorities: **P1** = needed for the next milestone or the FLE event, **P2** = hi
 - [x] Today, 2050, Orbit journey (2½ min) and Ohio State Campus journey (66 s), with lessons and baked scores
 - [x] Portal features the new journey; OSU world, previews, "Campus" place filter
 - [x] QA `gis` group (data checks, both journeys, 360 capture, Learn mode)
+- [x] Building quality pass: facade system, pitched roofs, parapets, storefronts; building viewer for close-up review
 
 ## Done (Phase 2, branch `phase-2`)
 

@@ -9,6 +9,7 @@
    Map data (c) OpenStreetMap contributors, ODbL 1.0. */
 import * as THREE from 'three';
 import { V3, Col, rng, clamp } from '../../sci-fi-360/js/lib.js';
+import { makeFacades, chooseStyle, tintFor } from './facades.js';
 
 /** fetch and decode a region's layer file (path relative to the repository root) */
 export async function loadRegion(id) {
@@ -41,9 +42,9 @@ class Acc {
       this.tri(key, [A.x, y, A.y], [Bv.x, y, Bv.y], [C.x, y, C.y], [0, 1, 0], [A.x / tile, A.y / tile], [Bv.x / tile, Bv.y / tile], [C.x / tile, C.y / tile], col); }
   }
   /** vertical quad from a to b (xz), y0..y1, outward normal n */
-  wall(key, a, b, y0, y1, n, u0, u1, tw, th, col) {
+  wall(key, a, b, y0, y1, n, u0, u1, tw, th, col, vb = 0) {
     const A0 = [a[0], y0, a[1]], B0 = [b[0], y0, b[1]], A1 = [a[0], y1, a[1]], B1 = [b[0], y1, b[1]];
-    const v0 = y0 / th, v1 = y1 / th, ua = u0 / tw, ub = u1 / tw;
+    const v0 = (y0 - vb) / th, v1 = (y1 - vb) / th, ua = u0 / tw, ub = u1 / tw;
     this.tri(key, A0, B1, B0, n, [ua, v0], [ub, v1], [ub, v0], col); this.tri(key, A0, A1, B1, n, [ua, v0], [ua, v1], [ub, v1], col);
   }
   build(mats, parent) { const out = {};
@@ -54,47 +55,6 @@ class Acc {
     this.k = {}; return out; }
 }
 
-/* ---------------- facade textures (canvas) ---------------- */
-function facade(kind, seed) {
-  const r = rng(seed), W = 256, H = 256; const mk = () => { const c = document.createElement('canvas'); c.width = W; c.height = H; return c; };
-  const cm = mk(), ce = mk(), x = cm.getContext('2d'), e = ce.getContext('2d'); e.fillStyle = '#000'; e.fillRect(0, 0, W, H);
-  const spec = { tower: { bg: '#9fb4c8', win: '#3f5f80', cols: 8, rows: 8, ww: .86, wh: .78, mull: '#d9e3ec' },
-                 office: { bg: '#d9d2c3', win: '#40566b', cols: 4, rows: 4, ww: .55, wh: .5 },
-                 brick: { bg: '#a65a45', win: '#2f3a44', cols: 4, rows: 4, ww: .42, wh: .52, brick: true },
-                 stone: { bg: '#d7cdb8', win: '#3a4652', cols: 3, rows: 4, ww: .38, wh: .58, arch: true },
-                 house: { bg: '#e6e0d4', win: '#33414d', cols: 2, rows: 3, ww: .34, wh: .42, siding: true },
-                 plain: { bg: '#b9b6ae', win: '#5a6168', cols: 2, rows: 4, ww: .2, wh: .25 } }[kind];
-  x.fillStyle = spec.bg; x.fillRect(0, 0, W, H);
-  if (spec.brick) { for (let y = 0; y < H; y += 6) for (let i = 0; i < W; i += 14) { x.fillStyle = `rgba(${90 + r() * 50},${40 + r() * 20},${30 + r() * 15},.35)`; x.fillRect(i + (y / 6 % 2) * 7, y, 13, 5); } }
-  if (spec.siding) { x.strokeStyle = 'rgba(0,0,0,.08)'; for (let y = 0; y < H; y += 8) { x.beginPath(); x.moveTo(0, y); x.lineTo(W, y); x.stroke(); } }
-  if (spec.mull) { x.fillStyle = spec.mull; for (let i = 0; i <= spec.cols; i++) x.fillRect(i * W / spec.cols - 1.5, 0, 3, H); for (let j = 0; j <= spec.rows; j++) x.fillRect(0, j * H / spec.rows - 2, W, 4); }
-  const cw = W / spec.cols, ch = H / spec.rows;
-  for (let j = 0; j < spec.rows; j++) for (let i = 0; i < spec.cols; i++) {
-    const w = cw * spec.ww, h = ch * spec.wh, px = i * cw + (cw - w) / 2, py = j * ch + (ch - h) * .55;
-    const g = x.createLinearGradient(px, py, px + w, py + h); g.addColorStop(0, spec.win); g.addColorStop(1, '#8fb0c8'); x.fillStyle = g;
-    if (spec.arch && j === spec.rows - 1) { x.beginPath(); x.moveTo(px, py + h); x.lineTo(px, py + w / 2); x.arc(px + w / 2, py + w / 2, w / 2, Math.PI, 0); x.lineTo(px + w, py + h); x.fill(); } else x.fillRect(px, py, w, h);
-    if (r() < .32) { e.fillStyle = `rgba(255,${215 + r() * 30},${160 + r() * 60},${.55 + r() * .4})`; e.fillRect(px, py, w, h); }
-  }
-  const t = (c, srgb) => { const tx = new THREE.CanvasTexture(c); tx.wrapS = tx.wrapT = THREE.RepeatWrapping; tx.anisotropy = 4; if (srgb) tx.colorSpace = THREE.SRGBColorSpace; return tx; };
-  return { map: t(cm, true), emi: t(ce, true), tile: { tower: [24, 28], office: [16, 14], brick: [14, 14], stone: [14, 16], house: [9, 9], plain: [12, 14] }[kind] };
-}
-
-/* ---------------- building styling ---------------- */
-const STONEY = new Set(['university', 'college', 'school', 'church', 'cathedral', 'civic', 'government', 'public', 'museum', 'library']);
-const PLAIN = new Set(['garage', 'garages', 'parking', 'industrial', 'warehouse', 'shed', 'roof', 'service', 'transformer_tower', 'stadium', 'grandstand']);
-const HOUSE = new Set(['house', 'detached', 'semidetached_house', 'terrace', 'bungalow']);
-export function styleOf(b, seed) {
-  const k = b.k || 'yes', h = b.h;
-  if (PLAIN.has(k)) return 'plain';
-  if (HOUSE.has(k) && h < 14) return 'house';
-  if (STONEY.has(k)) return h > 75 ? 'tower' : seed < .45 ? 'stone' : 'brick';
-  if (h >= 48) return 'tower';
-  if (k === 'apartments' || k === 'residential') return h > 30 ? 'office' : 'brick';
-  if (k === 'office' || k === 'commercial' || k === 'hotel') return h > 20 ? 'office' : seed < .5 ? 'brick' : 'office';
-  return h > 22 ? 'office' : seed < .55 ? 'brick' : 'office';
-}
-const TINT = { tower: ['#cfe0ee', '#b8cde0', '#dde7ef', '#a9c3d8'], office: ['#efe9dd', '#e2dccf', '#d6d4cd', '#f3eee4'], brick: ['#ffffff', '#f1d9cc', '#e5c2b2', '#d9b6a6'],
-  stone: ['#fffaf0', '#f2ead8', '#e8dfca'], house: ['#ffffff', '#e7eef3', '#f4e9d8', '#e4ecdf'], plain: ['#f0f0f0', '#dcdcdc', '#e6e2da'] };
 function cssColour(s) { try { return new Col(s); } catch (e) { return null; } }
 
 /**
@@ -105,6 +65,7 @@ function cssColour(s) { try { return new Col(s); } catch (e) { return null; } }
  * opts.trees: { parks: m²/tree, woods: m²/tree, max }          procedural trees in green areas (plus OSM tree nodes)
  * opts.treeShades: [colours]     canopy colours to pick from (e.g. autumn)
  * opts.trees.noFill: RegExp      green areas (by name) that get no procedural trees, only mapped ones
+ * opts.campus: true              campus rules for facades (collegiate brick for university and civic buildings)
  * opts.extent: [x0, z0, x1, z1]  limit what is built (metres)
  * Returns { group, colliders, landmarks, find(name), roads(name), treePoints, stats }
  */
@@ -144,39 +105,54 @@ export function buildCity(ctx, data, opts = {}) {
     roadLines.push(rd); }
   for (const rl of data.rail) ribbon(A, 'rail', rl.pts, 3.2, .16, new Col('#6b625a'), rl.b ? 6 : 0);
 
-  /* buildings */
-  const tex = {}; const STY = ['tower', 'office', 'brick', 'stone', 'house', 'plain'];
-  STY.forEach((s, i) => tex[s] = facade(s, 11 + i));
-  const roofCol = { null: new Col('#8b8d90'), green: new Col('#5f9a48'), white: new Col('#e8ebee') };
+  /* buildings: facade style from type/height/size (facades.js), floors aligned to each building's storey height,
+     storefront band at street level, pitched roofs on houses, parapets and rooftop units on flat roofs */
+  const F = makeFacades(ctx); const campus = !!opts.campus;
+  const roofTint = { green: new Col('#5f9a48'), white: new Col('#eef0f2') };
   let n = 0, nEst = 0;
   for (const b of data.buildings) {
     const ring0 = b.pts; if (ring0.length < 3) continue; const [cx, cz] = ring0[0]; if (!inExt(cx, cz)) continue;
     if (opts.skip?.(b)) continue;
     const ring = signedArea(ring0) > 0 ? ring0 : [...ring0].reverse();
-    const seed = ((Math.abs(b.p[0] * 31 + b.p[1] * 17) % 997) / 997);
-    const sty = styleOf(b, seed), T = tex[sty], [tw, th] = T.tile;
-    const y0 = b.m || 0, y1 = Math.max(y0 + 2.5, b.h);
-    const tint = (b.c && cssColour(b.c)) || new Col(TINT[sty][Math.floor(seed * TINT[sty].length)]);
-    const walls = (rg, sign) => { let u = 0; for (let i = 0; i < rg.length; i++) { const a = rg[i], c = rg[(i + 1) % rg.length]; const dx = c[0] - a[0], dz = c[1] - a[1], L = Math.hypot(dx, dz); if (L < .05) continue;
-      A.wall(sty, a, c, y0, y1, [sign * dz / L, 0, -sign * dx / L], u, u + L, tw, th, tint); u += L; } };
-    walls(ring, 1);
-    for (const h of b.holeP || []) walls(signedArea(h) < 0 ? h : [...h].reverse(), 1);
+    const s = ((Math.abs(b.p[0] * 31 + b.p[1] * 17) % 997) / 997), s2 = ((Math.abs(b.p[0] * 7 + b.p[1] * 13 + 5) % 991) / 991);
+    const area = Math.abs(signedArea(ring)), ob = obb(ring), rect = area / Math.max(1, ob.w * ob.d);
+    const C = chooseStyle(b, s, { area, rect, campus });
+    const y0 = b.m || 0, top = Math.max(y0 + 2.5, b.h);
+    const pitched = C.pitched && !b.m && !b.part && !b.holeP?.length;
+    const rise = pitched ? Math.min(4.5, Math.max(1.6, ob.d * .32)) : 0;
+    const eave = Math.max(y0 + 2.6, top - rise);
+    // a mapped colour is blended in gently: the facade textures already carry their own colour
+    const osmCol = b.c && cssColour(b.c), tint = osmCol ? new Col('#ffffff').lerp(osmCol, .5) : new Col(tintFor(C.style, s2));
+    const shopH = C.shop && eave - y0 > 9 ? Math.min(5, (eave - y0) * .3) : 0;
+    const upper0 = y0 + shopH, floors = Math.max(1, Math.round((eave - upper0) / C.floorH)), fh = (eave - upper0) / floors;
+    const walls = (rg, key, ya, yb, th, vb, col) => { let u = 0; for (let i = 0; i < rg.length; i++) { const a = rg[i], c = rg[(i + 1) % rg.length]; const dx = c[0] - a[0], dz = c[1] - a[1], L = Math.hypot(dx, dz); if (L < .05) continue;
+      A.wall(key, a, c, ya, yb, [dz / L, 0, -dx / L], u, u + L, F.bayW[key], th, col, vb); u += L; } };
+    const holes = (b.holeP || []).map(h => signedArea(h) < 0 ? h : [...h].reverse());
+    if (shopH) { walls(ring, 'shop', y0, upper0, shopH * 4, y0, new Col(tintFor('shop', s))); for (const h of holes) walls(h, 'shop', y0, upper0, shopH * 4, y0, tint); }
+    walls(ring, C.style, upper0, eave, fh * 4, upper0, tint); for (const h of holes) walls(h, C.style, upper0, eave, fh * 4, upper0, tint);
     const rk = opts.roof?.(b, n) ?? null;
-    A.poly(rk === 'solar' ? 'solar' : 'roof', ring, b.holeP, y1, rk === 'solar' ? new Col('#ffffff') : roofCol[rk] || roofCol.null, rk === 'solar' ? 3 : 8);
-    if (y1 >= 10 && !b.part) { const [x0, z0, x1, z1] = bbox(ring); colliders.push([x0, y0, z0, x1, y1, z1, b.n || `building ${n}`]); }
+    if (pitched) gable(A, ob, eave, rise, rk === 'solar' ? 'solar' : 'shingle', rk === 'solar' ? new Col('#ffffff') : new Col(tintFor('shingle', s2)), C.style, tint, F.bayW[C.style], fh * 4, upper0);
+    else {
+      const roofKey = rk === 'solar' ? 'solar' : 'flat', rc = rk === 'solar' ? new Col('#ffffff') : roofTint[rk] || new Col(tintFor('flat', s));
+      A.poly(roofKey, ring, b.holeP, eave + .02, rc, rk === 'solar' ? 3 : 12);
+      if (!b.part && eave - y0 > 5 && C.style !== 'house') {          // parapet: a short wall above the roof edge, in the facade's colour
+        walls(ring, 'unit', eave, eave + .9, 4, eave, new Col('#d8d6d0').lerp(tint, .35));
+        if (area > 700 && rk !== 'solar') rooftop(A, ring, ob, eave, area, s);   // mechanical units, stair/lift overrun
+      }
+    }
+    if (top >= 10 && !b.part) { const [x0, z0, x1, z1] = bbox(ring); colliders.push([x0, y0, z0, x1, top, z1, b.n || `building ${n}`]); }
     n++; if (b.e) nEst++;
   }
 
   /* materials and meshes */
-  const facadeMat = s => ctx.mat('#ffffff', { map: tex[s].map, emissiveMap: tex[s].emi, emissive: '#ffffff', emissiveIntensity: .32, roughness: s === 'tower' ? .3 : .8, metalness: s === 'tower' ? .3 : 0, envMapIntensity: s === 'tower' ? 1.1 : .35, vertexColors: true });
   const mats = { plaza: ctx.mat('#ffffff', { vertexColors: true, roughness: 1, envMapIntensity: .15 }), ground: ctx.mat('#ffffff', { vertexColors: true, roughness: .97, envMapIntensity: .2 }),
     street: ctx.mat('#ffffff', { vertexColors: true, roughness: .9, envMapIntensity: .2 }), path: ctx.mat('#ffffff', { vertexColors: true, roughness: .95, envMapIntensity: .2 }),
     paint: ctx.mat('#ffffff', { vertexColors: true, roughness: .7, envMapIntensity: .2 }), rail: ctx.mat('#ffffff', { vertexColors: true, roughness: .6, metalness: .4 }),
     bridge: ctx.mat('#ffffff', { vertexColors: true, roughness: .8, envMapIntensity: .3 }),
     water: ctx.mat('#3d7fa3', { roughness: .08, metalness: .3, envMapIntensity: 1.4, emissive: '#0d3048', emissiveIntensity: .35, vertexColors: true }),
-    roof: ctx.mat('#ffffff', { vertexColors: true, roughness: .9, envMapIntensity: .25 }),
-    solar: ctx.mat('#ffffff', { map: solarMap(), roughness: .25, metalness: .6, envMapIntensity: 1.2, emissive: '#0a1a40', emissiveIntensity: .35, vertexColors: true }) };
-  for (const s of STY) mats[s] = facadeMat(s);
+    unit: ctx.mat('#ffffff', { vertexColors: true, roughness: .6, metalness: .3, envMapIntensity: .5 }),
+    solar: ctx.mat('#ffffff', { map: solarMap(), roughness: .25, metalness: .6, envMapIntensity: 1.2, emissive: '#0a1a40', emissiveIntensity: .35, vertexColors: true, side: THREE.DoubleSide }),
+    ...F.mats };
   const meshes = A.build(mats, group);
 
   /* trees: OSM trees + procedural fill in green areas */
@@ -195,6 +171,40 @@ export function buildCity(ctx, data, opts = {}) {
   const find = name => { const q = name.toLowerCase(); const k = Object.keys(L).find(k => k.toLowerCase() === q) || Object.keys(L).find(k => k.toLowerCase().includes(q)); return k ? { name: k, ...L[k] } : null; };
   const roads = name => { const q = name.toLowerCase(); return roadLines.filter(rd => (rd.n || '').toLowerCase().includes(q)).map(rd => rd.pts); };
   return { group, meshes, mats, colliders, find, roads, landmarks: L, treePoints: treePts, stats: { buildings: n, estimatedHeights: nEst, trees: treePts.length, roads: roadLines.length } };
+}
+
+/* ---------------- building pieces ---------------- */
+/** minimum-area oriented box of a ring: { cx, cz, ux, uz (long axis), w (long), d (short) } */
+function obb(ring) { let best = null;
+  for (let i = 0; i < ring.length; i++) { const a = ring[i], b = ring[(i + 1) % ring.length]; let ux = b[0] - a[0], uz = b[1] - a[1]; const L = Math.hypot(ux, uz); if (L < .5) continue; ux /= L; uz /= L;
+    let p0 = 1e9, p1 = -1e9, q0 = 1e9, q1 = -1e9; for (const [x, z] of ring) { const p = x * ux + z * uz, q = -x * uz + z * ux; if (p < p0) p0 = p; if (p > p1) p1 = p; if (q < q0) q0 = q; if (q > q1) q1 = q; }
+    const ar = (p1 - p0) * (q1 - q0); if (!best || ar < best.ar) { const pc = (p0 + p1) / 2, qc = (q0 + q1) / 2; best = { ar, cx: pc * ux - qc * uz, cz: pc * uz + qc * ux, ux, uz, w: p1 - p0, d: q1 - q0 }; } }
+  if (!best) { const [x0, z0, x1, z1] = bbox(ring); return { cx: (x0 + x1) / 2, cz: (z0 + z1) / 2, ux: 1, uz: 0, w: x1 - x0, d: z1 - z0 }; }
+  if (best.d > best.w) { [best.w, best.d] = [best.d, best.w]; [best.ux, best.uz] = [-best.uz, best.ux]; }
+  return best; }
+/** pitched (gable) roof over an oriented box: ridge along the long axis; gable ends get the wall material */
+function gable(A, o, eave, rise, roofKey, roofCol, wallKey, wallCol, tw, th, vb) {
+  const hw = o.w / 2 + .35, hd = o.d / 2 + .45, vx = -o.uz, vz = o.ux;               // u = long axis, v = across
+  const P = (a, b, y) => [o.cx + o.ux * a + vx * b, y, o.cz + o.uz * a + vz * b];
+  const r0 = P(-hw, 0, eave + rise), r1 = P(hw, 0, eave + rise), slope = Math.hypot(hd, rise);
+  for (const sd of [-1, 1]) { const e0 = P(-hw, sd * hd, eave - .15), e1 = P(hw, sd * hd, eave - .15), L = Math.hypot(hd, rise);
+    const n = [vx * sd * rise / L, hd / L, vz * sd * rise / L];
+    triOut(A, roofKey, e0, e1, r1, n, [-hw / 4, 0], [hw / 4, 0], [hw / 4, slope / 4], roofCol); triOut(A, roofKey, e0, r1, r0, n, [-hw / 4, 0], [hw / 4, slope / 4], [-hw / 4, slope / 4], roofCol); }
+  for (const se of [-1, 1]) { const ea = se * (hw - .35), a = P(ea, -(hd - .45), eave), b = P(ea, hd - .45, eave), c = P(ea, 0, eave + rise - .1);
+    triOut(A, wallKey, a, b, c, [o.ux * se, 0, o.uz * se], [0, (eave - vb) / th], [o.d / tw, (eave - vb) / th], [o.d / 2 / tw, (eave + rise - vb) / th], wallCol); }
+}
+/** add a triangle wound so that it faces along normal n */
+function triOut(A, key, a, b, c, n, ua, ub, uc, col) { const ab = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], ac = [c[0] - a[0], c[1] - a[1], c[2] - a[2]];
+  const cx = ab[1] * ac[2] - ab[2] * ac[1], cy = ab[2] * ac[0] - ab[0] * ac[2], cz = ab[0] * ac[1] - ab[1] * ac[0];
+  if (cx * n[0] + cy * n[1] + cz * n[2] >= 0) A.tri(key, a, b, c, n, ua, ub, uc, col); else A.tri(key, a, c, b, n, ua, uc, ub, col); }
+/** rooftop clutter on large flat roofs: AC units and a stair/lift overrun, kept inside the footprint */
+function rooftop(A, ring, o, y, area, s) { const r = rng(Math.floor(s * 1e6)); const n = Math.min(6, 1 + Math.floor(area / 1500));
+  const box = (cx, cz, w, d, h, col) => { const hw = w / 2, hd = d / 2, vx = -o.uz, vz = o.ux; const P = (a, b) => [cx + o.ux * a + vx * b, cz + o.uz * a + vz * b];
+    const pts = [P(-hw, -hd), P(hw, -hd), P(hw, hd), P(-hw, hd)]; if (!pts.every(([x, z]) => pointInRing(x, z, ring))) return;
+    const c = new Col(col); for (let i = 0; i < 4; i++) { const a = pts[i], b = pts[(i + 1) % 4], dx = b[0] - a[0], dz = b[1] - a[1], L = Math.hypot(dx, dz) || 1; A.wall('unit', a, b, y, y + h, [dz / L, 0, -dx / L], 0, L, 4, 4, c); }
+    A.poly('unit', pts, null, y + h, c.clone().multiplyScalar(.92), 4); };
+  box(o.cx + (r() - .5) * o.w * .3, o.cz + (r() - .5) * o.d * .3, Math.min(8, o.w * .2), Math.min(6, o.d * .2), 3.4, '#cfcfca');
+  for (let i = 0; i < n; i++) box(o.cx + (r() - .5) * o.w * .6, o.cz + (r() - .5) * o.d * .6, 2.2 + r() * 2.5, 1.6 + r() * 2, 1.4 + r() * .8, r() < .5 ? '#b9bcbf' : '#d9dbdc');
 }
 
 /* ---------------- pieces ---------------- */

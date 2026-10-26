@@ -33,7 +33,7 @@ export function buildOSUCampus(ctx) {
   // inside that exact footprint, so the map's flat-roofed extrusion is left out
   const stadLL = DATA.landmarks['Ohio Stadium'];
   const SF = DATA.buildings.find(b => b.k === 'stadium' && stadLL && Math.abs(b.pts[0][0] - stadLL.x) < 200 && Math.abs(b.pts[0][1] - stadLL.z) < 250);
-  const city = buildCity(ctx, DATA, { seed: 21, trees: { parks: 330, woods: 80, max: 5000, noFill: /^The Oval$/ }, treeShades: autumn,
+  const city = buildCity(ctx, DATA, { seed: 21, trees: { parks: 330, woods: 80, max: 5000, noFill: /^The Oval$/ }, treeShades: autumn, campus: true,
     skip: b => b === SF || (b.n && /ohio stadium/i.test(b.n)) });
   group.add(city.group);
   const P = {}; const missing = [];

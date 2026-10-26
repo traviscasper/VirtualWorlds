@@ -15,6 +15,10 @@
 - Portal features the new journey with three panels; test shots in the Columbus and campus journeys are aimed at their landmarks.
 - `osm_world.py`: river centerlines and named places become landmarks; Overpass error remarks are rejected.
 
+### Building quality pass
+- New facade system (`facades.js`): nine facade types at realistic window spacing, floors aligned to each building's storey height, pitched roofs on houses, parapets and rooftop units, storefront ground floors, per-building tints, gentler use of mapped colours.
+- Building viewer for close-up QC (`tools/qa/gis_viewer.html?region=osu-campus|columbus-downtown&at=<landmark>`).
+
 ### Fixed
 - Columbus river leg followed a far-away stretch of the Scioto (the river's map line runs outside the area); it now follows the real course through downtown.
 - NaN geometry from zero-length bridge segments.
