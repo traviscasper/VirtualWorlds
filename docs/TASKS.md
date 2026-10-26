@@ -13,7 +13,7 @@ Priorities: **P1** = needed for the next milestone or the FLE event, **P2** = hi
 - [x] Portal features the new journey; OSU world, previews, "Campus" place filter
 - [x] QA `gis` group (data checks, both journeys, 360 capture, Learn mode)
 - [x] Building quality pass: facade system, pitched roofs, parapets, storefronts; building viewer for close-up review
-- [x] Nine hand-modelled landmarks on real footprints (docs/LANDMARKS.md)
+- [x] Sixteen hand-modelled landmarks on real footprints, in two batches (docs/LANDMARKS.md)
 
 ## Done (Phase 2, branch `phase-2`)
 
@@ -37,7 +37,7 @@ Priorities: **P1** = needed for the next milestone or the FLE event, **P2** = hi
 - [ ] **Watch it on real hardware**: desktop GPU, a phone (iOS Safari and Android Chrome), and a WebXR headset. Note frame rate and any layout issues. *(Not possible in the build environment; it has no GPU.)*
 - [ ] **Review Columbus 2050 content** with someone who knows downtown: landmark positions, which concepts to show, wording of the disclaimers
 - [ ] **Review the OSU campus** with someone who knows it: Orton Hall tower placement, stadium look, hotspot facts
-- [ ] **Check the landmarks against photos** (docs/LANDMARKS.md lists what is approximate); next candidates: William Green Building, COSI, One Nationwide Plaza, Hayes Hall, the Schottenstein Center
+- [ ] **Check the landmarks against photos** (docs/LANDMARKS.md lists what is approximate); next candidates (need photos): William Green Building, Three Nationwide Plaza, the Schottenstein Center
 - [ ] Review and merge: `phase-2` (PR #1) into `main` first, then the Phase 3 pull request
 - [ ] **Full-length renders** of `columbus-to-orbit` on a GPU machine: 4K 360 and 1080p 16:9 (`render_journey.py`)
 - [ ] **Decide hosting**: GitHub Pages needs the repo public or a paid plan; or deploy the static folder elsewhere (see DEPLOYMENT in PROJECT_STATUS.md). Needs Travis's approval.

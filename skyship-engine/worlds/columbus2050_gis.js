@@ -47,7 +47,7 @@ export function buildColumbus2050GIS(ctx) {
 
   /* ---------------- landmarks we draw ourselves ---------------- */
   // hand-modelled signature buildings on their real footprints (skyship-engine/js/landmarks.js)
-  const LM = buildLandmarks(ctx, DATA, ['leveque', 'rhodes', 'huntington', 'statehouse', 'arena']);
+  const LM = buildLandmarks(ctx, DATA, ['leveque', 'rhodes', 'huntington', 'statehouse', 'arena', 'onenationwide', 'cosi', 'ohiotheatre']);
 
   /* ---------------- 2050 sites on today's surface parking lots ---------------- */
   const area = r => { let s = 0; for (let i = 0; i < r.length; i++) { const a = r[i], b = r[(i + 1) % r.length]; s += a[0] * b[1] - b[0] * a[1]; } return Math.abs(s / 2); };

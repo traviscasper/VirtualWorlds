@@ -89,6 +89,49 @@ const DRAW = {
     for (let b = 0; b < 4; b++) { const px = b * 128 + 24; x.fillStyle = '#e1d8c4'; x.fillRect(px - 6, 60, 92, 330); win(x, y, px, 90, 80, 290, { frame: '#e1d8c4', fw: 2, mull: 3, glass: ['#2d3a46', '#9bb0c0'], lit: r() < .4 });
       x.fillStyle = '#e1d8c4'; x.beginPath(); x.arc(px + 40, 90, 46, Math.PI, 0); x.fill(); x.fillStyle = '#6b8193'; x.beginPath(); x.arc(px + 40, 90, 38, Math.PI, 0); x.fill(); }
   },
+  whitestone(x, y, r) {      // Ohio Statehouse: bright, near-white limestone ashlar with tall windows; 2 tall floors per texture
+    x.fillStyle = '#f2efe7'; x.fillRect(0, 0, S, S); noise(x, r, .03);
+    for (let k = 0; k < S; k += 32) { x.fillStyle = 'rgba(150,140,120,.16)'; x.fillRect(0, k, S, 1.5); for (let j = (k / 32) % 2 ? 0 : 48; j < S; j += 96) x.fillRect(j, k, 1.5, 32); }
+    for (let f = 0; f < 2; f++) for (let b = 0; b < 4; b++) { const px = b * 128 + 40, py = f * 256 + 40;
+      x.fillStyle = '#e6e1d4'; x.fillRect(px - 10, py - 18, 68, 14); win(x, y, px, py, 48, 170, { frame: '#f7f5ef', fw: 4, mull: 3, glass: ['#3b4752', '#a3b5c2'], lit: r() < .2 }); }
+  },
+  steelribs(x, y, r) {       // One Nationwide Plaza: dark vertical steel ribs tipped with white limestone, glass between
+    const g = x.createLinearGradient(0, 0, 0, S); g.addColorStop(0, '#6d8396'); g.addColorStop(1, '#3d4f5e'); x.fillStyle = g; x.fillRect(0, 0, S, S);
+    for (let f = 0; f < 4; f++) { x.fillStyle = 'rgba(25,30,36,.6)'; x.fillRect(0, f * 128 + 112, S, 16); }
+    for (let b = 0; b < 8; b++) { const px = b * 64; x.fillStyle = '#23292f'; x.fillRect(px, 0, 18, S); x.fillStyle = '#ece8de'; x.fillRect(px + 4, 0, 8, S); x.fillStyle = 'rgba(0,0,0,.35)'; x.fillRect(px + 18, 0, 3, S); }
+    for (let f = 0; f < 4; f++) for (let b = 0; b < 8; b++) if (r() < .22) { y.fillStyle = 'rgba(255,236,200,.5)'; y.fillRect(b * 64 + 22, f * 128 + 6, 40, 104); }
+  },
+  precast(x, y, r) {         // COSI (Isozaki): large precast concrete panels (~18 × 10 m) with stainless steel joints; one texture = 4 × 2 panels
+    x.fillStyle = '#d3d1cb'; x.fillRect(0, 0, S, S); noise(x, r, .06, S, S, 6000);
+    for (let i = 0; i < 4; i++) for (let j = 0; j < 2; j++) { const v = r(); x.fillStyle = `rgba(${v < .5 ? '0,0,0' : '255,255,255'},${.03 + v * .05})`; x.fillRect(i * 128, j * 256, 128, 256); }
+    for (let k = 0; k <= S; k += 128) { x.fillStyle = '#9ea4aa'; x.fillRect(k - 2, 0, 4, S); x.fillStyle = 'rgba(255,255,255,.6)'; x.fillRect(k + 1, 0, 1, S); }
+    for (let k = 0; k <= S; k += 256) { x.fillStyle = '#9ea4aa'; x.fillRect(0, k - 2, S, 4); }
+  },
+  ribbed(x, y, r) {          // 1960s precast tower: light concrete with vertical ribs and narrow windows (Lincoln & Morrill Towers; approximate)
+    x.fillStyle = '#d8d5cd'; x.fillRect(0, 0, S, S); noise(x, r, .05);
+    for (let f = 0; f < 4; f++) for (let b = 0; b < 8; b++) { const px = b * 64 + 20; x.fillStyle = 'rgba(0,0,0,.12)'; x.fillRect(px + 22, 0, 3, S);
+      win(x, y, px, f * 128 + 28, 18, 76, { frame: '#cfccc4', fw: 2, glass: ['#2e3a44', '#8fa5b4'], lit: r() < .25 }); }
+  },
+  baroque(x, y, r) {         // Ohio Theatre front: cream terra cotta with Spanish Baroque ornament. One texture = the whole facade (u 0→1 across, v 0→1 up)
+    x.fillStyle = '#efe2c6'; x.fillRect(0, 0, S, S); noise(x, r, .04);
+    x.fillStyle = '#e2d0aa'; x.fillRect(0, 0, S, 40); x.fillRect(0, 470, S, 42);                               // cornice band, base
+    for (const px of [40, 470]) { x.fillStyle = '#e6d4b0'; x.fillRect(px - 18, 40, 36, 430); for (let k = 60; k < 460; k += 26) { x.fillStyle = 'rgba(150,110,60,.35)'; x.beginPath(); x.arc(px, k, 7, 0, 7); x.fill(); } }
+    x.fillStyle = '#e6d4b0'; x.beginPath(); x.arc(256, 210, 150, Math.PI, 0); x.lineTo(406, 400); x.lineTo(106, 400); x.fill();   // the great arch
+    const g = x.createLinearGradient(0, 80, 0, 400); g.addColorStop(0, '#9fb3c2'); g.addColorStop(1, '#3a4652'); x.fillStyle = g; x.beginPath(); x.arc(256, 210, 124, Math.PI, 0); x.lineTo(380, 390); x.lineTo(132, 390); x.fill();
+    for (let b = 0; b < 5; b++) { x.fillStyle = '#e6d4b0'; x.fillRect(150 + b * 52, 120, 6, 270); } x.fillStyle = '#e6d4b0'; x.fillRect(132, 250, 248, 6);
+    for (let k = 0; k < 9; k++) { x.fillStyle = 'rgba(160,120,70,.4)'; x.beginPath(); x.arc(256 + Math.cos(Math.PI + k * Math.PI / 8) * 140, 210 + Math.sin(Math.PI + k * Math.PI / 8) * 140, 9, 0, 7); x.fill(); }
+    y.fillStyle = 'rgba(255,220,160,.5)'; y.beginPath(); y.arc(256, 210, 124, Math.PI, 0); y.lineTo(380, 390); y.lineTo(132, 390); y.fill();
+  },
+  romanbrick(x, y, r) {      // Hayes Hall: red brick with round-arched windows (Romanesque Revival); 4 floors
+    DRAW.victorianbrick(x, y, r);
+    for (let f = 0; f < 4; f++) for (let b = 0; b < 4; b++) { const px = b * 128 + 44, py = f * 128 + 26; x.fillStyle = '#9b4a37'; x.fillRect(px - 8, py - 18, 58, 26);
+      x.fillStyle = '#e2d6bd'; x.beginPath(); x.arc(px + 20, py + 8, 26, Math.PI, 0); x.fill(); x.fillStyle = '#4a5662'; x.beginPath(); x.arc(px + 20, py + 8, 20, Math.PI, 0); x.fill(); }
+  },
+  wexbrick(x, y, r) {        // Wexner Center towers: red brick, few openings
+    x.fillStyle = '#a0503c'; x.fillRect(0, 0, S, S);
+    for (let row = 0; row < S / 8; row++) for (let i = -1; i < S / 22 + 1; i++) { const v = r(); x.fillStyle = `rgb(${145 + v * 45},${66 + v * 24},${50 + v * 16})`; x.fillRect(i * 22 + (row % 2 ? 11 : 0), row * 8, 20, 6); }
+    for (let b = 0; b < 2; b++) win(x, y, b * 256 + 110, 200, 36, 120, { frame: '#e2d6bd', fw: 4 });
+  },
   slate(x, y, r) {           // dark slate / standing-seam roofs
     x.fillStyle = '#4b4f55'; x.fillRect(0, 0, S, S); for (let row = 0; row < S / 12; row++) for (let i = -1; i < S / 20 + 1; i++) { const v = r(); x.fillStyle = `rgb(${62 + v * 22},${66 + v * 22},${72 + v * 24})`; x.fillRect(i * 20 + (row % 2) * 10, row * 12, 19, 10); }
   },
@@ -100,7 +143,7 @@ let MATS = null;
 function mats(ctx) {
   if (MATS) return MATS; MATS = {}; let seed = 501;
   const p = { terracotta: [.8, 0, .35], redgranite: [.55, .05, .5], granitesolid: [.6, .05, .45], imperialred: [.55, .05, .5], bronzeglass: [.25, .45, 1.1], limestone: [.85, 0, .3], arcade: [.85, 0, .3],
-    stacks: [.3, .2, .8], victorianbrick: [.9, 0, .3], strata: [.92, 0, .25], unionbrick: [.88, 0, .3], arena: [.85, 0, .3], slate: [.7, .2, .35], redtile: [.85, 0, .25] };
+    stacks: [.3, .2, .8], victorianbrick: [.9, 0, .3], whitestone: [.8, 0, .35], steelribs: [.35, .4, .9], precast: [.8, .05, .35], ribbed: [.85, 0, .3], baroque: [.75, 0, .35], romanbrick: [.9, 0, .3], wexbrick: [.9, 0, .3], strata: [.92, 0, .25], unionbrick: [.88, 0, .3], arena: [.85, 0, .3], slate: [.7, .2, .35], redtile: [.85, 0, .25] };
   for (const k in DRAW) { const c = canvasPair(), r = rng(seed++); DRAW[k](c.x, c.y, r); const [ro, me, en] = p[k];
     MATS[k] = ctx.mat('#ffffff', { map: tex(c.m), emissiveMap: tex(c.e), emissive: '#ffffff', emissiveIntensity: .28, roughness: ro, metalness: me, envMapIntensity: en, vertexColors: true }); }
   MATS.white = ctx.mat('#ffffff', { roughness: .6, envMapIntensity: .5, vertexColors: true });
@@ -139,6 +182,12 @@ function hipRoof(A, F, key, u0, v0, w, d, y, rise, col) { const hw = w / 2, hd =
   const T = (a, b, cc) => triOut(A, key, a, b, cc, n(a, b, cc), uv(a), uv(b), uv(cc), col);
   T(c[0], c[1], r1); T(c[0], r1, r0); T(c[2], c[3], r0); T(c[2], r0, r1); T(c[1], c[2], r1); T(c[3], c[0], r0);
 }
+/** the map's building:parts inside a footprint (tallest first) */
+function partsIn(data, b) { const out = []; for (const q of data.buildings) { if (q === b || !q.part) continue; const r = q.pts; let x = 0, z = 0; for (const p of r) { x += p[0]; z += p[1]; } x /= r.length; z /= r.length;
+  if (pointInRing(x, z, b.pts)) out.push(q); } return out.sort((a, c) => c.h - a.h); }
+/** unit direction from (x, z) to the nearest point of a named road (or null) */
+function towardRoad(data, re, x, z) { let best = null, bd = 1e18; for (const r of data.roads) { if (!re.test(r.n || '')) continue; for (const p of r.pts) { const d = (p[0] - x) ** 2 + (p[1] - z) ** 2; if (d < bd) { bd = d; best = p; } } }
+  if (!best) return null; const dx = best[0] - x, dz = best[1] - z, l = Math.hypot(dx, dz) || 1; return { dx: dx / l, dz: dz / l, d: Math.sqrt(bd) }; }
 const colliderOf = (ring, y0, y1, name) => { let x0 = 1e9, z0 = 1e9, x1 = -1e9, z1 = -1e9; for (const [x, z] of ring) { x0 = Math.min(x0, x); x1 = Math.max(x1, x); z0 = Math.min(z0, z); z1 = Math.max(z1, z); } return [x0, y0, z0, x1, y1, z1, name]; };
 
 /* ---------------- the landmarks ---------------- */
@@ -202,16 +251,16 @@ const LANDMARKS = {
      High Street and Third Street fronts; a cylindrical drum (cupola) with a shallow conical roof, 158 ft high. */
   statehouse: { match: /^ohio statehouse$/i, build(b, F, B, A, M, out) {
     const ring = b.pts, H = 17;
-    extrude(A, ring, 'limestone', 0, H, 10, 17); A.poly('white', ring, null, H + .02, new Col('#cfc8b6'), 8);
-    extrude(A, inset(ring, -.6), 'white', H - 1.6, H, 8, 8, new Col('#e6e0d2'));                                     // cornice
+    extrude(A, ring, 'whitestone', 0, H, 10, 17); A.poly('white', ring, null, H + .02, new Col('#dcd8cf'), 8);
+    extrude(A, inset(ring, -.6), 'white', H - 1.6, H, 8, 8, new Col('#f6f4ee'));                                     // cornice
     for (const sd of [-1, 1]) { const vv = sd * (F.d / 2 + .2);                                                       // porticos on both long faces
-      fbox(B, F, 'white', 0, vv - sd * 2.6, F.w * .34, 5.2, 0, 1.2, new Col('#d8d2c4'));                            // steps
-      for (let i = 0; i < 8; i++) { const [x, z] = F.P(-F.w * .15 + i * F.w * .3 / 7, vv); B.add('white', cylGeo(1.05, 1.2, H - 3.2, 14), [x, 1.2, z], null, null, '#ece6d8'); }
-      fbox(B, F, 'white', 0, vv, F.w * .34, 1.6, H - 3.2, 3.2, new Col('#e6e0d2')); }
+      fbox(B, F, 'white', 0, vv - sd * 2.6, F.w * .34, 5.2, 0, 1.2, new Col('#eae7df'));                            // steps
+      for (let i = 0; i < 8; i++) { const [x, z] = F.P(-F.w * .15 + i * F.w * .3 / 7, vv); B.add('white', cylGeo(1.05, 1.2, H - 3.2, 14), [x, 1.2, z], null, null, '#f7f5f0'); }
+      fbox(B, F, 'white', 0, vv, F.w * .34, 1.6, H - 3.2, 3.2, new Col('#f4f2ec')); }
     const [x, z] = F.P(0, 0);
-    B.add('limestone', cylGeo(10, 10, 24, 40, 10, 17), [x, H, z], null, null, '#ffffff');
+    B.add('whitestone', cylGeo(10, 10, 24, 40, 10, 17), [x, H, z], null, null, '#ffffff');
     for (let i = 0; i < 16; i++) { const a = i / 16 * Math.PI * 2; B.add('white', boxGeo(1.6, 9, .6), [x + Math.cos(a) * 10.05, H + 8, z + Math.sin(a) * 10.05], [0, -a + Math.PI / 2, 0], null, '#3c444e'); }
-    B.add('white', cylGeo(11, 11, 1.8, 40), [x, H + 24, z], null, null, '#ece6d8'); B.add('white', new THREE.ConeGeometry(10.8, 4, 40).translate(0, 2, 0), [x, H + 25.8, z], null, null, '#bdb6a6');
+    B.add('white', cylGeo(11, 11, 1.8, 40), [x, H + 24, z], null, null, '#f6f4ee'); B.add('white', new THREE.ConeGeometry(10.8, 4, 40).translate(0, 2, 0), [x, H + 25.8, z], null, null, '#d9d6cf');
     out.colliders.push(colliderOf(ring, 0, H, 'Ohio Statehouse'), [x - 11, H, z - 11, x + 11, H + 30, z + 11, 'Statehouse cupola']); out.at.statehouse = { x, z, top: H + 30, h: H }; } },
 
   /* Nationwide Arena (2000): brick and stone veneer with tall arched glazing; arena roof */
@@ -275,7 +324,84 @@ const LANDMARKS = {
     pyramid(B, 'slate', tx, TH, tz, T * .8, 11, F.rot, '#ffffff'); B.add('metal', cylGeo(.12, .2, 4, 6), [tx, TH + 11, tz], null, null, '#3a3a3a');
     out.colliders.push(colliderOf(ring, 0, H + 7, 'University Hall'), [tx - T / 2, 0, tz - T / 2, tx + T / 2, TH + 15, tz + T / 2, 'University Hall tower']);
     out.at.univhall = { x: tx, z: tz, top: TH + 15, h: TH }; } },
+
+  /* One Nationwide Plaza (1977, 148 m, 40 floors): dark vertical steel ribs tipped with white limestone, glass between; glass express
+     elevator on one side (side approximate). Uses the map's own tower and podium parts. */
+  onenationwide: { match: /^one nationwide plaza$/i, build(b, F, B, A, M, out, W) {
+    const parts = partsIn(W.data, b), tower = parts[0] && parts[0].h > 60 ? parts[0] : b, H = tower.h || 148;
+    for (const q of parts.slice(tower === b ? 0 : 1)) { extrude(A, q.pts, 'limestone', q.m || 0, q.h, 10, 17); A.poly('white', q.pts, null, q.h + .02, new Col('#b8b6b0'), 8); }
+    extrude(A, tower.pts, 'steelribs', 0, H, 8, 15.2); A.poly('white', tower.pts, null, H + .02, new Col('#5b636b'), 8); extrude(A, inset(tower.pts, -.3), 'white', H - .5, H + 2.2, 8, 8, new Col('#2a2f35'));
+    const TF = frameOf(tower.pts), e = sideToward(TF, 1, 0), [ex, ez] = TF.P(e.u * (TF.w / 2 + 1.6), 0);
+    B.add('glass', boxGeo(3.2, H * .95, 3.2), [ex, 0, ez], [0, TF.rot, 0]); B.add('glowW', boxGeo(2.4, 2.6, 2.4), [ex, H * .55, ez], [0, TF.rot, 0]);
+    const [x, z] = TF.P(0, 0); out.colliders.push(colliderOf(tower.pts, 0, H + 2, 'One Nationwide Plaza')); out.at.onenationwide = { x, z, top: H + 2, h: H }; } },
+
+  /* COSI (1999, Arata Isozaki): a ~1,000 ft long lozenge ("clothoid" curve) of precast concrete panels with stainless joints,
+     built onto the back of a 1920 Neoclassical high school that faces downtown; corrugated-metal entrance rotunda.
+     Heights, the school's size and the rotunda's position are approximate. */
+  cosi: { match: /^cosi$/i, build(b, F, B, A, M, out, W) {
+    const ring = b.pts, H = 18;
+    extrude(A, ring, 'precast', 0, H, 72, 20); A.poly('white', inset(ring, 2.5), null, H + 2.2, new Col('#c9c8c3'), 8);
+    extrude(A, inset(ring, 1.2), 'precast', H, H + 1.4, 72, 20); extrude(A, inset(ring, 2.5), 'precast', H + 1.4, H + 2.2, 72, 20);   // rounded roof edge
+    const east = sideToward(F, 1, 0), north = sideToward(F, 0, -1), vE = east.v * (F.d / 2 - 14);      // the old school, on the downtown (east) side
+    fbox(B, F, 'limestone', 0, vE, 70, 26, 0, 20, new Col('#ffffff'), 10, 17); fbox(B, F, 'white', 0, vE, 72, 28, 20, 1.6, new Col('#e8e2d4'));
+    for (let i = 0; i < 8; i++) { const [cx, cz] = F.P(-17.5 + i * 5, vE + east.v * 13.6); B.add('white', cylGeo(.9, 1, 15, 14), [cx, 2.5, cz], null, null, '#efe9dc'); }
+    fbox(B, F, 'white', 0, vE + east.v * 13.6, 40, 2.6, 17.5, 2.5, new Col('#ece6d8')); fbox(B, F, 'white', 0, vE + east.v * 15, 34, 5, 0, 2.5, new Col('#ddd7ca'));
+    const [rx, rz] = F.P(north.u * (F.w / 2 - 6), 0); B.add('metal', cylGeo(11, 11, 14, 32), [rx, 0, rz], null, null, '#b9bec4'); B.add('metal', new THREE.ConeGeometry(11.6, 3, 32).translate(0, 1.5, 0), [rx, 14, rz], null, null, '#a9aeb4');
+    const [x, z] = F.P(0, 0); out.colliders.push(colliderOf(ring, 0, H + 3, 'COSI')); out.at.cosi = { x, z, top: H + 3, h: H }; } },
+
+  /* Ohio Theatre (1928, Thomas W. Lamb): Spanish Baroque movie palace on State Street; ornate cream front with a great arched window,
+     vertical "OHIO" blade sign and marquee (sign and marquee details approximate). */
+  ohiotheatre: { match: /^ohio theatre$/i, build(b, F, B, A, M, out, W) {
+    const ring = b.pts, H = 24, [cx0, cz0] = F.P(0, 0), st = towardRoad(W.data, /\bState Street\b/i, cx0, cz0) || { dx: 0, dz: -1 };
+    const fr = sideToward(F, st.dx, st.dz), alongU = Math.abs(st.dx * F.ux + st.dz * F.uz) > Math.abs(st.dx * F.vx + st.dz * F.vz);
+    extrude(A, ring, 'wexbrick', 0, H, 12, 14); A.poly('white', ring, null, H + .02, new Col('#9a9890'), 8);
+    const fw = alongU ? F.d : F.w, fu = alongU ? fr.u * (F.w / 2 + .4) : 0, fv = alongU ? 0 : fr.v * (F.d / 2 + .4);
+    fbox(B, F, 'baroque', fu, fv, alongU ? .8 : fw, alongU ? fw : .8, 0, H + 4, new Col('#ffffff'), fw + .1, H + 4.1);
+    const so = alongU ? [fu + fr.u * 2, fw * .28] : [fw * .28, fv + fr.v * 2];
+    fbox(B, F, 'white', so[0], so[1], alongU ? 1.2 : 2.4, alongU ? 2.4 : 1.2, 7, 16, new Col('#9b1c22'));
+    for (let i = 0; i < 4; i++) fbox(B, F, 'glowW', so[0] + (alongU ? fr.u * .7 : 0), so[1] + (alongU ? 0 : fr.v * .7), alongU ? .2 : 1.6, alongU ? 1.6 : .2, 18.8 - i * 3.6, 2.6);
+    fbox(B, F, 'white', fu + (alongU ? fr.u * 3 : 0), fv + (alongU ? 0 : fr.v * 3), alongU ? 6 : fw * .45, alongU ? fw * .45 : 6, 4.2, 1.6, new Col('#2b2f35'));
+    fbox(B, F, 'glowW', fu + (alongU ? fr.u * 3 : 0), fv + (alongU ? 0 : fr.v * 3), alongU ? 6.2 : fw * .46, alongU ? fw * .46 : 6.2, 4.6, .5);
+    out.colliders.push(colliderOf(ring, 0, H + 4, 'Ohio Theatre')); out.at.ohiotheatre = { x: cx0, z: cz0, top: H + 4, h: H }; } },
+
+  /* Wexner Center for the Arts (1989, Peter Eisenman): a red-brick, castellated tower evoking the 1958-burned armory, split in two with
+     the halves offset; a white three-dimensional grid running through and beyond the building; two grids 12.5° apart.
+     Tower position (end nearest 15th Avenue) and grid height are approximate. */
+  wexner: { match: /^wexner center for the arts$/i, build(b, F, B, A, M, out, W) {
+    const ring = b.pts, H = 10; extrude(A, ring, 'limestone', 0, H, 10, 17); A.poly('white', ring, null, H + .02, new Col('#e9e9e6'), 8);
+    const GH = 14, cell = 5.2, nU = Math.floor(F.w / cell), nV = Math.max(2, Math.floor(F.d * .55 / cell)), wht = new Col('#ffffff');
+    for (let i = 0; i <= nU; i++) for (let j = 0; j <= nV; j++) { const u = -F.w / 2 + i * F.w / nU, v = (j - nV / 2) * cell; fbox(B, F, 'white', u, v, .35, .35, 0, GH, wht); }
+    for (const y of [GH * .5, GH]) { for (let j = 0; j <= nV; j++) fbox(B, F, 'white', 0, (j - nV / 2) * cell, F.w, .3, y - .3, .3, wht); for (let i = 0; i <= nU; i++) fbox(B, F, 'white', -F.w / 2 + i * F.w / nU, 0, .3, nV * cell, y - .3, .3, wht); }
+    const [cx0, cz0] = F.P(0, 0), r15 = towardRoad(W.data, /\b15th Avenue\b/i, cx0, cz0) || { dx: 0, dz: -1 }, end = sideToward(F, r15.dx, r15.dz).u * (F.w / 2 - 9);
+    const rot = 12.5 * Math.PI / 180;
+    for (const [du, dv, h] of [[-2.6, -1.2, 22], [2.6, 1.6, 19]]) { const [x, z] = F.P(end + du, dv); B.add('wexbrick', boxGeo(5, h, 9, 8, 12), [x, 0, z], [0, F.rot + rot, 0], null, '#ffffff');
+      for (let k = 0; k < 3; k++) { const [mx, mz] = F.P(end + du, dv - 3.2 + k * 3.2); B.add('wexbrick', boxGeo(5.2, 1.6, 1.6), [mx, h, mz], [0, F.rot + rot, 0], null, '#ffffff'); } }   // crenellations
+    out.colliders.push(colliderOf(ring, 0, GH, 'Wexner Center')); const [tx, tz] = F.P(end, 0); out.at.wexner = { x: tx, z: tz, top: 24, h: 22 }; } },
+
+  /* Lincoln Tower and Morrill Tower (1967): twin 26-storey residence towers; the map's hexagonal shafts and podiums are used as-is;
+     the precast facade with vertical ribs is approximate. */
+  lincoln: { match: /^lincoln tower$/i, build(b, F, B, A, M, out, W) { twinTower(b, A, W, out, 'lincoln', 'Lincoln Tower'); } },
+  morrill: { match: /^morrill tower$/i, build(b, F, B, A, M, out, W) { twinTower(b, A, W, out, 'morrill', 'Morrill Tower'); } },
+
+  /* Hayes Hall (1893): brick (wood frame with brick exterior), basement plus three storeys, carved stone archway at the centre of the
+     front facing the Oval; roof form approximate. */
+  hayes: { match: /^hayes hall$/i, build(b, F, B, A, M, out, W) {
+    const ring = b.pts, H = 15, oval = W.oval || { x: 0, z: 0 }, front = sideToward(F, oval.x - F.cx, oval.z - F.cz);
+    extrude(A, ring, 'romanbrick', 0, H, 12, 17); hipRoof(A, F, 'slate', 0, 0, F.w * .9, F.d * .9, H, 7, new Col('#ffffff'));
+    const fv = front.v * (F.d / 2), [ax, az] = F.P(0, fv); fbox(B, F, 'limestone', 0, fv, 9, 2.4, 0, 9, new Col('#ffffff'), 10, 17);
+    const arch = new THREE.TorusGeometry(2.6, .7, 8, 16, Math.PI); B.add('white', arch, [ax, 5.4, az], [0, F.rot, 0], null, '#e6dcc6');
+    fbox(B, F, 'white', 0, fv + front.v * 1.8, 7, 3, 0, .9, new Col('#d9d0be'));
+    const [x, z] = F.P(0, 0); out.colliders.push(colliderOf(ring, 0, H + 7, 'Hayes Hall')); out.at.hayes = { x, z, top: H + 7, h: H }; } },
 };
+
+function twinTower(b, A, W, out, id, name) {
+  const parts = partsIn(W.data, b), shaft = parts.find(q => q.h > 40), pod = parts.find(q => q.h <= 40);
+  const H = shaft ? shaft.h : 80, sp = shaft ? shaft.pts : inset(b.pts, 6);
+  if (pod) { extrude(A, pod.pts, 'limestone', 0, pod.h, 10, 17); A.poly('white', pod.pts, null, pod.h + .02, new Col('#bdbab3'), 8); }
+  extrude(A, sp, 'ribbed', 0, H, 10.4, 12.4); A.poly('white', sp, null, H + .02, new Col('#bdbab3'), 8); extrude(A, inset(sp, -.3), 'white', H - .4, H + 1.6, 8, 8, new Col('#cfccc4'));
+  let x = 0, z = 0; for (const p of sp) { x += p[0]; z += p[1]; } x /= sp.length; z /= sp.length;
+  out.colliders.push(colliderOf(sp, 0, H + 2, name)); out.at[id] = { x, z, top: H + 2, h: H };
+}
 
 export function buildLandmarks(ctx, data, ids, ctxW = {}) {
   const M = mats(ctx), group = new THREE.Group(); group.name = 'landmarks'; const out = { group, colliders: [], skip: new Set(), at: {}, missing: [] };
@@ -289,7 +415,8 @@ export function buildLandmarks(ctx, data, ids, ctxW = {}) {
     for (const q of data.buildings) { if (q === b || (q.n && L.match.test(q.n))) { out.skip.add(q); continue; }
       const [qx, qz] = cen(q); if (Math.abs(qx - bx) > 400 || Math.abs(qz - bz) > 400) continue;
       if (pointInRing(qx, qz, b.pts) || (pointInRing(bx, bz, q.pts) && !q.n)) out.skip.add(q); }
-    const F = frameOf(b.pts); L.build(b, F, B, A, M, out, ctxW); }
+    const F = frameOf(b.pts); L.build(b, F, B, A, M, out, { ...ctxW, data }); }
+  for (const k of [...Object.keys(B.parts), ...Object.keys(A.k)]) if (!M[k]) console.warn('[landmarks] missing material', k);
   B.build(M, group); A.build(M, group);
   if (out.missing.length) console.info('[landmarks] not found in map data:', out.missing.join(', '));
   return out;

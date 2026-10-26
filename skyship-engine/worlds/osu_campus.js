@@ -35,7 +35,7 @@ export function buildOSUCampus(ctx) {
   const stadLL = DATA.landmarks['Ohio Stadium'];
   const SF = DATA.buildings.find(b => b.k === 'stadium' && stadLL && Math.abs(b.pts[0][0] - stadLL.x) < 200 && Math.abs(b.pts[0][1] - stadLL.z) < 250);
   // hand-modelled signature buildings on their real footprints (skyship-engine/js/landmarks.js)
-  const LM = buildLandmarks(ctx, DATA, ['thompson', 'union', 'orton', 'univhall'], { oval: DATA.landmarks['The Oval'] });
+  const LM = buildLandmarks(ctx, DATA, ['thompson', 'union', 'orton', 'univhall', 'hayes', 'wexner', 'lincoln', 'morrill'], { oval: DATA.landmarks['The Oval'] });
   const city = buildCity(ctx, DATA, { seed: 21, trees: { parks: 330, woods: 80, max: 5000, noFill: /^The Oval$/ }, treeShades: autumn, campus: true,
     skip: b => b === SF || LM.skip.has(b) || (b.n && /ohio stadium/i.test(b.n)) });
   group.add(city.group);

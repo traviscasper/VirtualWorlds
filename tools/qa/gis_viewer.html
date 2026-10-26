@@ -49,7 +49,7 @@ const envMats = []; const ctx = { envMats, fog: scene.fog, mat(color, opts = {})
 const msg = document.getElementById('msg');
 const data = await loadRegion(region);
 const t0 = performance.now();
-const LM = buildLandmarks(ctx, data, region === 'osu-campus' ? ['thompson', 'union', 'orton', 'univhall'] : ['leveque', 'rhodes', 'huntington', 'statehouse', 'arena'], { oval: data.landmarks['The Oval'] });
+const LM = buildLandmarks(ctx, data, region === 'osu-campus' ? ['thompson', 'union', 'orton', 'univhall', 'hayes', 'wexner', 'lincoln', 'morrill'] : ['leveque', 'rhodes', 'huntington', 'statehouse', 'arena', 'onenationwide', 'cosi', 'ohiotheatre'], { oval: data.landmarks['The Oval'] });
 const city = buildCity(ctx, data, { seed: 21, trees: { parks: 330, woods: 80, max: 6000 }, campus: region === 'osu-campus', skip: b => LM.skip.has(b) });
 scene.add(city.group, LM.group);
 msg.textContent = `${city.stats.buildings.toLocaleString()} buildings · built in ${((performance.now() - t0) / 1000).toFixed(1)} s`;
