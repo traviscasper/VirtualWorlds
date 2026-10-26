@@ -1,6 +1,6 @@
 /* WORLD · THE OHIO STATE UNIVERSITY — the Columbus campus as it is today, built from OpenStreetMap data
    (data/gis/osu-campus.json, made by tools/gis/osm_world.py). Buildings, streets, paths, the Olentangy River,
-   Mirror Lake and the Oval come from the map; Ohio Stadium and Orton Hall's bell tower get hand-modelled detail.
+   Mirror Lake and the Oval come from the map; Ohio Stadium, Thompson Library, the Ohio Union, Orton Hall and University Hall are hand-modelled on their real footprints.
 
    Origin (0,0) is the centre of the Oval; metres; x = east, z = south, y = up.
    Map data (c) OpenStreetMap contributors, ODbL 1.0.
@@ -8,6 +8,7 @@
    Module interface (shared with the other skyship worlds): build(ctx) → { group, path, update(t), anchors, telescope, colliders } */
 import * as THREE from 'three';
 import { V3, Col, lerp, FlightPath, Builder, boxGeo, cylGeo, People } from '../../sci-fi-360/js/lib.js';
+import { buildLandmarks } from '../js/landmarks.js';
 import { loadRegion, buildCity, Route, PathMovers, Walkers, footprint, chain } from '../js/gis.js';
 
 const DATA = await loadRegion('osu-campus');
@@ -33,15 +34,18 @@ export function buildOSUCampus(ctx) {
   // inside that exact footprint, so the map's flat-roofed extrusion is left out
   const stadLL = DATA.landmarks['Ohio Stadium'];
   const SF = DATA.buildings.find(b => b.k === 'stadium' && stadLL && Math.abs(b.pts[0][0] - stadLL.x) < 200 && Math.abs(b.pts[0][1] - stadLL.z) < 250);
+  // hand-modelled signature buildings on their real footprints (skyship-engine/js/landmarks.js)
+  const LM = buildLandmarks(ctx, DATA, ['thompson', 'union', 'orton', 'univhall'], { oval: DATA.landmarks['The Oval'] });
   const city = buildCity(ctx, DATA, { seed: 21, trees: { parks: 330, woods: 80, max: 5000, noFill: /^The Oval$/ }, treeShades: autumn, campus: true,
-    skip: b => b === SF || (b.n && /ohio stadium/i.test(b.n)) });
+    skip: b => b === SF || LM.skip.has(b) || (b.n && /ohio stadium/i.test(b.n)) });
   group.add(city.group);
   const P = {}; const missing = [];
   for (const k in FALLBACK) { let f = null; for (const nm of NAMES[k] || []) { f = city.find(nm); if (f) break; } if (!f) missing.push(k); P[k] = f || fromLL(FALLBACK[k]); }
   { const hs = chain(DATA.roads.filter(r => /\bHigh Street\b/i.test(r.n || '') && !['footway', 'path', 'service'].includes(r.c)).map(r => r.pts))[0];
     if (hs) { const q = hs.reduce((b, p) => Math.abs(p[1] - P.union.z) < Math.abs(b[1] - P.union.z) ? p : b, hs[0]); P.highst = { x: q[0], z: q[1], h: 0, r: 20 }; if (missing.includes('highst')) missing.splice(missing.indexOf('highst'), 1); } }
   if (missing.length) console.info('[osu-campus] using approximate positions for:', missing.join(', '));
-  const colliders = city.colliders;
+  const colliders = city.colliders; group.add(LM.group); colliders.push(...LM.colliders);
+  for (const k of ['thompson', 'union', 'univhall']) if (LM.at[k]) P[k] = { ...P[k], ...LM.at[k], h: LM.at[k].h };
 
   const B = new Builder();
   const M = { stone: ctx.mat('#ffffff', { vertexColors: true, roughness: .85, envMapIntensity: .3 }), seat: ctx.mat('#ffffff', { vertexColors: true, roughness: .7, envMapIntensity: .3, side: THREE.DoubleSide }),
@@ -78,14 +82,7 @@ export function buildOSUCampus(ctx) {
     P.rotunda = { x: cx, z: rz, h: 43 }; P.stadium = { x: cx, z: fz, h: 43, r: R1 };
   }
 
-  /* ---------------- Orton Hall's bell tower (the map has the hall; this adds the tower) ---------------- */
-  { const OF = footprint(DATA, /^orton hall$/i); const t = P.orton;
-    const corner = OF ? OF.ring.reduce((best, p) => Math.hypot(p[0] - P.oval.x, p[1] - P.oval.z) < Math.hypot(best[0] - P.oval.x, best[1] - P.oval.z) ? p : best, OF.ring[0]) : [t.x, t.z];
-    const tx = lerp(corner[0], OF ? OF.cx : t.x, .18), tz = lerp(corner[1], OF ? OF.cz : t.z, .18);
-    B.add('stone', boxGeo(8, 34, 8), [tx, 0, tz], null, null, '#cdbf9e'); B.add('stone', boxGeo(9.4, 2, 9.4), [tx, 34, tz], null, null, '#b9aa88');
-    B.add('stone', new THREE.ConeGeometry(6.4, 9, 4).rotateY(Math.PI / 4).translate(0, 4.5, 0), [tx, 36, tz], null, null, '#6d5a49');
-    B.add('glow', boxGeo(8.2, 2.4, 1.2), [tx, 29, tz], null, null);
-    colliders.push([tx - 5, 0, tz - 5, tx + 5, 45, tz + 5, 'Orton Hall bell tower']); P.ortonTower = { x: tx, z: tz, h: 45 }; }
+  P.ortonTower = LM.at.ortonTower || { x: P.orton.x, z: P.orton.z, h: 20 };
   B.build(M, group);
 
   /* ---------------- life on campus ---------------- */

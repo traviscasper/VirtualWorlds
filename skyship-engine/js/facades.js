@@ -145,3 +145,5 @@ export function chooseStyle(b, s, { area, rect, campus }) {
   if (k === 'apartments' || k === 'residential' || k === 'dormitory') { out.style = campus && s < .5 ? 'collegiate' : 'brick'; out.floorH = 3.2; return out; }
   out.style = campus ? (s < .55 ? 'collegiate' : 'brick') : (s < .55 ? 'brick' : 'punched'); out.floorH = 3.8; return out;
 }
+
+export { canvasPair, win, tex, noise, S as TEX_SIZE };

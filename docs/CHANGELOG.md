@@ -17,6 +17,7 @@
 
 ### Building quality pass
 - New facade system (`facades.js`): nine facade types at realistic window spacing, floors aligned to each building's storey height, pitched roofs on houses, parapets and rooftop units, storefront ground floors, per-building tints, gentler use of mapped colours.
+- **Hand-modelled landmarks** (`landmarks.js`) on their real footprints: LeVeque Tower, Rhodes State Office Tower, Huntington Center, Ohio Statehouse, Nationwide Arena, Thompson Library, Ohio Union, Orton Hall, University Hall. References and approximations in `docs/LANDMARKS.md`. Replaces the simpler in-world LeVeque, Statehouse and Orton tower.
 - Building viewer for close-up QC (`tools/qa/gis_viewer.html?region=osu-campus|columbus-downtown&at=<landmark>`).
 
 ### Fixed

@@ -18,7 +18,7 @@ Code-generated virtual worlds from **Future Life Experiences**, guided by **ARCH
 | [`worlds-within-worlds/`](worlds-within-worlds/) | **ARCHIVE: Worlds Within Worlds**, the 90-minute film engine and studio (separate GLSL raymarcher) |
 | [`world-tour/`](world-tour/) | Player for the World Tour short (draft video) |
 | [`tools/qa/`](tools/qa/) | Automated tests and preview rendering |
-| [`docs/`](docs/) | [Status](docs/PROJECT_STATUS.md) · [Tasks](docs/TASKS.md) · [Architecture](docs/ARCHITECTURE.md) · [World format](docs/WORLD_FORMAT.md) · [Changelog](docs/CHANGELOG.md) · [Recommendations](docs/RECOMMENDATIONS.md) |
+| [`docs/`](docs/) | [Status](docs/PROJECT_STATUS.md) · [Tasks](docs/TASKS.md) · [Architecture](docs/ARCHITECTURE.md) · [Landmarks](docs/LANDMARKS.md) · [World format](docs/WORLD_FORMAT.md) · [Changelog](docs/CHANGELOG.md) · [Recommendations](docs/RECOMMENDATIONS.md) |
 
 ## Run it locally
 

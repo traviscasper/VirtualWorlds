@@ -2,7 +2,7 @@
    OpenStreetMap data (data/gis/columbus-downtown.json, made by tools/gis/osm_world.py). NOT an official plan.
 
    Real today (from the map): the street network, building footprints and heights, the Scioto River, parks, bridges.
-   Hand-modelled real landmarks: the LeVeque Tower and the Ohio Statehouse.
+   Hand-modelled real landmarks (landmarks.js): the LeVeque Tower, Rhodes Tower, Huntington Center, Ohio Statehouse and Nationwide Arena.
    Imagined for 2050: green and solar roofs, transit lanes on Broad and High, protected bike lanes, street trees,
    a riverbank forest, a rooftop vertiport, mass-timber towers and a solar microgrid on today's surface parking lots,
    a green footbridge, autonomous shuttles and air taxis.
@@ -14,6 +14,7 @@
    Scioto Mile 20.5, Broad St 26.5, Statehouse 30, rooftops 34, clouds 41.5), so the journeys and hotspots carry over. */
 import * as THREE from 'three';
 import { V3, Col, lerp, clamp, rng, FlightPath, Builder, boxGeo, cylGeo, People } from '../../sci-fi-360/js/lib.js';
+import { buildLandmarks } from '../js/landmarks.js';
 import { loadRegion, buildCity, Route, PathMovers, Walkers, chain, lineMesh, samples, footprint, ringBox, pointInRing } from '../js/gis.js';
 
 const DATA = await loadRegion('columbus-downtown');
@@ -45,7 +46,8 @@ export function buildColumbus2050GIS(ctx) {
   const major = DATA.roads.filter(r => ['primary', 'secondary', 'tertiary', 'trunk'].includes(r.c) && !r.b);
 
   /* ---------------- landmarks we draw ourselves ---------------- */
-  const LQf = footprint(DATA, /leveque/i), SHf = footprint(DATA, /ohio statehouse|^statehouse/i);
+  // hand-modelled signature buildings on their real footprints (skyship-engine/js/landmarks.js)
+  const LM = buildLandmarks(ctx, DATA, ['leveque', 'rhodes', 'huntington', 'statehouse', 'arena']);
 
   /* ---------------- 2050 sites on today's surface parking lots ---------------- */
   const area = r => { let s = 0; for (let i = 0; i < r.length; i++) { const a = r[i], b = r[(i + 1) % r.length]; s += a[0] * b[1] - b[0] * a[1]; } return Math.abs(s / 2); };
@@ -55,13 +57,14 @@ export function buildColumbus2050GIS(ctx) {
 
   /* ---------------- the city ---------------- */
   const city = buildCity(ctx, DATA, { seed: 50, trees: { parks: 260, woods: 70, max: 9000 },
-    skip: b => (LQf && b === LQf.b) || (SHf && b === SHf.b),
+    skip: b => LM.skip.has(b),
     roof: (b) => { if (b.part || b.h > 120) return null; const s = hashB(b); if (b.h >= 48) return s < .3 ? 'solar' : null; return s < .45 ? 'green' : s < .7 ? 'solar' : s < .78 ? 'white' : null; },
     extraTrees: streetAndRiverTrees() });
   group.add(city.group);
   const colliders = city.colliders;
   const P = {}; for (const k in FALLBACK) { let f = null; for (const nm of NAMES[k]) { f = city.find(nm); if (f) break; } P[k] = f || fromLL(FALLBACK[k]); }
-  if (LQf) P.leveque = { x: LQf.cx, z: LQf.cz, h: 169, r: Math.max(LQf.w, LQf.d) / 2 }; if (SHf) P.statehouse = { x: SHf.cx, z: SHf.cz, h: 48, r: 40, w: SHf.w, d: SHf.d };
+  group.add(LM.group); colliders.push(...LM.colliders);
+  for (const k of ['leveque', 'statehouse']) if (LM.at[k]) P[k] = { ...LM.at[k], r: 30 };
 
   function streetAndRiverTrees() {
     const out = []; const water = DATA.water.map(w => w.pts);
@@ -79,30 +82,12 @@ export function buildColumbus2050GIS(ctx) {
   const tex = makeTextures();
   const M = { stone: ctx.mat('#ffffff', { vertexColors: true, roughness: .8, envMapIntensity: .35 }), dark: ctx.mat('#2a3340', { roughness: .45, metalness: .6, envMapIntensity: .8 }),
     white: ctx.mat('#ffffff', { roughness: .35, metalness: .15, envMapIntensity: .9, vertexColors: true }), grass: ctx.mat('#ffffff', { roughness: .95, vertexColors: true, envMapIntensity: .25 }),
-    leveque: ctx.mat('#ffffff', { map: tex.deco.map, emissiveMap: tex.deco.emi, emissive: '#ffffff', emissiveIntensity: .25, roughness: .7, vertexColors: true }),
     timber: ctx.mat('#ffffff', { map: tex.timber.map, emissiveMap: tex.timber.emi, emissive: '#ffffff', emissiveIntensity: .3, roughness: .7, vertexColors: true }),
     solar: city.mats.solar, water: city.mats.water,
     glowG: new THREE.MeshBasicMaterial({ color: new Col('#7dffb0').multiplyScalar(1.6) }), glowB: new THREE.MeshBasicMaterial({ color: new Col('#8fe4ff').multiplyScalar(1.8) }),
     glowW: new THREE.MeshBasicMaterial({ color: new Col('#fff1d0').multiplyScalar(1.6) }) };
   const addBox = (key, w, h, d, x, y, z, ry, color, label) => { B.add(key, boxGeo(w, h, d, 6, 8), [x, y, z], [0, ry || 0, 0], null, color); if (label) colliders.push([x - w / 2, y, z - d / 2, x + w / 2, y + h, z + d / 2, label]); };
   const treeList = [];
-
-  /* LeVeque Tower (1927, 169 m) — stepped Art Deco tower */
-  { const L = P.leveque, s = LQf ? clamp(Math.min(LQf.w, LQf.d) / 34, .7, 1.3) : 1; const tiers = [[34, 72], [28, 48], [22, 24], [16, 12]]; let y = 0;
-    for (const [w, h] of tiers) { addBox('leveque', w * s, h, w * s, L.x, y, L.z, 0, '#efe6d2', 'LeVeque Tower');
-      for (let i = 0; i < 4; i++) for (const sd of [-1, 1]) { const a = (i - 1.5) / 4 * w * s; B.add('leveque', boxGeo(1.1, h, 1.1), [L.x + a, y, L.z + sd * (w * s / 2 + .4)], null, null, '#f6eedb'); B.add('leveque', boxGeo(1.1, h, 1.1), [L.x + sd * (w * s / 2 + .4), y, L.z + a], null, null, '#f6eedb'); }
-      y += h; }
-    B.add('leveque', cylGeo(6, 8, 9, 8), [L.x, y, L.z], null, null, '#efe6d2'); B.add('leveque', new THREE.ConeGeometry(4, 4, 8).translate(0, 2, 0), [L.x, y + 9, L.z], null, null, '#efe6d2');
-    B.add('glowW', new THREE.SphereGeometry(1.4, 10, 8), [L.x, y + 14, L.z]); colliders.push([L.x - 6, y, L.z - 6, L.x + 6, y + 15, L.z + 6, 'LeVeque spire']); P.leveque.top = y + 14; }
-
-  /* Ohio Statehouse (completed 1861) — Greek Revival, drum and flat cupola, on Capitol Square */
-  { const S = P.statehouse, W = SHf ? SHf.w * .92 : 56, D = SHf ? SHf.d * .92 : 90;
-    addBox('stone', W, 17, D, S.x, 0, S.z, 0, '#e2dccd', 'Ohio Statehouse');
-    for (let i = 0; i < 8; i++) B.add('stone', cylGeo(1.1, 1.2, 13, 12), [S.x - W / 2 + 6 + i * (W - 12) / 7, 0, S.z - D / 2 - 2], null, null, '#f0ebdf');
-    addBox('stone', W - 8, 3, 4, S.x, 13, S.z - D / 2 - 2, 0, '#e8e2d4');
-    B.add('stone', cylGeo(10, 10, 24, 32), [S.x, 17, S.z], null, null, '#e8e2d4'); B.add('stone', cylGeo(11.2, 11.2, 2, 32), [S.x, 41, S.z], null, null, '#f0ebdf');
-    for (let i = 0; i < 16; i++) { const a = i / 16 * Math.PI * 2; B.add('dark', boxGeo(1.6, 9, .6), [S.x + Math.cos(a) * 10.05, 27, S.z + Math.sin(a) * 10.05], [0, -a + Math.PI / 2, 0]); }
-    colliders.push([S.x - 11, 17, S.z - 11, S.x + 11, 43, S.z + 11, 'Statehouse cupola']); }
 
   /* ---------------- flight path (world time) ---------------- */
   // river leg: follow the Scioto's real course from the north-west to the Broad Street bridge; then east along Broad

@@ -32,6 +32,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { loadRegion, buildCity } from '../../skyship-engine/js/gis.js';
+import { buildLandmarks } from '../../skyship-engine/js/landmarks.js';
 
 const qs = new URLSearchParams(location.search), region = qs.get('region') || 'osu-campus';
 document.getElementById('region').value = region;
@@ -48,8 +49,9 @@ const envMats = []; const ctx = { envMats, fog: scene.fog, mat(color, opts = {})
 const msg = document.getElementById('msg');
 const data = await loadRegion(region);
 const t0 = performance.now();
-const city = buildCity(ctx, data, { seed: 21, trees: { parks: 330, woods: 80, max: 6000 }, campus: region === 'osu-campus' });
-scene.add(city.group);
+const LM = buildLandmarks(ctx, data, region === 'osu-campus' ? ['thompson', 'union', 'orton', 'univhall'] : ['leveque', 'rhodes', 'huntington', 'statehouse', 'arena'], { oval: data.landmarks['The Oval'] });
+const city = buildCity(ctx, data, { seed: 21, trees: { parks: 330, woods: 80, max: 6000 }, campus: region === 'osu-campus', skip: b => LM.skip.has(b) });
+scene.add(city.group, LM.group);
 msg.textContent = `${city.stats.buildings.toLocaleString()} buildings · built in ${((performance.now() - t0) / 1000).toFixed(1)} s`;
 const names = Object.keys(data.landmarks).sort(); document.getElementById('names').innerHTML = names.map(n => `<option value="${n.replace(/"/g, '&quot;')}">`).join('');
 function goTo(name) { const L = city.find(name); if (!L) { msg.textContent = `No landmark called "${name}"`; return; } const r = Math.max(60, (L.r || 30) * 2.4, (L.h || 0) * 1.6);
@@ -58,7 +60,7 @@ document.getElementById('q').onchange = e => goTo(e.target.value);
 cam.position.set(260, 220, 360); controls.target.set(0, 0, 0); if (qs.get('at')) goTo(qs.get('at'));
 addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
 (function loop() { controls.update(); renderer.render(scene, cam); requestAnimationFrame(loop); })();
-window.QC = { ready: true, stats: city.stats, find: n => city.find(n),
+window.QC = { ready: true, stats: city.stats, find: n => city.find(n), at: LM.at, missing: LM.missing,
   shot(x, y, z, tx, ty, tz) { cam.position.set(x, y, z); controls.target.set(tx, ty, tz); controls.update(); renderer.render(scene, cam); return renderer.domElement.toDataURL('image/jpeg', .9); } };
 </script>
 </body>

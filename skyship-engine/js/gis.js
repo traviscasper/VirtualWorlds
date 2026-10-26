@@ -28,7 +28,7 @@ export function pointInRing(x, z, r) { let c = false; for (let i = 0, j = r.leng
 const bbox = r => { let x0 = 1e9, z0 = 1e9, x1 = -1e9, z1 = -1e9; for (const [x, z] of r) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (z < z0) z0 = z; if (z > z1) z1 = z; } return [x0, z0, x1, z1]; };
 
 /** accumulates triangles per material key (positions, normals, uvs, colours) */
-class Acc {
+export class Acc {
   constructor() { this.k = {}; }
   b(key) { return this.k[key] ||= { p: [], n: [], u: [], c: [] }; }
   tri(key, a, b, c, n, ua, ub, uc, col) { const B = this.b(key); B.p.push(...a, ...b, ...c); for (let i = 0; i < 3; i++) B.n.push(...n); B.u.push(...ua, ...ub, ...uc); for (let i = 0; i < 3; i++) B.c.push(col.r, col.g, col.b); }
@@ -175,7 +175,7 @@ export function buildCity(ctx, data, opts = {}) {
 
 /* ---------------- building pieces ---------------- */
 /** minimum-area oriented box of a ring: { cx, cz, ux, uz (long axis), w (long), d (short) } */
-function obb(ring) { let best = null;
+export function obb(ring) { let best = null;
   for (let i = 0; i < ring.length; i++) { const a = ring[i], b = ring[(i + 1) % ring.length]; let ux = b[0] - a[0], uz = b[1] - a[1]; const L = Math.hypot(ux, uz); if (L < .5) continue; ux /= L; uz /= L;
     let p0 = 1e9, p1 = -1e9, q0 = 1e9, q1 = -1e9; for (const [x, z] of ring) { const p = x * ux + z * uz, q = -x * uz + z * ux; if (p < p0) p0 = p; if (p > p1) p1 = p; if (q < q0) q0 = q; if (q > q1) q1 = q; }
     const ar = (p1 - p0) * (q1 - q0); if (!best || ar < best.ar) { const pc = (p0 + p1) / 2, qc = (q0 + q1) / 2; best = { ar, cx: pc * ux - qc * uz, cz: pc * uz + qc * ux, ux, uz, w: p1 - p0, d: q1 - q0 }; } }
@@ -304,4 +304,4 @@ export function lineMesh(ctx, lines, width, y, color, offset = 0, mat) {
 export function samples(line, step, offset = 0) { const l = offset ? offsetLine(line, offset) : line, R = new Route(l), out = [], o = {}; for (let d = step / 2; d < R.len; d += step) { R.at(d, o); out.push([o.x, o.z]); } return out; }
 /** the footprint ring and bbox of a named building */
 export function footprint(data, re) { const b = data.buildings.find(b => b.n && re.test(b.n)); if (!b) return null; const [x0, z0, x1, z1] = bbox(b.pts); return { b, ring: b.pts, x0, z0, x1, z1, cx: (x0 + x1) / 2, cz: (z0 + z1) / 2, w: x1 - x0, d: z1 - z0 }; }
-export { offsetLine, bbox as ringBox };
+export { offsetLine, bbox as ringBox, signedArea, triOut };
