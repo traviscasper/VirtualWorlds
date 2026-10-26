@@ -15,7 +15,7 @@ Worlds that run elsewhere (the film studio, the original kits) need only a manif
 | `summary`, `description` | Portal card and long description |
 | `categories` | `sustainability` (green), `technology` (red), `space` (purple); one or more |
 | `time` | `era` (past / present / future / past-to-future), `label`, optional `year` |
-| `place` | `type` (city / laboratory / orbit / spacecraft / planet / virtual), `name`, `fictional`, optional `geo` |
+| `place` | `type` (city / campus / laboratory / orbit / spacecraft / planet / virtual), `name`, `fictional`, optional `geo` |
 | `purposes` | explore / learn / simulate / design / experience a story |
 | `learningObjectives` | Shown in Learn mode |
 | `status.stage` | planned / draft / pilot / complete / film-only. **Do not mark unbuilt work as complete.** |
@@ -31,7 +31,7 @@ Worlds that run elsewhere (the film studio, the original kits) need only a manif
 | `audio.score` | Settings for the composed score (chords as MIDI notes, bells, pulse, ambience, drone, brightness) |
 | `portals[]` | `{to, via, label}`: connections to other worlds, through a journey |
 | `formats` | desktop / mobile / webxr / video360 / video16x9 |
-| `gis` | Readiness for real geographic data |
+| `gis` | `ready`, `source`, `notes`: whether the world is built on real map data (see ARCHITECTURE.md, *Worlds on real geography*) |
 
 ## The module contract
 

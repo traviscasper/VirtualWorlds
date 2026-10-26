@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Building Viewer · FLE Virtual Worlds</title>
+<style>
+  :root{color-scheme:light dark;--bg:#dfe9f3;--ink:#13233a;--panel:rgba(255,255,255,.88)}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1520;--ink:#e6eef7;--panel:rgba(16,26,40,.88)}}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:14px/1.4 system-ui,-apple-system,sans-serif}
+  canvas{display:block;width:100%;height:100%;touch-action:none}
+  #ui{position:fixed;left:12px;top:12px;right:12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--panel);padding:8px 10px;border-radius:12px;max-width:760px}
+  select,button,input{font:inherit;padding:5px 8px;border-radius:8px;border:1px solid #9ab}
+  #msg{opacity:.75}
+  #credit{position:fixed;right:10px;bottom:8px;font-size:12px;opacity:.75}
+</style>
+</head>
+<body>
+<div id="ui">
+  <b>Building viewer</b>
+  <label>Region <select id="region"><option value="osu-campus">Ohio State campus</option><option value="columbus-downtown">Downtown Columbus</option></select></label>
+  <label>Go to <input id="q" placeholder="a landmark name" list="names" size="18"></label><datalist id="names"></datalist>
+  <span id="msg">Loading…</span>
+</div>
+<div id="credit">Map data © OpenStreetMap contributors (ODbL)</div>
+<script type="importmap">{"imports":{"three":"../../sci-fi-360/vendor/three.module.js","three/addons/":"../../sci-fi-360/vendor/jsm/"}}</script>
+<script type="module">
+/* Close-up quality control for map-based cities: the same builder (skyship-engine/js/gis.js) as the worlds, with a free
+   camera. Drag to orbit, scroll/pinch to zoom, right-drag to pan. ?region=osu-campus|columbus-downtown&at=Name
+   Test hook: window.QC.shot(camX, camY, camZ, lookX, lookY, lookZ) → JPEG data URL. */
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { loadRegion, buildCity } from '../../skyship-engine/js/gis.js';
+import { buildLandmarks } from '../../skyship-engine/js/landmarks.js';
+
+const qs = new URLSearchParams(location.search), region = qs.get('region') || 'osu-campus';
+document.getElementById('region').value = region;
+document.getElementById('region').onchange = e => { qs.set('region', e.target.value); qs.delete('at'); location.search = qs; };
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(2, devicePixelRatio)); renderer.setSize(innerWidth, innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.outputColorSpace = THREE.SRGBColorSpace; document.body.prepend(renderer.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color('#bcd3e8'); scene.fog = new THREE.FogExp2('#c8d9e6', .00045);
+const pmrem = new THREE.PMREMGenerator(renderer); scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), .04).texture;
+const sun = new THREE.DirectionalLight('#fff1d8', 2.4); sun.position.set(-450, 620, -640); scene.add(sun, new THREE.HemisphereLight('#dce9ff', '#5b6a4c', 1.1));
+const cam = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 1, 20000);
+const controls = new OrbitControls(cam, renderer.domElement); controls.enableDamping = true; controls.maxPolarAngle = Math.PI * .49;
+const envMats = []; const ctx = { envMats, fog: scene.fog, mat(color, opts = {}) { const m = new THREE.MeshStandardMaterial({ color, roughness: .75, metalness: 0, envMapIntensity: .35, ...opts }); envMats.push(m); return m; } };
+const msg = document.getElementById('msg');
+const data = await loadRegion(region);
+const t0 = performance.now();
+const LM = buildLandmarks(ctx, data, region === 'osu-campus' ? ['thompson', 'union', 'orton', 'univhall', 'hayes', 'wexner', 'lincoln', 'morrill'] : ['leveque', 'rhodes', 'huntington', 'statehouse', 'arena', 'onenationwide', 'cosi', 'ohiotheatre'], { oval: data.landmarks['The Oval'] });
+const city = buildCity(ctx, data, { seed: 21, trees: { parks: 330, woods: 80, max: 6000 }, campus: region === 'osu-campus', skip: b => LM.skip.has(b) });
+scene.add(city.group, LM.group);
+msg.textContent = `${city.stats.buildings.toLocaleString()} buildings · built in ${((performance.now() - t0) / 1000).toFixed(1)} s`;
+const names = Object.keys(data.landmarks).sort(); document.getElementById('names').innerHTML = names.map(n => `<option value="${n.replace(/"/g, '&quot;')}">`).join('');
+function goTo(name) { const L = city.find(name); if (!L) { msg.textContent = `No landmark called "${name}"`; return; } const r = Math.max(60, (L.r || 30) * 2.4, (L.h || 0) * 1.6);
+  controls.target.set(L.x, Math.max(4, (L.h || 0) * .4), L.z); cam.position.set(L.x + r * .8, Math.max(40, (L.h || 0) * 1.1 + 30), L.z + r); msg.textContent = L.name; }
+document.getElementById('q').onchange = e => goTo(e.target.value);
+cam.position.set(260, 220, 360); controls.target.set(0, 0, 0); if (qs.get('at')) goTo(qs.get('at'));
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+(function loop() { controls.update(); renderer.render(scene, cam); requestAnimationFrame(loop); })();
+window.QC = { ready: true, stats: city.stats, find: n => city.find(n), at: LM.at, missing: LM.missing,
+  shot(x, y, z, tx, ty, tz) { cam.position.set(x, y, z); controls.target.set(tx, ty, tz); controls.update(); renderer.render(scene, cam); return renderer.domElement.toDataURL('image/jpeg', .9); } };
+</script>
+</body>
+</html>

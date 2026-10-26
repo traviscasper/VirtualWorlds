@@ -1,0 +1,66 @@
+# Downloads real OpenStreetMap data for the Columbus 2050 and Ohio State worlds on a GitHub-hosted runner,
+# checks it, uploads the two built files as an artifact, and commits only those two files back to the branch.
+# Runs when this workflow or the GIS tools change on phase-3-columbus-osu, or by hand (Actions tab → Run workflow,
+# available once this file is also on the default branch).
+name: OpenStreetMap data
+
+on:
+  push:
+    branches: [phase-3-columbus-osu]
+    paths:
+      - .github/workflows/osm-data.yml
+      - tools/gis/osm_world.py
+      - tools/gis/verify_osm.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: osm-data-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  osm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check that the map servers answer
+        continue-on-error: true
+        run: |
+          for u in https://overpass-api.de/api/status https://overpass.kumi.systems/api/status https://overpass.private.coffee/api/status https://maps.mail.ru/osm/tools/overpass/api/status; do
+            echo "== $u"; curl -sS -m 30 "$u" | head -8 || echo "(no answer)"
+          done
+
+      - name: Download and build (real OpenStreetMap data only)
+        run: python tools/gis/osm_world.py all
+
+      - name: Verify
+        run: python tools/gis/verify_osm.py --summary "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload the built files
+        uses: actions/upload-artifact@v4
+        with:
+          name: osm-gis-data
+          path: |
+            data/gis/columbus-downtown.json
+            data/gis/osu-campus.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Commit only the two data files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- data/gis/columbus-downtown.json data/gis/osu-campus.json
+          echo "Staged:"; git diff --cached --stat
+          if git diff --cached --quiet; then echo "No change to commit."; exit 0; fi
+          git commit -m "Add OpenStreetMap data for downtown Columbus and the OSU campus"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

@@ -4,7 +4,7 @@
   "kind": "world",
   "name": "Columbus 2050",
   "summary": "Fly down the Scioto and along Broad Street through one possible, greener future for downtown Columbus.",
-  "description": "An artistic future scenario for downtown Columbus, Ohio: a free-flowing Scioto River lined with urban forest, rapid transit in green lanes on Broad and High streets, protected bike lanes on every street, autonomous electric shuttles, green and solar roofs, mass-timber towers, a neighborhood microgrid and a rooftop vertiport. Real landmarks (the LeVeque Tower, the Ohio Statehouse, the Scioto Mile, Rhodes Tower, the Huntington Center, COSI) are placed approximately on a simplified street grid.",
+  "description": "An artistic future scenario for downtown Columbus, Ohio, built on real geography from OpenStreetMap: today's streets, building footprints, the Scioto River and parks, with the LeVeque Tower and the Ohio Statehouse modelled on their real footprints. The imagined 2050 layer adds green and solar roofs, rapid transit in green lanes on Broad and High streets, protected bike lanes, street trees and a riverbank forest, autonomous electric shuttles, a rooftop vertiport, a green footbridge, and mass-timber towers and a solar microgrid on what are surface parking lots today.",
   "categories": [
     "sustainability",
     "technology"
@@ -44,7 +44,7 @@
   ],
   "status": {
     "stage": "pilot",
-    "notes": "Artistic scenario on a simplified grid. Ready for verified GIS data (see gis)."
+    "notes": "Real streets, buildings and river from OpenStreetMap; the 2050 additions are imagined. Most building heights are estimated from building type."
   },
   "disclaimer": "Columbus 2050 is an artistic future scenario, not an official plan.",
   "launch": [
@@ -67,8 +67,8 @@
   "preview": "portal/img/columbus-2050.jpg",
   "engine": {
     "type": "skyship",
-    "module": "skyship-engine/worlds/columbus2050.js",
-    "build": "buildColumbus2050",
+    "module": "skyship-engine/worlds/columbus2050_gis.js",
+    "build": "buildColumbus2050GIS",
     "space": false,
     "earth": false,
     "cabinLight": 0.3,
@@ -451,6 +451,10 @@
       "source": "FLE"
     },
     {
+      "text": "Streets, buildings and the river come from OpenStreetMap. Map data © OpenStreetMap contributors, ODbL 1.0.",
+      "source": "OpenStreetMap"
+    },
+    {
       "text": "Columbus was founded in 1812 on the banks of the Scioto River.",
       "source": "City of Columbus"
     },
@@ -468,14 +472,17 @@
     }
   ],
   "assets": {
-    "models": "procedural (code-generated)",
+    "models": "OpenStreetMap footprints extruded in code, plus procedural landmarks and 2050 additions",
     "textures": "canvas-generated facades and solar panels",
     "shared": [
+      "skyship-engine/js/gis.js",
       "sci-fi-360/js/lib.js",
       "sci-fi-360/vendor/three.module.js",
       "skyship-engine/journey.html"
     ],
-    "data": []
+    "data": [
+      "data/gis/columbus-downtown.json"
+    ]
   },
   "lighting": "late-morning summer sun; light haze; clouds at 380–600 m (the skyship climbs through them to orbit)",
   "audio": {
@@ -537,7 +544,8 @@
     "video16x9": true
   },
   "gis": {
-    "ready": false,
-    "notes": "Street grid, river centreline and landmark positions are constants in columbus2050.js (STREETS, riverX, landmarks). Next step: generate them from OpenStreetMap / Franklin County GIS and calibrate building heights from LiDAR; the engine and manifests do not change."
+    "ready": true,
+    "source": "OpenStreetMap via tools/gis/osm_world.py (region columbus-downtown)",
+    "notes": "Street network, footprints, river and parks are real. About 78% of building heights are estimated (no height or levels tag). Next: calibrate heights from Ohio statewide LiDAR (OGRIP) and overlay verified plans such as LinkUS."
   }
 }

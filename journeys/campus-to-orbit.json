@@ -1,0 +1,401 @@
+{
+  "$schema": "./schema.json",
+  "id": "campus-to-orbit",
+  "title": "Today, 2050, Orbit",
+  "tagline": "Skyship · Ohio State today → Columbus 2050 → orbital habitat",
+  "summary": "A 2½-minute flight through time: Ohio State's campus as it is today, downtown Columbus in one possible 2050, then up through the clouds to an orbital habitat.",
+  "duration": 156,
+  "transition": 4,
+  "timelineLabel": "TODAY → 2050 → ORBIT",
+  "timelineX": [
+    0,
+    0.42,
+    1
+  ],
+  "transitLabel": "CLIMBING THROUGH THE CLOUDS",
+  "categories": [
+    "sustainability",
+    "technology",
+    "space"
+  ],
+  "worlds": [
+    {
+      "world": "osu-campus",
+      "t0": 0,
+      "t1": 66,
+      "timeOffset": 0
+    },
+    {
+      "world": "columbus-2050",
+      "t0": 66,
+      "t1": 108,
+      "timeOffset": -66
+    },
+    {
+      "world": "orbital-habitat",
+      "t0": 108,
+      "t1": 156,
+      "timeOffset": 12
+    }
+  ],
+  "cues": [
+    {
+      "t": 0,
+      "mood": "curious",
+      "look": "ahead",
+      "slot": "L",
+      "line": "The Ohio State University. Columbus, today."
+    },
+    {
+      "t": 3.5,
+      "mood": "happy",
+      "look": "river",
+      "slot": "R",
+      "line": "The Olentangy. Its dam came down in 2012."
+    },
+    {
+      "t": 9,
+      "mood": "amazed",
+      "look": "stadium",
+      "point": true,
+      "slot": "L",
+      "line": "Ohio Stadium. The Horseshoe, since 1922."
+    },
+    {
+      "t": 16,
+      "mood": "curious",
+      "look": "rotunda",
+      "slot": "R",
+      "line": "Its rotunda was modelled on the Pantheon."
+    },
+    {
+      "t": 20.5,
+      "mood": "thoughtful",
+      "look": "energy",
+      "slot": "L",
+      "line": "Campus energy: aiming for zero carbon by 2050."
+    },
+    {
+      "t": 25.5,
+      "mood": "happy",
+      "look": "thompson",
+      "point": true,
+      "slot": "R",
+      "line": "Thompson Library. A million books inside."
+    },
+    {
+      "t": 32,
+      "mood": "excited",
+      "look": "oval",
+      "slot": "L",
+      "line": "The Oval. No cars, just paths and people."
+    },
+    {
+      "t": 39,
+      "mood": "curious",
+      "look": "orton",
+      "point": true,
+      "slot": "R",
+      "line": "Orton Hall: Ohio's rocks, in the order they formed."
+    },
+    {
+      "t": 45.5,
+      "mood": "happy",
+      "look": "mirrorlake",
+      "slot": "L",
+      "line": "Mirror Lake. Native plants, and homes for bees."
+    },
+    {
+      "t": 53,
+      "mood": "curious",
+      "look": "union",
+      "slot": "R",
+      "line": "The Ohio Union, where campus meets High Street."
+    },
+    {
+      "t": 58.5,
+      "mood": "excited",
+      "look": "up",
+      "gesture": "spin",
+      "slot": "L",
+      "line": "Next: downtown Columbus. In the year 2050."
+    },
+    {
+      "t": 62.5,
+      "mood": "amazed",
+      "look": "up",
+      "slot": "R",
+      "line": "Up through the clouds, and forward in time..."
+    },
+    {
+      "t": 66,
+      "mood": "curious",
+      "look": "ahead",
+      "slot": "L",
+      "line": "Columbus, 2050. Same river, one possible future."
+    },
+    {
+      "t": 70.5,
+      "mood": "happy",
+      "look": "river",
+      "slot": "R",
+      "line": "The Scioto runs free here, lined with forest."
+    },
+    {
+      "t": 74,
+      "mood": "amazed",
+      "look": "vertiport",
+      "point": true,
+      "slot": "L",
+      "line": "A rooftop vertiport. Air taxis, buses and bikes meet here."
+    },
+    {
+      "t": 78,
+      "mood": "curious",
+      "look": "greenbridge",
+      "slot": "R",
+      "line": "Below us: a bridge just for walking and biking."
+    },
+    {
+      "t": 81.5,
+      "mood": "amazed",
+      "look": "leveque",
+      "point": true,
+      "slot": "L",
+      "line": "The LeVeque Tower, 1927. A real Columbus landmark."
+    },
+    {
+      "t": 85.5,
+      "mood": "happy",
+      "look": "fountain",
+      "point": true,
+      "slot": "R",
+      "line": "The Scioto Mile. Parks right on the water."
+    },
+    {
+      "t": 89.2,
+      "mood": "surprised",
+      "look": "canyon",
+      "gesture": "jump",
+      "slot": "R",
+      "line": "Steady... right down Broad Street!"
+    },
+    {
+      "t": 92.3,
+      "mood": "excited",
+      "look": "transit",
+      "point": true,
+      "slot": "R",
+      "line": "Rapid transit in its own green lane."
+    },
+    {
+      "t": 95.5,
+      "mood": "thoughtful",
+      "look": "statehouse",
+      "point": true,
+      "slot": "R",
+      "line": "The Ohio Statehouse, finished in 1861."
+    },
+    {
+      "t": 99,
+      "mood": "happy",
+      "look": "roofs",
+      "point": true,
+      "slot": "L",
+      "line": "Green roofs, solar panels, towers made of wood."
+    },
+    {
+      "t": 102.5,
+      "mood": "excited",
+      "look": "up",
+      "gesture": "spin",
+      "slot": "R",
+      "line": "Hold on. Next stop: orbit!"
+    },
+    {
+      "t": 106.5,
+      "mood": "amazed",
+      "look": "up",
+      "slot": "R",
+      "line": "Up through the clouds..."
+    },
+    {
+      "t": 112.5,
+      "mood": "amazed",
+      "look": "down",
+      "slot": "R",
+      "line": "Earth. Columbus is down there, under the clouds."
+    },
+    {
+      "t": 116,
+      "mood": "happy",
+      "look": "ring",
+      "point": true,
+      "slot": "R",
+      "line": "A ring habitat, spinning to make gravity."
+    },
+    {
+      "t": 119.5,
+      "mood": "excited",
+      "look": "up",
+      "gesture": "spin",
+      "slot": "R",
+      "line": "Straight through the middle!"
+    },
+    {
+      "t": 124.5,
+      "mood": "happy",
+      "look": "falls",
+      "point": true,
+      "slot": "R",
+      "line": "Forest, lake, waterfall. Water used again and again."
+    },
+    {
+      "t": 132.5,
+      "mood": "curious",
+      "look": "farm",
+      "point": true,
+      "slot": "L",
+      "line": "The Life Support Commons. First: food."
+    },
+    {
+      "t": 136.5,
+      "mood": "happy",
+      "look": "water",
+      "point": true,
+      "slot": "L",
+      "line": "Water, cleaned and used again. Almost nothing lost."
+    },
+    {
+      "t": 140.5,
+      "mood": "amazed",
+      "look": "energy",
+      "point": true,
+      "slot": "L",
+      "line": "Sunlight in, stored for the dark side of the orbit."
+    },
+    {
+      "t": 144.5,
+      "mood": "happy",
+      "look": "air",
+      "point": true,
+      "slot": "L",
+      "line": "Algae breathe in our CO2 and breathe out oxygen."
+    },
+    {
+      "t": 148.5,
+      "mood": "thoughtful",
+      "look": "earthView",
+      "slot": "R",
+      "line": "A city or a habitat: both have to keep life going."
+    },
+    {
+      "t": 152.5,
+      "mood": "happy",
+      "look": "you",
+      "gesture": "wave",
+      "slot": "R"
+    }
+  ],
+  "audio": {
+    "file": "../journeys/audio/campus-to-orbit.mp3"
+  },
+  "final": {
+    "t0": 150,
+    "line1": "Today, Tomorrow, and Beyond:",
+    "line2": "Sustaining Life Is Our Responsibility.",
+    "foot": "MAP DATA © OPENSTREETMAP CONTRIBUTORS · COLUMBUS 2050 IS AN ARTISTIC SCENARIO · FUTURE LIFE EXPERIENCES"
+  },
+  "lesson": {
+    "title": "Sustaining Life: Campus, City, Orbit",
+    "course": "Virtual Environments for a Better Future",
+    "intro": "The same needs (clean water, energy, food, fresh air and ways to move) show up on a real campus today, in an imagined city of 2050, and in a habitat in orbit. Investigate each one.",
+    "objectives": [
+      {
+        "text": "Explain what changed when the Olentangy's dam was removed.",
+        "hotspots": [
+          "osu-river"
+        ]
+      },
+      {
+        "text": "Describe how a campus is cutting its carbon today.",
+        "hotspots": [
+          "osu-energy"
+        ]
+      },
+      {
+        "text": "Describe two ways a future city could move people without more cars.",
+        "hotspots": [
+          "transit",
+          "vertiport"
+        ]
+      },
+      {
+        "text": "Name ways buildings can make energy and manage rain.",
+        "hotspots": [
+          "roofs",
+          "microgrid"
+        ]
+      },
+      {
+        "text": "Explain how a habitat recycles water and air.",
+        "hotspots": [
+          "water",
+          "air"
+        ]
+      },
+      {
+        "text": "Compare: which needs are the same on campus, in the city and in orbit?",
+        "hotspots": [
+          "osu-mirrorlake",
+          "river",
+          "farm"
+        ]
+      }
+    ]
+  },
+  "shots": [
+    [
+      11,
+      "c2o_osu_stadium",
+      "cabin",
+      -0.46,
+      -0.21
+    ],
+    [
+      35,
+      "c2o_osu_oval",
+      "cabin",
+      -0.38,
+      -1.13
+    ],
+    [
+      66,
+      "c2o_clouds_1",
+      "cabin",
+      0,
+      -0.1
+    ],
+    [
+      90,
+      "c2o_broad",
+      "cabin",
+      0.11,
+      -0.57
+    ],
+    [
+      108,
+      "c2o_clouds_2",
+      "cabin",
+      0,
+      -0.1
+    ],
+    [
+      139,
+      "c2o_water",
+      "cabin",
+      1.3,
+      -0.05
+    ]
+  ]
+}

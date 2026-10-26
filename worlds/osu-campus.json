@@ -1,0 +1,142 @@
+{
+  "$schema": "./schema.json",
+  "id": "osu-campus",
+  "kind": "world",
+  "name": "Ohio State Campus",
+  "summary": "Fly over The Ohio State University's Columbus campus as it is today: the Olentangy River, Ohio Stadium, Thompson Library, the Oval, Orton Hall and Mirror Lake.",
+  "description": "The Ohio State University's Columbus campus, built from OpenStreetMap data: real building footprints, streets, footpaths, the Olentangy River, Mirror Lake and the Oval. Ohio Stadium and Orton Hall's bell tower are hand-modelled on top of the map. Students walk the Oval's paths, buses and cars use the real streets, and kayaks paddle the restored river. The trees wear autumn colours.",
+  "categories": ["sustainability", "technology"],
+  "themes": ["campus", "river restoration", "campus energy", "history", "learning places", "digital twin"],
+  "time": { "era": "present", "label": "Today", "year": 2026 },
+  "place": { "type": "campus", "name": "The Ohio State University, Columbus", "fictional": false,
+    "geo": { "lat": 39.9993, "lon": -83.0142, "note": "Origin (0,0) is the centre of the Oval; metres; x east, z south. Exact origin is in data/gis/osu-campus.json." } },
+  "purposes": ["explore", "learn", "experience a story"],
+  "learningObjectives": [
+    "Explain how removing a dam and restoring a river can improve water quality and habitat.",
+    "Describe how a large campus is cutting its carbon emissions.",
+    "Connect campus landmarks to how the university and its landscape changed over 150 years."
+  ],
+  "status": { "stage": "pilot", "notes": "Built from OpenStreetMap; building heights are tagged or estimated. Stadium and bell tower are hand-modelled." },
+  "launch": [
+    { "label": "Fly the campus", "mode": "cinematic", "href": "skyship-engine/journey.html?journey=osu-campus" },
+    { "label": "Explore", "mode": "explore", "href": "skyship-engine/journey.html?journey=osu-campus&mode=explore" },
+    { "label": "Learn", "mode": "learn", "href": "skyship-engine/journey.html?journey=osu-campus&mode=learn" }
+  ],
+  "preview": "portal/img/osu-campus.jpg",
+  "engine": {
+    "type": "skyship",
+    "module": "skyship-engine/worlds/osu_campus.js",
+    "build": "buildOSUCampus",
+    "space": false,
+    "earth": false,
+    "cabinLight": 0.3,
+    "entry": { "t": 0, "camera": "cabin", "heading": "north up the Olentangy River" },
+    "display": {
+      "chip": "Ohio State",
+      "year": "TODAY",
+      "yearShort": "NOW",
+      "title": "THE OHIO STATE UNIVERSITY",
+      "author": "COLUMBUS CAMPUS · OPENSTREETMAP",
+      "sub": "a real campus, mapped",
+      "theme": "A CAMPUS THAT LEARNS",
+      "themeLine": "A river set free, a stadium from 1922, a library rebuilt, and a plan for zero carbon.",
+      "place": "OHIO STATE · COLUMBUS",
+      "below": "THE OLENTANGY RIVER",
+      "outside": "CLEAR · 58°F"
+    },
+    "atmosphere": {
+      "top": "#4f86c2", "hor": "#d9e4ee", "bot": "#6f7562", "fog": "#d3dde6", "fogD": 0.0004,
+      "sun": [-0.55, 0.5, -0.45], "sunCol": "#ffe6c4", "sS": 1.15, "aS": 0.62, "hemiS": "#dfe9ff", "hemiG": "#6a6248",
+      "stars": 0, "cloud": "#ffffff", "cloudAmt": 0.5, "band": [380, 600], "cloudy": 0.3, "exp": 1.0, "moonDisk": 0, "whiteout": "#e8eef4"
+    }
+  },
+  "navigation": { "modes": ["cinematic", "explore", "learn"], "controls": ["drag to look", "pinch or scroll to zoom", "fly-to menu", "stops", "hotspots", "WebXR headset"] },
+  "stops": [
+    { "t": 4, "name": "Olentangy River", "hotspots": ["osu-river"] },
+    { "t": 13, "name": "Ohio Stadium", "hotspots": ["osu-stadium"] },
+    { "t": 20, "name": "Campus energy", "hotspots": ["osu-energy"] },
+    { "t": 27, "name": "Thompson Library", "hotspots": ["osu-thompson"] },
+    { "t": 35, "name": "The Oval", "hotspots": ["osu-oval"] },
+    { "t": 41, "name": "Orton Hall", "hotspots": ["osu-orton"] },
+    { "t": 48, "name": "Mirror Lake", "hotspots": ["osu-mirrorlake"] },
+    { "t": 56, "name": "Ohio Union", "hotspots": ["osu-union"] }
+  ],
+  "hotspots": [
+    { "id": "osu-river", "anchor": "river", "label": "Olentangy River", "category": "sustainability", "kicker": "Sustainability · real place",
+      "title": "A river set free", "text": "The Olentangy runs along the west side of campus. In 2012 the Fifth Avenue dam just downstream was removed, and the river was given back its pools, riffles, native plants and wetlands.",
+      "facts": [
+        { "text": "Demolition of the roughly 77-year-old Fifth Avenue dam began on August 29, 2012. The $7 million project was funded by the City of Columbus, Ohio EPA and Ohio State.", "source": "WOSU Public Media, September 2012" },
+        { "text": "Removing the dam was expected to let fish move upstream, cool the water and improve water quality.", "source": "WOSU Public Media, September 2012" },
+        { "text": "More than 60 dams have been removed from Ohio rivers since the 1970s.", "source": "Ohio State School of Environment and Natural Resources" }
+      ],
+      "archive": "No dam here any more. The river runs the way it wants to.", "size": 220,
+      "question": { "q": "What was expected to happen after the dam came down?", "options": ["Fish move upstream and the water gets cooler", "The river gets deeper and slower", "The river dries up"], "answer": 0, "why": "Without the dam's slow, warm pool, the river flows freely again, and fish can swim upstream." } },
+    { "id": "osu-stadium", "anchor": "stadium", "label": "Ohio Stadium", "category": "technology", "kicker": "History · engineering",
+      "title": "Ohio Stadium, 1922", "text": "The Horseshoe opened in 1922, open to the south with its rotunda at the north end. Its upper deck overhangs the lower one to bring more fans close to the field.",
+      "facts": [
+        { "text": "Ohio Stadium opened on October 7, 1922. It was designed by Howard Dwight Smith, an Ohio State graduate.", "source": "Wikipedia, Ohio Stadium" },
+        { "text": "Its official capacity is 102,780 (set in 2019). The record crowd was 110,045, against Michigan in 2016.", "source": "Wikipedia, Ohio Stadium" },
+        { "text": "The north rotunda was modelled on the dome of the Pantheon in Rome. The stadium was listed on the National Register of Historic Places in 1974.", "source": "Wikipedia, Ohio Stadium" }
+      ],
+      "archive": "A horseshoe of concrete, a hundred years old and still roaring.", "size": 260 },
+    { "id": "osu-energy", "anchor": "energy", "label": "Campus energy", "category": "sustainability", "kicker": "Sustainability · real goals",
+      "title": "Cutting a campus's carbon", "text": "A university the size of a small city uses a lot of energy. Ohio State is replacing lights, metering buildings, and building a combined heat and power plant that makes electricity and heat from the same fuel.",
+      "facts": [
+        { "text": "Ohio State reported a 30% drop in carbon emissions, from 615,051 to 428,392 metric tons of CO2e, compared with fiscal year 2015.", "source": "Ohio State News, November 2022" },
+        { "text": "The university's goal is carbon neutrality by 2050. Leaders were asked to plan for net zero by 2040.", "source": "Ohio State News, November 2022" },
+        { "text": "About 123,000 light fixtures were converted to LED, and about 900 smart meters were installed in nearly 300 buildings.", "source": "Ohio State News, November 2022" }
+      ],
+      "archive": "Every light, every meter, every building. Small changes, added up.", "size": 160,
+      "question": { "q": "What makes a combined heat and power plant efficient?", "options": ["It uses the heat left over from making electricity", "It runs only at night", "It burns more fuel to make more power"], "answer": 0, "why": "Ordinary power plants waste their heat. CHP captures it to warm buildings, so the same fuel does two jobs." } },
+    { "id": "osu-thompson", "anchor": "thompson", "label": "Thompson Library", "category": "technology", "kicker": "Learning · real place",
+      "title": "Thompson Library", "text": "The main library stands at the west end of the Oval. Its ten-storey stacks tower was added in 1951, and a renovation finished in 2009 opened it up with glass and a new west atrium.",
+      "facts": [
+        { "text": "Built 1910–1912, the library opened in January 1913. The 2007–2009 renovation cost $108.7 million and reopened the building on September 24, 2009.", "source": "Wikipedia, William Oxley Thompson Memorial Library" },
+        { "text": "It holds about 1.25 million volumes on site, including 250,000 in special collections.", "source": "Wikipedia, William Oxley Thompson Memorial Library" }
+      ],
+      "archive": "A million books, and a view of the whole Oval.", "size": 110 },
+    { "id": "osu-oval", "anchor": "oval", "label": "The Oval", "category": "sustainability", "kicker": "Place · real history",
+      "title": "The Oval", "text": "The green heart of campus. The Oval wasn't in the original plan: an 1893 master plan proposed an open quadrangle with no roads through it, and the shape grew from there. Its paths are for people on foot.",
+      "facts": [
+        { "text": "The end nearest High Street was reshaped in 1901, making the space an oval; the name first appeared in 1910.", "source": "Ohio State University Libraries, University Archives" },
+        { "text": "The roads around the Oval became pedestrian-only walkways in the 1970s.", "source": "Ohio State University Libraries, University Archives" }
+      ],
+      "archive": "No cars on the Oval. Just paths, trees and people.", "size": 300,
+      "question": { "q": "What happened to the roads around the Oval in the 1970s?", "options": ["They became walkways for people on foot", "They were widened for buses", "They became parking"], "answer": 0, "why": "The campus turned its central roads into pedestrian walkways." } },
+    { "id": "osu-orton", "anchor": "orton", "label": "Orton Hall", "category": "sustainability", "kicker": "Earth science · real place",
+      "title": "Orton Hall, a building made of Ohio", "text": "Orton Hall, home of the Orton Geological Museum, is built from Ohio stone laid in the order the rocks formed: the oldest at the bottom, the youngest near the top of the bell tower.",
+      "facts": [
+        { "text": "Orton Hall opened in August 1893, designed by Yost & Packard.", "source": "Orton Geological Museum, Ohio State" },
+        { "text": "Its stones run from Silurian rock at the base to Carboniferous rock near the top of the tower, and grotesques in the tower show ancient reptiles and mammals.", "source": "Orton Geological Museum, Ohio State" }
+      ],
+      "archive": "Read it from the bottom up: four hundred million years of Ohio.", "size": 70,
+      "question": { "q": "How are Orton Hall's stones arranged?", "options": ["In the order the rocks formed, oldest at the bottom", "By colour", "At random"], "answer": 0, "why": "The building is a geology lesson: older Silurian stone at the base, younger Carboniferous stone near the top." } },
+    { "id": "osu-mirrorlake", "anchor": "mirrorlake", "label": "Mirror Lake", "category": "sustainability", "kicker": "Sustainability · real place",
+      "title": "Mirror Lake, restored", "text": "Mirror Lake started as a stream and then a bog. A renovation completed in 2018 made it shallower, with sloping edges planted with native plants that give pollinators a home.",
+      "facts": [
+        { "text": "Construction began in late 2016, and the renovated lake reopened in August 2018 with softer, planted edges and more seating.", "source": "Ohio State News, July 2018" },
+        { "text": "Native plants on the sloped banks provide pollinator habitat.", "source": "Ohio State News, July 2018" }
+      ],
+      "archive": "Shallow water, soft edges, and flowers for the bees.", "size": 120 },
+    { "id": "osu-union", "anchor": "union", "label": "Ohio Union", "category": "sustainability", "kicker": "Campus life · real place",
+      "title": "The Ohio Union", "text": "The student union on High Street opened in 2010 as a LEED Silver certified building. It replaced earlier unions going back to 1910.",
+      "facts": [
+        { "text": "The current Ohio Union opened on March 29, 2010, and is LEED Silver certified.", "source": "Wikipedia, Ohio Union" },
+        { "text": "Ohio State's first union opened in 1910 in what is now Hale Hall; the university describes it as the first student union at a public university.", "source": "Wikipedia, Ohio Union" }
+      ],
+      "archive": "Where campus meets the city, on High Street.", "size": 120 }
+  ],
+  "facts": [
+    { "text": "Built from OpenStreetMap data. Map data © OpenStreetMap contributors, ODbL 1.0.", "source": "OpenStreetMap" },
+    { "text": "Ohio Stadium opened in 1922 and holds 102,780 people.", "source": "Wikipedia, Ohio Stadium" },
+    { "text": "Thompson Library reopened in 2009 after a $108.7 million renovation.", "source": "Wikipedia, William Oxley Thompson Memorial Library" },
+    { "text": "The Fifth Avenue dam on the Olentangy was removed in 2012.", "source": "WOSU Public Media" },
+    { "text": "Ohio State aims to be carbon neutral by 2050.", "source": "Ohio State News, 2022" }
+  ],
+  "assets": { "models": "OpenStreetMap footprints extruded in code, plus procedural landmarks", "textures": "canvas-generated facades", "shared": ["skyship-engine/js/gis.js", "sci-fi-360/js/lib.js", "sci-fi-360/vendor/three.module.js", "skyship-engine/journey.html"], "data": ["data/gis/osu-campus.json"] },
+  "lighting": "clear autumn afternoon; trees in fall colour; clouds at 380–600 m",
+  "audio": { "score": { "chords": [[48, 55, 60, 64], [45, 52, 57, 60], [41, 48, 53, 57], [43, 50, 55, 59]], "bar": 4, "bells": [72, 76, 79, 76, 74, 72, 71, 74], "pulse": 0.5, "ambience": "city", "bright": 0.65 } },
+  "portals": [{ "to": "columbus-2050", "via": "campus-to-orbit", "label": "On to Columbus 2050 and orbit" }],
+  "formats": { "desktop": true, "mobile": true, "webxr": true, "video360": true, "video16x9": true },
+  "gis": { "ready": true, "source": "OpenStreetMap via tools/gis/osm_world.py (region osu-campus)", "notes": "Heights come from height or building:levels tags where present, otherwise a default by building type (marked e:1 in the data). Next: calibrate heights from Ohio LiDAR or Ohio State's own GIS." }
+}
